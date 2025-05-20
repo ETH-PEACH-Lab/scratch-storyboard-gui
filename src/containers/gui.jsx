@@ -23,7 +23,8 @@ import {
     closeBackdropLibrary,
     closeTelemetryModal,
     openExtensionLibrary,
-    closeDebugModal
+    closeDebugModal,
+    closeAssistantModal
 } from '../reducers/modals';
 
 import FontLoaderHOC from '../lib/font-loader-hoc.jsx';
@@ -160,6 +161,9 @@ const mapStateToProps = state => {
         costumeLibraryVisible: state.scratchGui.modals.costumeLibrary,
         costumesTabVisible: state.scratchGui.editorTab.activeTabIndex === COSTUMES_TAB_INDEX,
         debugModalVisible: state.scratchGui.modals.debugModal,
+        assistantModalVisible: state.scratchGui.modals.assistantModal,
+        componentModalVisible: state.scratchGui.modals.componentModal,
+        relationshipModalVisible: state.scratchGui.modals.relationshipModal,
         error: state.scratchGui.projectState.error,
         isError: getIsError(loadingState),
         isFullScreen: state.scratchGui.mode.isFullScreen,
@@ -187,6 +191,9 @@ const mapDispatchToProps = dispatch => ({
     onRequestCloseBackdropLibrary: () => dispatch(closeBackdropLibrary()),
     onRequestCloseCostumeLibrary: () => dispatch(closeCostumeLibrary()),
     onRequestCloseDebugModal: () => dispatch(closeDebugModal()),
+    onRequestCloseAssistantModal: () => dispatch(closeAssistantModal()),
+    onRequestCloseComponentModal: () => dispatch(closeAssistantModal()),
+    onRequestCloseRelationshipModal: () => dispatch(closeAssistantModal()),
     onRequestCloseTelemetryModal: () => dispatch(closeTelemetryModal())
 });
 

@@ -41,6 +41,9 @@ import codeIcon from './icon--code.svg';
 import costumesIcon from './icon--costumes.svg';
 import soundsIcon from './icon--sounds.svg';
 import DebugModal from '../debug-modal/debug-modal.jsx';
+import AssistantModal from '../dbox-modal/assistant-modal.jsx';
+import ComponentModal from '../dbox-modal/component-modal.jsx';
+import RelationshipModal from '../dbox-modal/relationship-modal.jsx';
 
 const messages = defineMessages({
     addExtension: {
@@ -84,6 +87,9 @@ const GUIComponent = props => {
         costumeLibraryVisible,
         costumesTabVisible,
         debugModalVisible,
+        assistantModalVisible,
+        componentModalVisible,
+        relationshipModalVisible,
         enableCommunity,
         intl,
         isCreating,
@@ -111,6 +117,9 @@ const GUIComponent = props => {
         onRequestCloseBackdropLibrary,
         onRequestCloseCostumeLibrary,
         onRequestCloseDebugModal,
+        onRequestCloseAssistantModal,
+        onRequestCloseComponentModal,
+        onRequestCloseRelationshipModal,
         onRequestCloseTelemetryModal,
         onSeeCommunity,
         onShare,
@@ -211,6 +220,18 @@ const GUIComponent = props => {
                 {<DebugModal
                     isOpen={debugModalVisible}
                     onClose={onRequestCloseDebugModal}
+                />}
+                {<AssistantModal
+                    isOpen={assistantModalVisible}
+                    onClose={onRequestCloseAssistantModal}
+                />}
+                {<ComponentModal
+                    isOpen={componentModalVisible}
+                    onClose={onRequestCloseComponentModal}
+                />}
+                {<RelationshipModal
+                    isOpen={relationshipModalVisible}
+                    onClose={onRequestCloseRelationshipModal}
                 />}
                 {backdropLibraryVisible ? (
                     <BackdropLibrary
@@ -405,6 +426,7 @@ GUIComponent.propTypes = {
     costumeLibraryVisible: PropTypes.bool,
     costumesTabVisible: PropTypes.bool,
     debugModalVisible: PropTypes.bool,
+    assistantModalVisible: PropTypes.bool,
     enableCommunity: PropTypes.bool,
     intl: intlShape.isRequired,
     isCreating: PropTypes.bool,
@@ -427,6 +449,7 @@ GUIComponent.propTypes = {
     onRequestCloseBackdropLibrary: PropTypes.func,
     onRequestCloseCostumeLibrary: PropTypes.func,
     onRequestCloseDebugModal: PropTypes.func,
+    onRequestCloseAssistantModal: PropTypes.func,
     onRequestCloseTelemetryModal: PropTypes.func,
     onSeeCommunity: PropTypes.func,
     onShare: PropTypes.func,

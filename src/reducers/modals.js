@@ -4,6 +4,8 @@ const CLOSE_MODAL = 'scratch-gui/modals/CLOSE_MODAL';
 const MODAL_BACKDROP_LIBRARY = 'backdropLibrary';
 const MODAL_COSTUME_LIBRARY = 'costumeLibrary';
 const MODAL_DEBUG = 'debugModal';
+const MODAL_DBOX = 'dboxModal';
+const MODAL_ASSISTANT = 'assistantModal';
 const MODAL_EXTENSION_LIBRARY = 'extensionLibrary';
 const MODAL_LOADING_PROJECT = 'loadingProject';
 const MODAL_TELEMETRY = 'telemetryModal';
@@ -17,6 +19,8 @@ const initialState = {
     [MODAL_BACKDROP_LIBRARY]: false,
     [MODAL_COSTUME_LIBRARY]: false,
     [MODAL_DEBUG]: false,
+    [MODAL_DBOX]: false,
+    [MODAL_ASSISTANT]: false,
     [MODAL_EXTENSION_LIBRARY]: false,
     [MODAL_LOADING_PROJECT]: false,
     [MODAL_TELEMETRY]: false,
@@ -63,6 +67,12 @@ const openCostumeLibrary = function () {
 const openDebugModal = function () {
     return openModal(MODAL_DEBUG);
 };
+const openDBoxModal = function () {
+    return openModal(MODAL_DBOX);
+};
+const openAssistantModal = function () {
+    return openModal(MODAL_ASSISTANT);
+};
 const openExtensionLibrary = function () {
     return openModal(MODAL_EXTENSION_LIBRARY);
 };
@@ -96,6 +106,12 @@ const closeCostumeLibrary = function () {
 const closeDebugModal = function () {
     return closeModal(MODAL_DEBUG);
 };
+const closeDBoxModal = function () {
+    return closeModal(MODAL_DBOX);
+};
+const closeAssistantModal = function () {
+    return closeModal(MODAL_ASSISTANT);
+};
 const closeExtensionLibrary = function () {
     return closeModal(MODAL_EXTENSION_LIBRARY);
 };
@@ -126,6 +142,8 @@ export {
     openBackdropLibrary,
     openCostumeLibrary,
     openDebugModal,
+    openDBoxModal,
+    openAssistantModal,
     openExtensionLibrary,
     openLoadingProject,
     openSoundLibrary,
@@ -137,6 +155,8 @@ export {
     closeBackdropLibrary,
     closeCostumeLibrary,
     closeDebugModal,
+    closeDBoxModal,
+    closeAssistantModal,
     closeExtensionLibrary,
     closeLoadingProject,
     closeSpriteLibrary,
