@@ -8,7 +8,7 @@ import {Component} from './storyboard.jsx';
 // ComponentModal component (example, adjust as needed)
 const ComponentModal = ({isOpen, onClose = () => {}}) => {
 
-    const [component, setComponent] = useState(new Component('My Component'));
+    const [component, setComponent] = useState(() => new Component('My Component'));
 
     const handleNameChange = useCallback(e => {
         setComponent({...component, name: e.target.value});
@@ -21,6 +21,11 @@ const ComponentModal = ({isOpen, onClose = () => {}}) => {
     const handleClose = useCallback(() => {
         onClose();
     }, [onClose]);
+
+    const handleFormSubmit = useCallback(e => {
+        e.preventDefault();
+        // Handle form submission logic here
+    }, []);
     
     if (!isOpen) return null;
     return (
@@ -49,10 +54,11 @@ const ComponentModal = ({isOpen, onClose = () => {}}) => {
             </div>
             <div className={styles.modalContent}>
                 {/* Replace with your actual form */}
-                <form>
-                    <label>
+                <form onSubmit={handleFormSubmit}>
+                    <label htmlFor="component-name">
                         {'Component Name:'}
                         <input
+                            id="component-name"
                             type="text"
                             className={styles.titleInput}
                             value={component.name}
@@ -61,9 +67,10 @@ const ComponentModal = ({isOpen, onClose = () => {}}) => {
                         />
                     </label>
                     <button type="submit">{'Save'}</button>
-                    <label>
+                    <label htmlFor="component-description">
                         {'Component Description:'}
                         <input
+                            id="component-description"
                             type="text"
                             className={styles.titleInput}
                             value={component.description}

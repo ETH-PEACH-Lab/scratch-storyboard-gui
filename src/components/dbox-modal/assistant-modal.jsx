@@ -18,7 +18,17 @@ const messages = defineMessages({
         defaultMessage: 'Verify',
         description: 'verify button text'
     },
-    addComponetent: {
+    finish: {
+        id: 'gui.AssistantModal.finish',
+        defaultMessage: 'Continue',
+        description: 'finish button text, minimizes overlay'
+    },
+    groundTruth: {
+        id: 'gui.AssistantModal.groundTruth',
+        defaultMessage: 'Add Project',
+        description: 'ground truth button text'
+    },
+    addComponent: {
         id: 'gui.AssistantModal.addComponent',
         defaultMessage: 'add component',
         description: 'add component button text'
@@ -31,15 +41,92 @@ const messages = defineMessages({
 });
 const AssistantModal = ({isOpen, onClose = () => {}}) => {
 
-    const [storyboard, setStoryboard] = useState(new Storyboard('My Storyboard Title'));
+    const [storyboard, setStoryboard] = useState(() => new Storyboard('My Storyboard'));
 
     const handleClose = useCallback(() => {
         onClose();
     }, [onClose]);
 
+    const handleMinimize = useCallback(() => {
+        // Handle minimize logic here
+        // For example, you might want to set a state variable to control visibility
+        // or use a callback to notify the parent component
+        console.log('Minimize button clicked');
+    }, []);
+
     const handleTitleChange = useCallback(e => {
-        setStoryboard({...storyboard, title: e.target.value});
+        storyboard.title = e.target.value;
+        setStoryboard(new Storyboard(
+            storyboard.title,
+            storyboard.description,
+            storyboard.components,
+            storyboard.relationships
+        ));
     }, [storyboard]);
+
+    const handleDescriptionChange = useCallback(e => {
+        storyboard.description = e.target.value;
+        setStoryboard(new Storyboard(
+            storyboard.title,
+            storyboard.description,
+            storyboard.components,
+            storyboard.relationships
+        ));
+    }, [storyboard]);
+
+    const handleComponentNameChange = useCallback(e => {
+        const index = e.target.dataset.index;
+        const newComponents = [...storyboard.components];
+        newComponents[index].name = e.target.value;
+        setStoryboard(new Storyboard(
+            storyboard.title,
+            storyboard.description,
+            newComponents,
+            storyboard.relationships
+        ));
+    }, [storyboard]);
+
+    const handleComponentDescriptionChange = useCallback(e => {
+        const index = e.target.dataset.index;
+        const newComponents = [...storyboard.components];
+        newComponents[index].description = e.target.value;
+        setStoryboard(new Storyboard(
+            storyboard.title,
+            storyboard.description,
+            newComponents,
+            storyboard.relationships
+        ));
+    }, [storyboard]);
+
+    const handleAddComponent = useCallback(
+        () => {
+            storyboard.addComponent('Component1', 'Description1');
+            setStoryboard(new Storyboard(
+                storyboard.title,
+                storyboard.description,
+                storyboard.components,
+                storyboard.relationships
+            ));
+        },
+        [storyboard]
+    );
+
+    const handleAddRelationship = useCallback(
+        () => {
+            storyboard.addRelationship('Relationship1', 'Description1');
+            setStoryboard(new Storyboard(
+                storyboard.title,
+                storyboard.description,
+                storyboard.components,
+                storyboard.relationships
+            ));
+        },
+        [storyboard]
+    );
+
+    const handleAddGroundTruth = useCallback(() => {
+        console.log('Teacher added a final project');
+    }, []);
 
     const handleVerify = useCallback(() => {}, []);
 
@@ -53,13 +140,21 @@ const AssistantModal = ({isOpen, onClose = () => {}}) => {
             overlayClassName={styles.assistantModalOverlay}
         >
             <div className={styles.modalHeader}>
-                <input
-                    type="text"
-                    className={styles.titleInput}
-                    value={storyboard.title}
-                    onChange={handleTitleChange}
-                    placeholder="Enter Storyboard title..."
-                />
+                <div className={styles.headerTitle}>
+                    <FormattedMessage
+                        {...messages.title}
+                    />
+                </div>
+
+   
+                <button
+                    className={styles.groundTruthButton}
+                    onClick={handleAddGroundTruth}
+                >
+                    <FormattedMessage
+                        {...messages.groundTruth}
+                    />
+                </button>
 
                 <div className={styles.headerIcons}>
                     <button
@@ -75,34 +170,100 @@ const AssistantModal = ({isOpen, onClose = () => {}}) => {
             </div>
 
             <div className={styles.modalContent}>
-                <div className={styles.storyboardTitle}>
-                    {storyboard.title}
-                </div>
-                {/* Blank workspace area */}
-                <button
-                    className={styles.addButton}
-                    // onClick={this.props.onOpenComponentModal}
-                >
-                    {/* <img src={closeIcon} className={styles.addIcon} alt="Add Component" /> */}
-                    <FormattedMessage {...messages.addComponent} />
-                </button>
-                <button
-                    className={styles.addButton}
-                    // onClick={this.props.onOpenRelationshipModal}
-                >
-                    {/* <img src={closeIcon} className={styles.addIcon} alt="Add Relationship" /> */}
-                    <FormattedMessage {...messages.addRelationship} />
-                </button>
-                <button
-                    className={styles.verifyButton}
-                    onClick={handleVerify}
-                >
-                    <img
-                        src={checkIcon}
-                        alt="Verify"
+                <span className={styles.storyboardTitleContainer}>
+                    {'Title:'}
+                    <input
+                        type="text"
+                        className={styles.storyboardTitle}
+                        value={storyboard.title}
+                        onChange={handleTitleChange}
+                        placeholder="Enter Storyboard title..."
                     />
-                    <FormattedMessage {...messages.verify} />
-                </button>
+                </span>
+                <span className={styles.storyboardTitleContainer}>
+                    {'Description:'}
+                    <input
+                        type="text"
+                        className={styles.storyboardDescription}
+                        value={storyboard.description}
+                        onChange={handleDescriptionChange}
+                        placeholder="Enter Storyboard description..."
+                    />
+                </span>
+                
+                {/* Blank workspace area */}
+                <div className="componentList">
+                    {/* Liste von Komponenten, z.B.: */}
+                    {storyboard.components.map((component, index) => (
+                        <div
+                            key={index}
+                            className="componentCard"
+                        >
+                            <strong>{'Name'}</strong>
+                            <input
+                                type="text"
+                                className={styles.componentName}
+                                value={component.name}
+                                onChange={handleComponentNameChange}
+                                placeholder="Enter Component name..."
+                            />
+                            <strong>{'Description'}</strong>
+                            <input
+                                type="text"
+                                className={styles.componentDescription}
+                                value={component.description}
+                                onChange={handleComponentDescriptionChange}
+                                placeholder="Enter Component description..."
+                            />
+                        </div>
+                    ))}
+                </div>
+                <div className="relationshipList">
+                    {/* Liste von Beziehungen, z.B.: */}
+                    {storyboard.relationships.map((relationship, index) => (
+                        <div
+                            key={index}
+                            className="relationshipCard"
+                        >
+                            <strong>{relationship.name}</strong>
+                            <p>{relationship.description}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="actions">
+                    <button
+                        className={styles.addButton}
+                        onClick={handleAddComponent}
+                    >
+                        {/* <img src={closeIcon} className={styles.addIcon} alt="Add Component" /> */}
+                        <FormattedMessage {...messages.addComponent} />
+                    </button>
+                    <button
+                        className={styles.addButton}
+                        onClick={handleAddRelationship}
+                    >
+                        {/* <img src={closeIcon} className={styles.addIcon} alt="Add Relationship" /> */}
+                        <FormattedMessage {...messages.addRelationship} />
+                    </button>
+                    <button
+                        className={styles.verifyButton}
+                        onClick={handleVerify}
+                    >
+                        <img
+                            src={checkIcon}
+                            alt="Verify"
+                        />
+                        <FormattedMessage {...messages.verify} />
+                    </button>
+                    <button
+                        className={styles.verifyButton}
+                        onClick={handleMinimize}
+                    >
+                        <FormattedMessage
+                            {...messages.finish}
+                        />
+                    </button>
+                </div>
             </div>
         </ReactModal>
     );
