@@ -85,7 +85,7 @@ import aboutIcon from './icon--about.svg';
 import fileIcon from './icon--file.svg';
 import editIcon from './icon--edit.svg';
 import debugIcon from '../debug-modal/icons/icon--debug.svg';
-import dboxIcon from '../dbox-modal/icons/icon--code.svg';
+// import backdropIcon from './icon--backdrop.svg';
 
 import scratchLogo from './scratch-logo.svg';
 import ninetiesLogo from './nineties_logo.svg';
@@ -728,19 +728,19 @@ class MenuBar extends React.Component {
                                 <FormattedMessage {...ariaMessages.debug} />
                             </span>
                         </div>
-                        <div
+                        {/* <div
                             aria-label={this.props.intl.formatMessage(ariaMessages.assistant)}
                             className={classNames(styles.menuBarItem, styles.noOffset, styles.hoverable)}
                             onClick={this.props.onOpenAssistantModal}
                         >
                             <img
                                 className={styles.helpIcon}
-                                src={dboxIcon}
+                                src={backdropIcon}
                             />
                             <span className={styles.debugLabel}>
                                 <FormattedMessage {...ariaMessages.assistant} />
                             </span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

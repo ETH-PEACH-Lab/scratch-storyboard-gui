@@ -14,6 +14,7 @@ import Blocks from '../../containers/blocks.jsx';
 import CostumeTab from '../../containers/costume-tab.jsx';
 import TargetPane from '../../containers/target-pane.jsx';
 import SoundTab from '../../containers/sound-tab.jsx';
+import StoryboardTab from '../../containers/storyboard-tab.jsx';
 import StageWrapper from '../../containers/stage-wrapper.jsx';
 import Loader from '../loader/loader.jsx';
 import Box from '../box/box.jsx';
@@ -37,6 +38,7 @@ import {themeMap} from '../../lib/themes';
 
 import styles from './gui.css';
 import addExtensionIcon from './icon--extensions.svg';
+import storyboardIcon from './icon--storyboard.svg';
 import codeIcon from './icon--code.svg';
 import costumesIcon from './icon--costumes.svg';
 import soundsIcon from './icon--sounds.svg';
@@ -110,6 +112,7 @@ const GUIComponent = props => {
         onToggleLoginOpen,
         onActivateCostumesTab,
         onActivateSoundsTab,
+        onActivateStoryboardTab,
         onActivateTab,
         onClickLogo,
         onExtensionButtonClick,
@@ -130,6 +133,7 @@ const GUIComponent = props => {
         onTelemetryModalOptOut,
         showComingSoon,
         soundsTabVisible,
+        storyboardTabVisible,
         stageSizeMode,
         targetIsStage,
         telemetryModalVisible,
@@ -331,6 +335,21 @@ const GUIComponent = props => {
                                             id="gui.gui.soundsTab"
                                         />
                                     </Tab>
+                                    <Tab
+                                        className={tabClassNames.tab}
+                                        onClick={onActivateStoryboardTab}
+                                    >
+                                        <img
+                                            className={styles.storyboardIcon}
+                                            draggable={false}
+                                            src={storyboardIcon}
+                                        />
+                                        <FormattedMessage
+                                            defaultMessage="Storyboard"
+                                            description="Button to get to the storyboard panel"
+                                            id="gui.gui.storyboardTab"
+                                        />
+                                    </Tab>
                                 </TabList>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     <Box className={styles.blocksWrapper}>
@@ -369,6 +388,9 @@ const GUIComponent = props => {
                                 </TabPanel>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     {soundsTabVisible ? <SoundTab vm={vm} /> : null}
+                                </TabPanel>
+                                <TabPanel className={tabClassNames.tabPanel}>
+                                    {storyboardTabVisible ? <StoryboardTab vm={vm} /> : null}
                                 </TabPanel>
                             </Tabs>
                             {backpackVisible ? (
@@ -439,6 +461,7 @@ GUIComponent.propTypes = {
     logo: PropTypes.string,
     onActivateCostumesTab: PropTypes.func,
     onActivateSoundsTab: PropTypes.func,
+    onActivateStoryboardTab: PropTypes.func,
     onActivateTab: PropTypes.func,
     onClickAccountNav: PropTypes.func,
     onClickLogo: PropTypes.func,
@@ -463,6 +486,7 @@ GUIComponent.propTypes = {
     renderLogin: PropTypes.func,
     showComingSoon: PropTypes.bool,
     soundsTabVisible: PropTypes.bool,
+    storyboardTabVisible: PropTypes.bool,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
     targetIsStage: PropTypes.bool,
     telemetryModalVisible: PropTypes.bool,

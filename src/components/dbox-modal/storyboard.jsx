@@ -25,6 +25,10 @@ export class Component {
     constructor (name, description, location) {
         this._name = name;
         this._description = description;
+        this._looks = [];
+        this._sounds = [];
+        this._variables = [];
+        this._behaviors = [];
         this._location = location;
         this._feedback = '';
     }
@@ -117,6 +121,7 @@ export class Storyboard {
 
     constructor (title, components = [], relationships = []) {
         this._title = title;
+        this._description = '';
         this._components = components;
         this._relationships = relationships;
         this._feedback = '';
@@ -138,6 +143,14 @@ export class Storyboard {
         this._title = value;
     }
 
+    get description () {
+        return this._description;
+    }
+
+    set description (value) {
+        this._description = value;
+    }
+
     get feedback () {
         return this._feedback;
     }
@@ -146,8 +159,9 @@ export class Storyboard {
         this._feedback = value;
     }
 
-    addComponent () {
-        const component = new Component();
+    addComponent (title, description) {
+        location = new Location(0, 0);
+        const component = new Component(title, description, location);
         this._components.push(component);
     }
 
@@ -155,8 +169,9 @@ export class Storyboard {
         return this._components[index];
     }
 
-    addRelationship () {
-        const relationship = new Relationship();
+    addRelationship (title, description) {
+        location = new Location(0, 0);
+        const relationship = new Relationship(title, description, location);
         this._relationships.push(relationship);
     }
 
@@ -174,6 +189,9 @@ export class Storyboard {
 
     toJSON () {
         return {
+            title: this._title,
+            description: this._description,
+            feedback: this._feedback,
             components: this._components.map(c => c.toJSON()),
             relationships: this._relationships.map(r => r.toJSON())
         };

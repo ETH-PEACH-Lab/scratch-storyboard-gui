@@ -317,3 +317,7 @@ $fade-out-distance: 15px;
 :global(.ReactModal__Body--open) {
     overflow: hidden;
 }
+
+.storyboardIcon{
+    height: 1.1rem;
+}
