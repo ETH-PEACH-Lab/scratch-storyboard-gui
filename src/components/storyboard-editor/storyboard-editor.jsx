@@ -13,6 +13,7 @@ import redoIcon from './icon--redo.svg';
 import undoIcon from './icon--undo.svg';
 import surpriseIcon from '../action-menu/icon--surprise.svg';
 import ReactTooltip from 'react-tooltip';
+import Spinner from '../spinner/spinner.jsx';
 
 const BufferedInput = BufferedInputHOC(Input);
 
@@ -71,6 +72,16 @@ const messages = defineMessages({
         id: 'gui.storyboardEditor.behaviorRelatedSprites',
         description: 'Related sprites of the behavior in the storyboard editor',
         defaultMessage: 'Related Sprites (comma separated)'
+    },
+    behaviorSounds: {
+        id: 'gui.storyboardEditor.behaviorSounds',
+        description: 'Sounds of the behavior in the storyboard editor',
+        defaultMessage: 'Related Sounds (comma separated)'
+    },
+    behaviorCostumes: {
+        id: 'gui.storyboardEditor.behaviorCostumes',
+        description: 'Costumes of the behavior in the storyboard editor',
+        defaultMessage: 'Related Costumes (comma separated)'
     },
     behaviorPossibleBlocks: {
         id: 'gui.storyboardEditor.behaviorPossibleBlocks',
@@ -137,6 +148,11 @@ const StoryboardEditor = props => (
                     onSubmit={props.onChangeTitle}
                 />
             </Label>
+            <Spinner
+                small
+                className={styles.spinner}
+                level={'info'}
+            />
             <div className={styles.buttonGroupTopRight}>
                 <button
                     className={styles.button}
@@ -359,6 +375,80 @@ const StoryboardEditor = props => (
                 }
             </div>
             <div className={styles.row}>
+                <Label text={props.intl.formatMessage(messages.behaviorSounds)}>
+                    <BufferedInput
+                        tabIndex="1"
+                        type="text"
+                        className={styles.descriptionInput}
+                        value={props.behaviors[props.selectedBehaviorIndex].sounds}
+                        onSubmit={props.onChangeSounds}
+                    />
+                </Label>
+                {props.feedback && (
+                    <div className={styles.feedbackButtonGroup}>
+                        <button
+                            className={styles.feedbackButton}
+                            disabled={!props.feedback}
+                            title={props.intl.formatMessage(messages.feedback)}
+                            data-for={messages.behaviorSounds.id}
+                            data-tip={`Behavior Sounds Feedback: ${
+                                props.behaviors[props.selectedBehaviorIndex].feedback.sounds
+                            }`}
+                        // onClick={props.openFeedback}
+                        >
+                            <img
+                                className={styles.feedbackIcon}
+                                draggable={false}
+                                src={surpriseIcon}
+                            />
+                        </button>
+                        <ReactTooltip
+                            className={styles.tooltip}
+                            effect="solid"
+                            id={messages.behaviorSounds.id}
+                            place={'left'}
+                        />
+                    </div>)
+                }
+            </div>
+            <div className={styles.row}>
+                <Label text={props.intl.formatMessage(messages.behaviorCostumes)}>
+                    <BufferedInput
+                        tabIndex="1"
+                        type="text"
+                        className={styles.descriptionInput}
+                        value={props.behaviors[props.selectedBehaviorIndex].costumes}
+                        onSubmit={props.onChangeCostumes}
+                    />
+                </Label>
+                {props.feedback && (
+                    <div className={styles.feedbackButtonGroup}>
+                        <button
+                            className={styles.feedbackButton}
+                            disabled={!props.feedback}
+                            title={props.intl.formatMessage(messages.feedback)}
+                            data-for={messages.behaviorCostumes.id}
+                            data-tip={`Behavior Costumes Feedback: ${
+                                props.behaviors[props.selectedBehaviorIndex].feedback.costumes
+                            }`}
+                        // onClick={props.openFeedback}
+                        >
+                            <img
+                                className={styles.feedbackIcon}
+                                draggable={false}
+                                src={surpriseIcon}
+                            />
+                        </button>
+                        <ReactTooltip
+                            className={styles.tooltip}
+                            effect="solid"
+                            id={messages.behaviorCostumes.id}
+                            place={'left'}
+                        />
+                    </div>)
+                }
+            </div>
+            <div className={styles.row}>
                 <Label text={props.intl.formatMessage(messages.behaviorPossibleBlocks)}>
                     <BufferedInput
                         tabIndex="1"
@@ -420,6 +510,8 @@ StoryboardEditor.propTypes = {
     onChangeName: PropTypes.func.isRequired,
     onChangeDescription: PropTypes.func.isRequired,
     onChangeVariables: PropTypes.func.isRequired,
+    onChangeSounds: PropTypes.func.isRequired,
+    onChangeCostumes: PropTypes.func.isRequired,
     onChangeRelatedSprites: PropTypes.func.isRequired,
     onChangePossibleBlocks: PropTypes.func.isRequired
 };

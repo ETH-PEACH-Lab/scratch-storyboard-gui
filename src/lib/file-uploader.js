@@ -254,9 +254,23 @@ const spriteUpload = function (fileData, fileType, spriteName, storage, handleSp
     }
 };
 
+const referenceUpload = function (fileData, fileType, storage, handleReference, handleError = () => {}) {
+    if (fileType !== '.sb3') {
+        handleError(`Encountered unexpected file type: ${fileType}`);
+        return;
+    }
+    const vmReference = createVMAsset(
+        storage,
+        storage.AssetType.Reference,
+        storage.DataFormat.TXT,
+        new Uint8Array(fileData));
+    handleReference(vmReference);
+};
+
 export {
     handleFileUpload,
     costumeUpload,
     soundUpload,
-    spriteUpload
+    spriteUpload,
+    referenceUpload
 };

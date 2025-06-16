@@ -16,6 +16,8 @@ class StoryboardEditor extends React.Component {
             'handleChangeVariables',
             'handleChangePossibleBlocks',
             'handleChangeRelatedSprites',
+            'handleChangeCostumes',
+            'handleChangeSounds',
             'handleChangeTitle',
             'handleChangeStoryboardVariables',
             'handleChangeStoryboardDescription',
@@ -96,6 +98,17 @@ class StoryboardEditor extends React.Component {
         this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].possibleBlocks = possibleBlocks;
         this.forceUpdate();
     }
+
+    handleChangeCostumes (costumes) {
+        this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].costumes = costumes;
+        this.forceUpdate();
+    }
+
+    handleChangeSounds (sounds) {
+        this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].sounds = sounds;
+        this.forceUpdate();
+    }
+
     handleChangeRelatedSprites (relatedSprites) {
         this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].relatedSprites = relatedSprites;
         this.forceUpdate();
@@ -132,6 +145,8 @@ class StoryboardEditor extends React.Component {
                 onChangeName={this.handleChangeName}
                 onChangeDescription={this.handleChangeDescription}
                 onChangeVariables={this.handleChangeVariables}
+                onChangeCostumes={this.handleChangeCostumes}
+                onChangeSounds={this.handleChangeSounds}
                 onChangeRelatedSprites={this.handleChangeRelatedSprites}
                 onChangePossibleBlocks={this.handleChangePossibleBlocks}
                 onChangeTitle={this.handleChangeTitle}
@@ -157,9 +172,7 @@ StoryboardEditor.propTypes = {
 const mapStateToProps = (state, {behaviorIndex}) => {
     const sprite = state.scratchGui.vm.editingTarget.sprite;
     const index = behaviorIndex < sprite.behaviors.length ? behaviorIndex : sprite.behaviors.length - 1;
-    const behavior = state.scratchGui.vm.editingTarget.sprite.behaviors[index];
     return {
-        name: behavior ? behavior.behaviorName : 'example behavior',
         behaviorIndex: index,
         vm: state.scratchGui.vm
     };

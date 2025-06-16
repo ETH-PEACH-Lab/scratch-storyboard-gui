@@ -127,11 +127,15 @@ class StoryboardTab extends React.Component {
             name: '',
             description: '',
             variables: '',
+            costumes: '',
+            sounds: '',
             relatedSprites: '',
             possibleBlocks: '',
             feedback: {
                 variables: '',
                 description: '',
+                costumes: '',
+                sounds: '',
                 relatedSprites: '',
                 possibleBlocks: ''
             }
@@ -182,13 +186,19 @@ class StoryboardTab extends React.Component {
     }
 
     handleVerifyStoryboard () {
-        // TODO: Implement verification logic
-        // This is where you would call a verification function to check the storyboard
-        // this.props.vm.referenceProject
+        if (!this.props.vm.referenceProjectString) {
+            this.setState({feedback: null});
+            return;
+        }
+
+        // this.props.vm.getFeedback();
 
         this.setState({feedback: 'Verification in progress...'});
-        console.log('TODO handleVerifyStoryboard: Implement verification logic');
-        console.log(this.props.vm.runtime.targets, 'C sprites after upload');
+
+        console.log('TODO test verification logic');
+
+        // this.props.vm.descriptionToBlocks();
+        console.log('TODO implement description to blocks conversion');
     }
 
     handleReferenceUpload (e) {
@@ -296,9 +306,6 @@ class StoryboardTab extends React.Component {
                 this.setState({
                     referenceProject: json
                 });
-    
-                console.log(this.props.vm.referenceProject, 'Reference project after upload');
-                // this.props.onActiveStoryboardTab();
 
                 this.props.onCloseImporting();
 

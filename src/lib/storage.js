@@ -1,6 +1,7 @@
 import {ScratchStorage} from 'scratch-storage';
 
 import defaultProject from './default-project';
+import storyboardProject from './storyboard-project';
 
 /**
  * Wrapper for ScratchStorage which adds default web sources.
@@ -77,7 +78,7 @@ class Storage extends ScratchStorage {
         this.cacheDefaultProject();
     }
     cacheDefaultProject () {
-        const defaultProjectAssets = defaultProject(this.translator);
+        const defaultProjectAssets = storyboardProject(this.translator);
         defaultProjectAssets.forEach(asset => this.builtinHelper._store(
             this.AssetType[asset.assetType],
             this.DataFormat[asset.dataFormat],
