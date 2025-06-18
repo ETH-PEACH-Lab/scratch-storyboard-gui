@@ -1,4 +1,5 @@
-import projectData from './project-data';
+// import projectData from './project-data';
+import projectDataBehavior from './project-data-behavior'; // for testing purposes
 
 /* eslint-disable import/no-unresolved */
 import backdrop from '!raw-loader!./cd21514d0531fdffb22204e0ec5ed84a.svg?';
@@ -18,7 +19,7 @@ const storyboardProject = translator => {
     }
     const encoder = new _TextEncoder();
 
-    const projectJson = projectData(translator);
+    const projectJson = projectDataBehavior(translator);
     return [{
         id: 0,
         assetType: 'Project',

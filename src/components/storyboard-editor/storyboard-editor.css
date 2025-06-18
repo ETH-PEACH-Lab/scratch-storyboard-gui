@@ -309,3 +309,10 @@ $border-radius: 0.25rem;
     position: absolute;
     /* overflow-y: hidden; */
 }
+
+.spinner.feedback {
+    border-color: rgba(0, 0, 0, 0.2); /* light gray border */
+}
+.spinner.feedback::after {
+    border-top-color: #007bff !important; /* bright blue spinner head */
+}

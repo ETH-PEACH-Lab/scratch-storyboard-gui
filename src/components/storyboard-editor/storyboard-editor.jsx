@@ -12,8 +12,10 @@ import styles from './storyboard-editor.css';
 import redoIcon from './icon--redo.svg';
 import undoIcon from './icon--undo.svg';
 import surpriseIcon from '../action-menu/icon--surprise.svg';
+import copyIcon from './icon--copy.svg';
+import IconButton from '../icon-button/icon-button.jsx';
 import ReactTooltip from 'react-tooltip';
-import Spinner from '../spinner/spinner.jsx';
+import SpinnerComponent from '../spinner/spinner.jsx';
 
 const BufferedInput = BufferedInputHOC(Input);
 
@@ -76,12 +78,12 @@ const messages = defineMessages({
     behaviorSounds: {
         id: 'gui.storyboardEditor.behaviorSounds',
         description: 'Sounds of the behavior in the storyboard editor',
-        defaultMessage: 'Related Sounds (comma separated)'
+        defaultMessage: 'Sounds (comma separated)'
     },
     behaviorCostumes: {
         id: 'gui.storyboardEditor.behaviorCostumes',
         description: 'Costumes of the behavior in the storyboard editor',
-        defaultMessage: 'Related Costumes (comma separated)'
+        defaultMessage: 'Costumes (comma separated)'
     },
     behaviorPossibleBlocks: {
         id: 'gui.storyboardEditor.behaviorPossibleBlocks',
@@ -91,7 +93,7 @@ const messages = defineMessages({
     copy: {
         id: 'gui.storyboardEditor.copy',
         description: 'Title of the button to copy the storyboard',
-        defaultMessage: 'Copy'
+        defaultMessage: 'Copy Storyboard to Comments in Coding Area'
     },
     paste: {
         id: 'gui.storyboardEditor.paste',
@@ -148,11 +150,6 @@ const StoryboardEditor = props => (
                     onSubmit={props.onChangeTitle}
                 />
             </Label>
-            <Spinner
-                small
-                className={styles.spinner}
-                level={'info'}
-            />
             <div className={styles.buttonGroupTopRight}>
                 <button
                     className={styles.button}
@@ -252,6 +249,29 @@ const StoryboardEditor = props => (
                 </div>)
             }
         </div>
+        {/* <div
+            className={styles.textContainer}
+            style={{whiteSpace: 'pre-wrap'}}
+        >
+            {props.feedback || 'No feedback available'}
+        </div> */}
+        <SpinnerComponent className="spinner feedback small" />
+        {props.feedback && (
+            <Label text={props.intl.formatMessage(messages.feedback)}>
+                <div
+                    className={styles.textContainer}
+                    style={{whiteSpace: 'pre-wrap'}}
+                >
+                    {props.feedback || 'No feedback available'}
+                </div>
+            </Label>
+        )}
+        <IconButton
+            className={styles.toolButton}
+            img={copyIcon}
+            title={props.intl.formatMessage(messages.copy)}
+            onClick={props.onCopy}
+        />
         <div className={styles.divider} />
         {props.behaviors.length > 0 && props.selectedBehaviorIndex > -1 && (<>
             <div className={styles.row}>
@@ -494,16 +514,17 @@ StoryboardEditor.propTypes = {
     canUndo: PropTypes.bool.isRequired,
     canRedo: PropTypes.bool.isRequired,
     feedback: PropTypes.string,
-    handleOpenFeedback: PropTypes.func.isRequired,
+    handleOpenFeedback: PropTypes.func,
     setRef: PropTypes.func.isRequired,
     intl: intlShape,
-    title: PropTypes.string.isRequired,
-    storyboardDescription: PropTypes.string.isRequired,
-    storyboardVariables: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    storyboardDescription: PropTypes.string,
+    storyboardVariables: PropTypes.string,
     behaviors: PropTypes.array.isRequired,
     selectedBehaviorIndex: PropTypes.number.isRequired,
     onUndo: PropTypes.func.isRequired,
     onRedo: PropTypes.func.isRequired,
+    onCopy: PropTypes.func.isRequired,
     onChangeTitle: PropTypes.func.isRequired,
     onChangeStoryboardVariables: PropTypes.func.isRequired,
     onChangeStoryboardDescription: PropTypes.func.isRequired,

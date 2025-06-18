@@ -51,9 +51,7 @@ class StoryboardEditor extends React.Component {
         }
     }
     handleCopy () {
-        if (this.ref) {
-            this.ref.handleCopy();
-        }
+        // implement copy of storyboard to comments in coding area
     }
 
     handleUndo () {
@@ -116,20 +114,23 @@ class StoryboardEditor extends React.Component {
 
     handleChangeTitle (title) {
         this.props.vm.setStoryboardTitle(title);
+        this.forceUpdate();
     }
 
     handleChangeStoryboardVariables (variables) {
-        this.props.vm.setGlobalVariables(variables);
+        this.props.vm.setStoryboardGlobalVariables(variables);
+        this.forceUpdate();
     }
     handleChangeStoryboardDescription (description) {
         this.props.vm.setStoryboardDescription(description);
+        this.forceUpdate();
     }
 
-    handleOpenFeedback = () => {
-        // This function should handle opening the feedback modal or redirecting to a feedback page
-        // For now, we will just log a message to the console
-        console.log('Open feedback modal');
-    };
+    // handleOpenFeedback = () => {
+    //     // This function should handle opening the feedback modal or redirecting to a feedback page
+    //     // For now, we will just log a message to the console
+    //     console.log('Open feedback modal');
+    // };
 
     
     render () {
@@ -138,6 +139,9 @@ class StoryboardEditor extends React.Component {
             <StoryboardEditorComponent
                 canRedo={this.redoStack.length > 0}
                 canUndo={this.undoStack.length > 0}
+                title={this.props.vm.storyboardOverall.title}
+                storyboardDescription={this.props.vm.storyboardOverall.description}
+                storyboardVariables={this.props.vm.storyboardOverall.globalVariables}
                 behaviors={this.props.vm.editingTarget.sprite.behaviors}
                 selectedBehaviorIndex={this.props.selectedBehaviorIndex}
                 feedback={this.props.feedback}

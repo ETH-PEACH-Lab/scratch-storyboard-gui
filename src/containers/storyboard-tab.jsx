@@ -5,7 +5,7 @@ import {defineMessages, intlShape, injectIntl} from 'react-intl';
 import VM from 'scratch-vm';
 
 import AssetPanel from '../components/asset-panel/asset-panel.jsx';
-import fileUploadIcon from '../components/action-menu/icon--file-upload.svg';
+// import fileUploadIcon from '../components/action-menu/icon--file-upload.svg';
 import addComponentIcon from '../components/action-menu/icon--backdrop.svg';
 import surpriseIcon from '../components/action-menu/icon--surprise.svg';
 import addBehaviorIcon from '../components/action-menu/icon--addBehavior.svg';
@@ -13,7 +13,8 @@ import behaviorIcon from '../components/action-menu/icon--behavior.svg';
 
 import StoryboardEditor from './storyboard-editor.jsx';
 
-import {handleFileUpload, referenceUpload, spriteUpload} from '../lib/file-uploader.js';
+// import {handleFileUpload, referenceUpload, spriteUpload} from '../lib/file-uploader.js';
+import referenceProject from '../lib/storyboard-project/reference-project.json';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
 
@@ -90,6 +91,8 @@ class StoryboardTab extends React.Component {
             feedback: null,
             referenceProject: null
         };
+        const referenceProjectString = this.props.vm.addReferenceProject(referenceProject);
+        this.setState({referenceProject: referenceProjectString});
     }
 
     componentWillReceiveProps (nextProps) {
@@ -185,20 +188,19 @@ class StoryboardTab extends React.Component {
         this.fileInput = input;
     }
 
-    handleVerifyStoryboard () {
-        if (!this.props.vm.referenceProjectString) {
-            this.setState({feedback: null});
-            return;
-        }
+    async handleVerifyStoryboard () {
 
-        // this.props.vm.getFeedback();
+        const feedback = await this.props.vm.getFeedback();
+        console.log('Feedback response', feedback);
 
-        this.setState({feedback: 'Verification in progress...'});
+        this.setState({feedback: feedback});
 
-        console.log('TODO test verification logic');
+        // console.log('TODO test verification logic edge cases');
 
-        // this.props.vm.descriptionToBlocks();
-        console.log('TODO implement description to blocks conversion');
+        // const projectJson = await this.props.vm.descriptionToBlocks();
+        // console.log(projectJson, 'Response for verification');
+        // console.log('TODO test project json format');
+        // console.log('TODO implement description to blocks conversion');
     }
 
     handleReferenceUpload (e) {
@@ -350,14 +352,24 @@ class StoryboardTab extends React.Component {
                 img: addComponentIcon
             },
             {
-                title: intl.formatMessage(messages.fileUploadReference),
-                img: fileUploadIcon,
-                onClick: this.handleFileUploadClick,
-                fileAccept: '.json', // '.sb,.sb2,.sb3',
-                fileChange: this.handleReferenceUpload,
-                fileInput: this.setFileInput,
-                fileMultiple: true
+                title: intl.formatMessage(messages.addBehavior),
+                img: addBehaviorIcon,
+                onClick: this.handleNewBehavior
+            },
+            {
+                title: intl.formatMessage(messages.verify),
+                img: surpriseIcon,
+                onClick: this.handleVerifyStoryboard
             }
+            // , {
+            //     title: intl.formatMessage(messages.fileUploadReference),
+            //     img: fileUploadIcon,
+            //     onClick: this.handleFileUploadClick,
+            //     fileAccept: '.json', // '.sb,.sb2,.sb3',
+            //     fileChange: this.handleReferenceUpload,
+            //     fileInput: this.setFileInput,
+            //     fileMultiple: true
+            // }
             // ,{
             //     title: intl.formatMessage(messages.addBehavior),
             //     img: addBehaviorIcon,
@@ -365,21 +377,21 @@ class StoryboardTab extends React.Component {
             // }
         ];
 
-        if (sprite) {
-            buttons.push({
-                title: intl.formatMessage(messages.addBehavior),
-                img: addBehaviorIcon,
-                onClick: this.handleNewBehavior
-            });
-        }
+        // if (sprite) {
+        //     buttons.push({
+        //         title: intl.formatMessage(messages.addBehavior),
+        //         img: addBehaviorIcon,
+        //         onClick: this.handleNewBehavior
+        //     });
+        // }
 
-        if (this.state.referenceProject) {
-            buttons.push({
-                title: intl.formatMessage(messages.verify),
-                img: surpriseIcon,
-                onClick: this.handleVerifyStoryboard
-            });
-        }
+        // if (this.state.referenceProject) {
+        //     buttons.push({
+        //         title: intl.formatMessage(messages.verify),
+        //         img: surpriseIcon,
+        //         onClick: this.handleVerifyStoryboard
+        //     });
+        // }
 
         return (
             <AssetPanel
