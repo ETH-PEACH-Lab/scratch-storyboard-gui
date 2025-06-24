@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
+import classNames from 'classnames';
 
 import Label from '../forms/label.jsx';
 import Input from '../forms/input.jsx';
@@ -154,6 +155,9 @@ const messages = defineMessages({
 const StoryboardEditor = props => {
     const [showVariablesDropdown, setShowVariablesDropdown] = useState(false);
     const [showRelatedSpritesDropdown, setShowRelatedSpritesDropdown] = useState(false);
+    const [expanded, setExpanded] = useState(true);
+
+    const toggleExpanded = () => setExpanded(prev => !prev);
 
     return (
         <div
@@ -220,11 +224,11 @@ const StoryboardEditor = props => {
                         onSubmit={props.onChangeStoryboardDescription}
                     />
                 </Label>
-                {props.feedback && (
+                {props.planningFeedback && (
                     <div className={styles.feedbackButtonGroup}>
                         <button
                             className={styles.feedbackButton}
-                            disabled={!props.feedback}
+                            disabled={!props.planningFeedback}
                             title={props.intl.formatMessage(messages.feedback)}
                             onClick={props.handleOpenFeedback}
                             data-for={messages.storyboardDescription.id}
@@ -256,11 +260,11 @@ const StoryboardEditor = props => {
                         onSubmit={props.onChangeStoryboardVariables}
                     />
                 </Label>
-                {props.feedback && (
+                {props.planningFeedback && (
                     <div className={styles.feedbackButtonGroup}>
                         <button
                             className={styles.feedbackButton}
-                            disabled={!props.feedback}
+                            disabled={!props.planningFeedback}
                             title={props.intl.formatMessage(messages.feedback)}
                             data-for={messages.storyboardVariables.id}
                             data-tip={'TDB Storyboard Variables Feedback' +
@@ -289,14 +293,25 @@ const StoryboardEditor = props => {
                 </div>
             
             )}
-            {props.feedback && (
+            {props.understandingFeedback && (
                 <div className={styles.feedbackTextBox}>
                     <Label text={props.intl.formatMessage(messages.feedback)}>
-                        <div
-                            className={styles.textContainer}
-                            style={{whiteSpace: 'pre-wrap'}}
-                        >
-                            {props.feedback || 'No feedback available'}
+                        <div className={styles.textRow}>
+                            <div
+                                className={classNames(styles.textContainer, {
+                                    [styles.expanded]: expanded
+                                })}
+                                style={{whiteSpace: 'pre-wrap'}}
+                            >
+                                {props.understandingFeedback || 'No feedback available'}
+                            </div>
+                            <button
+                                className={styles.toggleButton}
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={toggleExpanded}
+                            >
+                                {expanded ? 'Show less' : 'Show more'}
+                            </button>
                         </div>
                     </Label>
                 </div>
@@ -370,11 +385,11 @@ const StoryboardEditor = props => {
                                 </div>
                             </div>
                         </Label>
-                        {props.feedback && (
+                        {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
                                 <button
                                     className={styles.feedbackButton}
-                                    disabled={!props.feedback}
+                                    disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorVariables.id}
                                     data-tip={`Behavior Variable Feedback: ${
@@ -406,11 +421,11 @@ const StoryboardEditor = props => {
                                 onSubmit={props.onChangeDescription}
                             />
                         </Label>
-                        {props.feedback && (
+                        {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
                                 <button
                                     className={styles.feedbackButton}
-                                    disabled={!props.feedback}
+                                    disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorDescription.id}
                                     data-tip={`Behavior Description Feedback: ${
@@ -487,11 +502,11 @@ const StoryboardEditor = props => {
                                 </div>
                             </div>
                         </Label>
-                        {props.feedback && (
+                        {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
                                 <button
                                     className={styles.feedbackButton}
-                                    disabled={!props.feedback}
+                                    disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorRelatedSprites.id}
                                     data-tip={`Behavior Related Sprites Feedback: ${
@@ -524,11 +539,11 @@ const StoryboardEditor = props => {
                                 onSubmit={props.onChangeSounds}
                             />
                         </Label>
-                        {props.feedback && (
+                        {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
                                 <button
                                     className={styles.feedbackButton}
-                                    disabled={!props.feedback}
+                                    disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorSounds.id}
                                     data-tip={`Behavior Sounds Feedback: ${
@@ -561,11 +576,11 @@ const StoryboardEditor = props => {
                                 onSubmit={props.onChangeCostumes}
                             />
                         </Label>
-                        {props.feedback && (
+                        {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
                                 <button
                                     className={styles.feedbackButton}
-                                    disabled={!props.feedback}
+                                    disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorCostumes.id}
                                     data-tip={`Behavior Costumes Feedback: ${
@@ -636,7 +651,8 @@ const StoryboardEditor = props => {
 StoryboardEditor.propTypes = {
     canUndo: PropTypes.bool.isRequired,
     canRedo: PropTypes.bool.isRequired,
-    feedback: PropTypes.string,
+    understandingFeedback: PropTypes.string,
+    planningFeedback: PropTypes.string,
     phase: PropTypes.string,
     handleOpenFeedback: PropTypes.func,
     setRef: PropTypes.func.isRequired,

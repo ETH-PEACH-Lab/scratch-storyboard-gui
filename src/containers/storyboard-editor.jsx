@@ -192,7 +192,8 @@ class StoryboardEditor extends React.Component {
                 storyboardVariables={this.props.vm.storyboardOverall.globalVariables}
                 behaviors={this.props.vm.editingTarget.sprite.behaviors}
                 selectedBehaviorIndex={this.props.selectedBehaviorIndex}
-                feedback={this.props.feedback}
+                understandingFeedback={this.props.understandingFeedback}
+                planningFeedback={this.props.planningFeedback}
                 phase={this.props.phase}
                 setRef={this.setRef}
                 onChangeName={this.handleChangeName}
@@ -220,7 +221,8 @@ class StoryboardEditor extends React.Component {
 StoryboardEditor.propTypes = {
     selectedBehaviorIndex: PropTypes.number.isRequired,
     behaviors: PropTypes.array.isRequired,
-    feedback: PropTypes.string,
+    understandingFeedback: PropTypes.string,
+    planningFeedback: PropTypes.string,
     phase: PropTypes.string,
     vm: PropTypes.instanceOf(VM).isRequired
 };

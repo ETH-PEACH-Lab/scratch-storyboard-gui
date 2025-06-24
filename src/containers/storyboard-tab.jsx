@@ -104,7 +104,8 @@ class StoryboardTab extends React.Component {
 
         this.state = {
             selectedBehaviorIndex: 0,
-            feedback: null,
+            understandingFeedback: null,
+            planningFeedback: null,
             referenceProject: this.props.vm.addReferenceProject(referenceProject) || null,
             phase: Phase.Planning,
             selectedVariables: [],
@@ -226,7 +227,7 @@ class StoryboardTab extends React.Component {
         this.setState({phase: Phase.Loading});
         const feedback = await this.props.vm.getUnderstandingFeedback();
         this.setState({phase: Phase.Planning});
-        this.setState({feedback: feedback});
+        this.setState({understandingFeedback: feedback});
         // console.log('TODO test verification logic edge cases');
     }
 
@@ -234,8 +235,8 @@ class StoryboardTab extends React.Component {
         this.setState({phase: Phase.Loading});
         const feedback = await this.props.vm.getPlanningFeedback();
         this.setState({phase: Phase.Planning});
-        this.setState({feedback: feedback});
-        
+        this.setState({planningFeedback: feedback});
+
         // const projectJson = await this.props.vm.descriptionToBlocks();
         // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
@@ -452,7 +453,8 @@ class StoryboardTab extends React.Component {
                     <StoryboardEditor
                         selectedBehaviorIndex={this.state.selectedBehaviorIndex}
                         behavior={sprite.behaviors[this.state.selectedBehaviorIndex]}
-                        feedback={this.state.feedback}
+                        understandingFeedback={this.state.understandingFeedback}
+                        planningFeedback={this.state.planningFeedback}
                         phase={this.state.phase}
                         vm={vm}
                     />
