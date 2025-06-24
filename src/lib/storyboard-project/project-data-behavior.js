@@ -74,7 +74,7 @@ const projectDataBehavior = translateFunction => {
                 behaviors: [{
                     name: 'Moving',
                     description: '',
-                    variables: ['x'],
+                    variables: ['x position'],
                     costumes: '',
                     sounds: '',
                     relatedSprites: [],

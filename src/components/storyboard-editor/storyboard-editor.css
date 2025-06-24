@@ -236,17 +236,23 @@ $border-radius: 0.25rem;
 
 .buttonGroupTopRight {
     position: absolute;
-    top: 0;
+    /* top: 0; */
+    align-items: center;
     right: 0;
     display: flex;
 }
 
-.header-row {
+.headerRow {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    margin-bottom: calc(2 * $space);
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.titleLabel {
+  margin-right: 1rem;
 }
 
 .titleInput {
@@ -303,6 +309,36 @@ $border-radius: 0.25rem;
     color: $ui-white;
 }
 
+.feedbackTextBox {
+    margin-top: 1rem;
+    align-self: flex-start;
+}
+
+.textContainer {
+  white-space: pre-wrap;
+  max-height: 50vh;         /* Adjust height as needed */
+  overflow-y: auto;
+  padding: 0.5rem;  
+  scrollbar-width: thin;           /* Firefox */
+  scrollbar-color: #999 #f3f3f3;   /* Firefox */
+  border-width: 1px;
+  border-style: solid;
+  border-color: $ui-black-transparent;
+  border-radius: 0.5rem;
+}
+
+/* Chrome, Edge, Safari */
+.textContainer::-webkit-scrollbar {
+  width: 8px;
+}
+.textContainer::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
+}
+.textContainer::-webkit-scrollbar-track {
+  background-color: #f3f3f3;
+}
+
 .tooltip{
 
     background: $looks-secondary-dark;
@@ -310,9 +346,138 @@ $border-radius: 0.25rem;
     /* overflow-y: hidden; */
 }
 
-.spinner.feedback {
-    border-color: rgba(0, 0, 0, 0.2); /* light gray border */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
+
+.spinner.feedback {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+}
+
 .spinner.feedback::after {
-    border-top-color: #007bff !important; /* bright blue spinner head */
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #007bff; /* spinner color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 0;
+    background: #f0f0f0;
+}
+
+/* .multiSelectDropdown {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+.dropdownButton {
+    background-color: #4C97FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+
+.arrowDown {
+    margin-left: 8px;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-top: 4px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+}
+
+.dropdownOption {
+    display: block;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdownOption:hover {
+    background-color: #f0f0f0;
+} */
+
+.labelText {
+    margin-left: 4px;
+    margin-right: 6px;
+}
+
+.selectedItemsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.selectedItem {
+  background-color: #e0f0ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.dropdownButton {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #b1b0f5;
+  border-radius: 0.25rem;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%; /* puts it right below the button */
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  z-index: 10;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0.25rem;
+  border-radius: 0.25rem;
+  width: max-content;     /* Grows to fit content */
+  white-space: nowrap; 
+}
+
+.dropdownOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.dropdownWrapper {
+  position: relative;
+  display: inline-block;
 }

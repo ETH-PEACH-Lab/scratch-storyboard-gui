@@ -18,6 +18,7 @@ import referenceProject from '../lib/storyboard-project/reference-project.json';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
 
+import pseudocode from '../lib/storyboard-project/reference_project_pseudo.txt?raw';
 import {connect} from 'react-redux';
 
 import {
@@ -65,12 +66,22 @@ const messages = defineMessages({
         description: 'Button to add a behavior in the editor tab',
         id: 'gui.storyboardTab.addBehavior'
     },
-    verify: {
-        defaultMessage: 'Get Feedback',
-        description: 'Button to get feedback in the editor tab',
-        id: 'gui.storyboardTab.verify'
+    verifyUnderstanding: {
+        defaultMessage: 'Get Understanding Feedback',
+        description: 'Button to get understanding feedback in the editor tab',
+        id: 'gui.storyboardTab.verifyUnderstanding'
+    },
+    verifyPlanning: {
+        defaultMessage: 'Get Planning Feedback',
+        description: 'Button to get planning feedback in the editor tab',
+        id: 'gui.storyboardTab.verifyPlanning'
     }
 });
+const Phase = {
+    Understanding: 'understanding',
+    Loading: 'loading',
+    Planning: 'planning'
+};
 
 
 class StoryboardTab extends React.Component {
@@ -80,19 +91,27 @@ class StoryboardTab extends React.Component {
             'handleSelectBehavior',
             'handleDeleteBehavior',
             'handleNewBehavior',
-            'handleVerifyStoryboard',
-            'handleReferenceUpload',
+            // 'handleVerifyStoryboard',
+            'handleUnderstandingVerification',
+            'handlePlanningVerification',
+            // 'handleReferenceUpload',
             'handleFileUploadClick',
             'handleDrop',
             'setFileInput'
         ]);
+
+        this.props.vm.addReferenceProjectPseudocode(pseudocode);
+
         this.state = {
             selectedBehaviorIndex: 0,
             feedback: null,
-            referenceProject: null
+            referenceProject: this.props.vm.addReferenceProject(referenceProject) || null,
+            phase: Phase.Planning,
+            selectedVariables: [],
+            showVariablesDropdown: false,
+            selectedRelatedSprites: [],
+            showRelatedSpritesDropdown: false
         };
-        const referenceProjectString = this.props.vm.addReferenceProject(referenceProject);
-        this.setState({referenceProject: referenceProjectString});
     }
 
     componentWillReceiveProps (nextProps) {
@@ -107,9 +126,16 @@ class StoryboardTab extends React.Component {
             return;
         }
         if (this.props.editingTarget !== editingTarget) {
-            this.setState({selectedBehaviorIndex: 0});
-        } else if (this.state.selectedBehaviorIndex > target.behaviors.length - 1) {
-            this.setState({selectedBehaviorIndex: Math.max(target.behaviors.length - 1, 0)});
+            if (this.state.selectedBehaviorIndex !== 0) {
+                this.setState({selectedBehaviorIndex: 0});
+            }
+        } else if (
+            this.state.selectedBehaviorIndex > target.behaviors.length - 1 &&
+        this.state.selectedBehaviorIndex !== Math.max(target.behaviors.length - 1, 0)
+        ) {
+            this.setState({
+                selectedBehaviorIndex: Math.max(target.behaviors.length - 1, 0)
+            });
         }
     }
 
@@ -194,131 +220,144 @@ class StoryboardTab extends React.Component {
         console.log('Feedback response', feedback);
 
         this.setState({feedback: feedback});
+    }
 
+    async handleUnderstandingVerification (){
+        this.setState({phase: Phase.Loading});
+        const feedback = await this.props.vm.getUnderstandingFeedback();
+        this.setState({phase: Phase.Planning});
+        this.setState({feedback: feedback});
         // console.log('TODO test verification logic edge cases');
+    }
 
+    async handlePlanningVerification (){
+        this.setState({phase: Phase.Loading});
+        const feedback = await this.props.vm.getPlanningFeedback();
+        this.setState({phase: Phase.Planning});
+        this.setState({feedback: feedback});
+        
         // const projectJson = await this.props.vm.descriptionToBlocks();
         // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
     }
 
-    handleReferenceUpload (e) {
-        const file = e.target.files[0];
-        if (!file || !file.name.endsWith('.json')) {
-            return;
-        }
+    // handleReferenceUpload (e) {
+    //     const file = e.target.files[0];
+    //     if (!file || !file.name.endsWith('.json')) {
+    //         return;
+    //     }
 
-        const reader = new FileReader();
-        this.props.onShowImporting();
+    //     const reader = new FileReader();
+    //     this.props.onShowImporting();
 
-        const storage = this.props.vm.runtime.storage;
+    //     const storage = this.props.vm.runtime.storage;
 
-        reader.onload = () => {
-            try {
-                const json = JSON.parse(reader.result);
+    //     reader.onload = () => {
+    //         try {
+    //             const json = JSON.parse(reader.result);
 
-                if (!json.targets || !Array.isArray(json.targets)) {
-                    throw new Error('Invalid Scratch project structure.');
-                }
+    //             if (!json.targets || !Array.isArray(json.targets)) {
+    //                 throw new Error('Invalid Scratch project structure.');
+    //             }
 
-                // add minimal sprites
-                for (const target of json.targets) {
-                    if (target.isStage) {
-                        continue; // Skip stage targets
-                    }
-                    const copyTarget = JSON.parse(JSON.stringify(target));
-                    copyTarget.blocks = {}; // No blocks
-                    copyTarget.currentCostume = 0; // Default to first costume
-                    copyTarget.comments = {}; // No comments
-                    copyTarget.list = []; // No lists
-                    copyTarget.variables = {}; // No variables
-                    copyTarget.clones = []; // No clones
-                    copyTarget.visible = true; // Ensure the sprite is visible
-                    copyTarget.x = 0; // Default position
-                    copyTarget.y = 0; // Default position
-                    copyTarget.size = 100; // Default size
-                    copyTarget.direction = 90; // Default direction
-                    copyTarget.rotationStyle = 'all around'; // Default rotation style
-                    copyTarget.costumes = copyTarget.costumes.slice(0, 1); // Keep only the first costume
+    //             // add minimal sprites
+    //             for (const target of json.targets) {
+    //                 if (target.isStage) {
+    //                     continue; // Skip stage targets
+    //                 }
+    //                 const copyTarget = JSON.parse(JSON.stringify(target));
+    //                 copyTarget.blocks = {}; // No blocks
+    //                 copyTarget.currentCostume = 0; // Default to first costume
+    //                 copyTarget.comments = {}; // No comments
+    //                 copyTarget.list = []; // No lists
+    //                 copyTarget.variables = {}; // No variables
+    //                 copyTarget.clones = []; // No clones
+    //                 copyTarget.visible = true; // Ensure the sprite is visible
+    //                 copyTarget.x = 0; // Default position
+    //                 copyTarget.y = 0; // Default position
+    //                 copyTarget.size = 100; // Default size
+    //                 copyTarget.direction = 90; // Default direction
+    //                 copyTarget.rotationStyle = 'all around'; // Default rotation style
+    //                 copyTarget.costumes = copyTarget.costumes.slice(0, 1); // Keep only the first costume
 
-                    const loadCostumePromises = [];
-                    copyTarget.costumes.forEach(costume => {
-                        const md5ext = costume.md5ext;
-                        const [assetId, ext] = md5ext.split('.');
-                        const assetType = ext === 'svg' ?
-                            storage.AssetType.ImageVector :
-                            storage.AssetType.ImageBitmap;
+    //                 const loadCostumePromises = [];
+    //                 copyTarget.costumes.forEach(costume => {
+    //                     const md5ext = costume.md5ext;
+    //                     const [assetId, ext] = md5ext.split('.');
+    //                     const assetType = ext === 'svg' ?
+    //                         storage.AssetType.ImageVector :
+    //                         storage.AssetType.ImageBitmap;
 
-                        const loadPromise = storage.load(assetType, assetId, ext)
-                            .then(asset => {
-                                costume.asset = asset;
-                            });
+    //                     const loadPromise = storage.load(assetType, assetId, ext)
+    //                         .then(asset => {
+    //                             costume.asset = asset;
+    //                         });
 
-                        loadCostumePromises.push(loadPromise);
-                    });
+    //                     loadCostumePromises.push(loadPromise);
+    //                 });
 
-                    copyTarget.sounds = []; // No sounds
-                    copyTarget.behaviors = []; // No behaviors
+    //                 copyTarget.sounds = []; // No sounds
+    //                 copyTarget.behaviors = []; // No behaviors
 
-                    // Wait for all assets to be loaded
-                    Promise.all([...loadCostumePromises])
-                        .then(() => {
-                            // All assets are in storage, safe to add sprite
-                            this.props.vm.addSprite(JSON.stringify({
-                                targets: [copyTarget],
-                                meta: {
-                                    semver: '3.0.0',
-                                    vm: '0.2.0',
-                                    agent: 'sprite-import'
-                                }
-                            })).then(() => {
-                                console.log('Sprite added successfully');
-                            })
-                                .catch(err => {
-                                    console.error('Error adding sprite:', err);
-                                });
-                        })
-                        .catch(err => {
-                            console.error('Error loading assets:', err);
-                        });
+    //                 // Wait for all assets to be loaded
+    //                 Promise.all([...loadCostumePromises])
+    //                     .then(() => {
+    //                         // All assets are in storage, safe to add sprite
+    //                         this.props.vm.addSprite(JSON.stringify({
+    //                             targets: [copyTarget],
+    //                             meta: {
+    //                                 semver: '3.0.0',
+    //                                 vm: '0.2.0',
+    //                                 agent: 'sprite-import'
+    //                             }
+    //                         })).then(() => {
+    //                             console.log('Sprite added successfully');
+    //                         })
+    //                             .catch(err => {
+    //                                 console.error('Error adding sprite:', err);
+    //                             });
+    //                     })
+    //                     .catch(err => {
+    //                         console.error('Error loading assets:', err);
+    //                     });
 
-                    // const spriteJson = {
-                    //     targets: [copyTarget],
-                    //     meta: {
-                    //         semver: '3.0.0',
-                    //         vm: '0.2.0',
-                    //         agent: 'custom-import'
-                    //     }
-                    // };
+    //                 // const spriteJson = {
+    //                 //     targets: [copyTarget],
+    //                 //     meta: {
+    //                 //         semver: '3.0.0',
+    //                 //         vm: '0.2.0',
+    //                 //         agent: 'custom-import'
+    //                 //     }
+    //                 // };
 
-                    // const response = this.props.vm.addSprite(JSON.stringify(spriteJson));
-                    // console.log(response, 'A sprite after upload');
-                }
+    //                 // const response = this.props.vm.addSprite(JSON.stringify(spriteJson));
+    //                 // console.log(response, 'A sprite after upload');
+    //             }
 
-                console.log(this.props.sprites, 'A sprites after upload');
-                console.log(this.props.vm.runtime.targets, 'B sprites after upload');
+    //             console.log(this.props.sprites, 'A sprites after upload');
+    //             console.log(this.props.vm.runtime.targets, 'B sprites after upload');
 
-                // Set a name from the file
-                json.name = file.name.replace(/\.json$/, '');
+    //             // Set a name from the file
+    //             json.name = file.name.replace(/\.json$/, '');
 
-                // Save reference project json as string for verification
-                this.props.vm.addReferenceProject(json);
+    //             // Save reference project json as string for verification
+    //             this.props.vm.addReferenceProject(json);
 
-                this.setState({
-                    referenceProject: json
-                });
+    //             this.setState({
+    //                 referenceProject: json
+    //             });
 
-                this.props.onCloseImporting();
+    //             this.props.onCloseImporting();
 
-            } catch (err) {
-                console.error('Failed to parse project JSON:', err);
-                this.props.onCloseImporting();
-            }
-        };
+    //         } catch (err) {
+    //             console.error('Failed to parse project JSON:', err);
+    //             this.props.onCloseImporting();
+    //         }
+    //     };
 
-        reader.readAsText(file);
-    }
+    //     reader.readAsText(file);
+    // }
 
 
     render () {
@@ -357,9 +396,14 @@ class StoryboardTab extends React.Component {
                 onClick: this.handleNewBehavior
             },
             {
-                title: intl.formatMessage(messages.verify),
+                title: intl.formatMessage(messages.verifyUnderstanding),
                 img: surpriseIcon,
-                onClick: this.handleVerifyStoryboard
+                onClick: this.handleUnderstandingVerification
+            },
+            {
+                title: intl.formatMessage(messages.verifyPlanning),
+                img: surpriseIcon,
+                onClick: this.handlePlanningVerification
             }
             // , {
             //     title: intl.formatMessage(messages.fileUploadReference),
@@ -409,6 +453,7 @@ class StoryboardTab extends React.Component {
                         selectedBehaviorIndex={this.state.selectedBehaviorIndex}
                         behavior={sprite.behaviors[this.state.selectedBehaviorIndex]}
                         feedback={this.state.feedback}
+                        phase={this.state.phase}
                         vm={vm}
                     />
                 ) : null}
@@ -424,8 +469,8 @@ StoryboardTab.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool,
     onActivateCostumesTab: PropTypes.func.isRequired,
-    onCloseImporting: PropTypes.func.isRequired,
-    onShowImporting: PropTypes.func.isRequired,
+    // onCloseImporting: PropTypes.func.isRequired,
+    // onShowImporting: PropTypes.func.isRequired,
     sprites: PropTypes.shape({
         id: PropTypes.shape({
             behaviors: PropTypes.arrayOf(PropTypes.shape({

@@ -25,13 +25,34 @@ class StoryboardEditor extends React.Component {
             'handleCopy',
             'handleUndo',
             'handleRedo',
-            'setRef'
+            'setRef',
+            'handleToggleVariable',
+            'handleToggleRelatedSprites'
         ]);
 
         this.redoStack = [];
         this.undoStack = [];
 
         this.ref = null;
+
+        this.variableList = [
+            ...this.props.vm.storyboardOverall.globalVariables,
+            'x position',
+            'y position',
+            'direction',
+            'mouse-x',
+            'mouse-y',
+            'mouse-pointer',
+            'answer',
+            'username',
+            'loudness',
+            'volume',
+            'timer'
+        ];
+
+        this.relatedSprites = this.props.vm.runtime.targets.map(target => target.getName())
+            .filter(name => name !== this.props.vm.editingTarget.sprite.name);
+
     }
 
     componentWillReceiveProps (newProps) {
@@ -45,13 +66,39 @@ class StoryboardEditor extends React.Component {
         this.ref = element;
     }
 
+    handleToggleVariable (option){
+        // eslint-disable-next-line no-negated-condition
+        if (!this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+            .variables.includes(option)) {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .variables.push(option);
+        } else {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .variables.pop(option);
+        }
+        this.forceUpdate();
+    }
+
+    handleToggleRelatedSprites (option){
+        // eslint-disable-next-line no-negated-condition
+        if (!this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+            .relatedSprites.includes(option)) {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .relatedSprites.push(option);
+        } else {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .relatedSprites.pop(option);
+        }
+        this.forceUpdate();
+    }
+
     handleDelete () {
         if (this.ref) {
             this.ref.handleDelete();
         }
     }
     handleCopy () {
-        // implement copy of storyboard to comments in coding area
+        this.props.vm.copyStoryboardToComments();
     }
 
     handleUndo () {
@@ -131,7 +178,6 @@ class StoryboardEditor extends React.Component {
     //     // For now, we will just log a message to the console
     //     console.log('Open feedback modal');
     // };
-
     
     render () {
         console.log('StoryboardEditor props:', this.props);
@@ -140,11 +186,14 @@ class StoryboardEditor extends React.Component {
                 canRedo={this.redoStack.length > 0}
                 canUndo={this.undoStack.length > 0}
                 title={this.props.vm.storyboardOverall.title}
+                variables={this.variableList}
+                relatedSprites={this.relatedSprites}
                 storyboardDescription={this.props.vm.storyboardOverall.description}
                 storyboardVariables={this.props.vm.storyboardOverall.globalVariables}
                 behaviors={this.props.vm.editingTarget.sprite.behaviors}
                 selectedBehaviorIndex={this.props.selectedBehaviorIndex}
                 feedback={this.props.feedback}
+                phase={this.props.phase}
                 setRef={this.setRef}
                 onChangeName={this.handleChangeName}
                 onChangeDescription={this.handleChangeDescription}
@@ -156,6 +205,8 @@ class StoryboardEditor extends React.Component {
                 onChangeTitle={this.handleChangeTitle}
                 onChangeStoryboardVariables={this.handleChangeStoryboardVariables}
                 onChangeStoryboardDescription={this.handleChangeStoryboardDescription}
+                onToggleVariable={this.handleToggleVariable}
+                onToggleRelatedSprites={this.handleToggleRelatedSprites}
                 onDelete={this.handleDelete}
                 onCopy={this.handleCopy}
                 onUndo={this.handleUndo}
@@ -170,6 +221,7 @@ StoryboardEditor.propTypes = {
     selectedBehaviorIndex: PropTypes.number.isRequired,
     behaviors: PropTypes.array.isRequired,
     feedback: PropTypes.string,
+    phase: PropTypes.string,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
