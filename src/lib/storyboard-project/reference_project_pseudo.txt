@@ -1,0 +1,86 @@
+{
+    "targets": [
+        {
+            "name": "Bowl",
+            "pseudo_code": "
+            when @greenFlag clicked
+            forever
+                if <key [right arrow v] pressed?> then
+                    change x by (10)
+                end
+                if <key [left arrow v] pressed?> then
+                    change x by (-10)
+                end
+            end
+
+            when @greenFlag clicked
+            forever
+                if <touching [Golden Apple v]?> then
+                    change [Punkte v] by (2)
+                end
+            end
+            "
+        },
+        {
+            "name": "Red Apple",
+            "pseudo_code": "
+            when @greenFlag clicked
+            forever
+                change y by (-10)
+                if <(y position) \< [-170]> then
+                    go to [random position v]
+                    set y to (180)
+                end
+            end
+
+            when @greenFlag clicked
+            set [Punkte v] to [1]
+            forever
+                if <touching [Bowl v]?> then
+                    play sound [Chomp1 v] until done
+                    change [Punkte v] by (1)
+                    go to [random position v]
+                    set y to (180)
+                end
+            end
+            "
+        },
+        {
+            "name": "Golden Apple",
+            "pseudo_code": "
+            when @greenFlag clicked
+            forever
+                change y by (-5)
+                if <(y position) \< [-170]> then
+                    go to [random position v]
+                    set y to (180)
+                    hide
+                    wait (3) seconds
+                    show
+                end
+            end
+
+            when @greenFlag clicked
+            set [Punkte v] to [0]
+            forever
+                if <touching [Bowl v]?> then
+                    change [Punkte v] by (2)
+                    play sound [Chomp v] until done
+                    go to [random position v]
+                    set y to (180)
+                end
+            end
+            "
+        },
+        {
+            "name": "You Win",
+            "pseudo_code": "
+            when @greenFlag clicked
+            hide
+            wait until <<(Punkte) \> [10]> or <(Punkte) = [10]>>
+            show
+            stop [all v]
+            "
+        }
+    ]
+}

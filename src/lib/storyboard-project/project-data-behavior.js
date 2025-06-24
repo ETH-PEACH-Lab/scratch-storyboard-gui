@@ -74,52 +74,46 @@ const projectDataBehavior = translateFunction => {
                 behaviors: [{
                     name: 'Moving',
                     description: '',
-                    variables: 'x',
+                    variables: ['x'],
                     costumes: '',
                     sounds: '',
-                    relatedSprites: '',
-                    possibleBlocks: '',
+                    relatedSprites: [],
                     feedback: {
                         variables: '',
                         description: '',
                         costumes: '',
                         sounds: '',
-                        relatedSprites: '',
-                        possibleBlocks: ''
+                        relatedSprites: ''
                     }
                 },
                 {
                     name: 'Touching Red Apple',
                     description: '',
-                    variables: 'Points',
+                    variables: ['Points'],
                     costumes: '',
                     sounds: 'bing',
-                    relatedSprites: 'Red Apple',
-                    possibleBlocks: '',
+                    relatedSprites: ['Red Apple'],
                     feedback: {
                         variables: '',
                         description: '',
                         costumes: '',
                         sounds: '',
-                        relatedSprites: '',
-                        possibleBlocks: ''
+                        relatedSprites: ''
                     }
                 },
                 {
                     name: 'Touching Golden Apple',
                     description: '',
-                    variables: 'Points',
+                    variables: ['Points'],
                     costumes: '',
                     sounds: 'bing',
-                    relatedSprites: 'Golden Apple',
-                    possibleBlocks: '',
+                    relatedSprites: ['Golden Apple'],
                     feedback: {
                         variables: '',
                         description: '',
                         costumes: '',
                         sounds: '',
-                        relatedSprites: '',
-                        possibleBlocks: ''
+                        relatedSprites: ''
                     }
                 }],
                 volume: 100,
@@ -185,6 +179,7 @@ const projectDataBehavior = translateFunction => {
                     }
                 ],
                 sounds: [],
+                behaviors: [],
                 volume: 100,
                 layerOrder: 1,
                 visible: true,
