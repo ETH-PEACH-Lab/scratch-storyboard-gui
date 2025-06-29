@@ -78,9 +78,15 @@ const messages = defineMessages({
     }
 });
 const Phase = {
-    Understanding: 'understanding',
-    Loading: 'loading',
-    Planning: 'planning'
+    Understanding: 'Understanding',
+    Loading: 'Loading',
+    Planning: 'Planning'
+};
+
+const feedbackColors = {
+    Complete: '#4CAF50', // Green
+    Incomplete: '#FF5733', // Red
+    NeedsImprovement: '#FFC107'// Yellow
 };
 
 
@@ -91,6 +97,8 @@ class StoryboardTab extends React.Component {
             'handleSelectBehavior',
             'handleDeleteBehavior',
             'handleNewBehavior',
+            'handleUnderstanding',
+            'handlePlanning',
             // 'handleVerifyStoryboard',
             'handleUnderstandingVerification',
             'handlePlanningVerification',
@@ -106,8 +114,15 @@ class StoryboardTab extends React.Component {
             selectedBehaviorIndex: 0,
             understandingFeedback: null,
             planningFeedback: null,
+            planningFeedbackColors: {
+                'gui.storyboardEditor.behaviorDescription': feedbackColors.Complete,
+                'gui.storyboardEditor.behaviorVariables': feedbackColors.Complete,
+                'gui.storyboardEditor.behaviorCostumes': feedbackColors.NeedsImprovement,
+                'gui.storyboardEditor.behaviorSounds': feedbackColors.Complete,
+                'gui.storyboardEditor.behaviorRelatedSprites': feedbackColors.Complete
+            },
             referenceProject: this.props.vm.addReferenceProject(referenceProject) || null,
-            phase: Phase.Planning,
+            phase: Phase.Understanding,
             selectedVariables: [],
             showVariablesDropdown: false,
             selectedRelatedSprites: [],
@@ -156,18 +171,16 @@ class StoryboardTab extends React.Component {
         const vmBehavior = {
             name: '',
             description: '',
-            variables: '',
+            variables: [],
             costumes: '',
             sounds: '',
-            relatedSprites: '',
-            possibleBlocks: '',
+            relatedSprites: [],
             feedback: {
                 variables: '',
                 description: '',
                 costumes: '',
                 sounds: '',
-                relatedSprites: '',
-                possibleBlocks: ''
+                relatedSprites: ''
             }
         };
 
@@ -215,6 +228,17 @@ class StoryboardTab extends React.Component {
         this.fileInput = input;
     }
 
+    handlePlanning () {
+        this.setState({phase: 'Planning'});
+        this.forceUpdate();
+        console.log(this.state.phase);
+    }
+
+    handleUnderstanding () {
+        this.setState({phase: 'Understanding'});
+        this.forceUpdate();
+    }
+
     async handleVerifyStoryboard () {
 
         const feedback = await this.props.vm.getFeedback();
@@ -236,6 +260,7 @@ class StoryboardTab extends React.Component {
         const feedback = await this.props.vm.getPlanningFeedback();
         this.setState({phase: Phase.Planning});
         this.setState({planningFeedback: feedback});
+        // set the feedback colors based on the response
 
         // const projectJson = await this.props.vm.descriptionToBlocks();
         // console.log(projectJson, 'Response for verification');
@@ -396,16 +421,15 @@ class StoryboardTab extends React.Component {
                 img: addBehaviorIcon,
                 onClick: this.handleNewBehavior
             },
-            {
+            ...(this.state.phase === Phase.Understanding ? [{
                 title: intl.formatMessage(messages.verifyUnderstanding),
                 img: surpriseIcon,
                 onClick: this.handleUnderstandingVerification
-            },
-            {
+            }] : [{
                 title: intl.formatMessage(messages.verifyPlanning),
                 img: surpriseIcon,
                 onClick: this.handlePlanningVerification
-            }
+            }])
             // , {
             //     title: intl.formatMessage(messages.fileUploadReference),
             //     img: fileUploadIcon,
@@ -456,6 +480,9 @@ class StoryboardTab extends React.Component {
                         understandingFeedback={this.state.understandingFeedback}
                         planningFeedback={this.state.planningFeedback}
                         phase={this.state.phase}
+                        planningFeedbackColors={this.state.planningFeedbackColors}
+                        onHandleUnderstanding={this.handleUnderstanding}
+                        onHandlePlanning={this.handlePlanning}
                         vm={vm}
                     />
                 ) : null}

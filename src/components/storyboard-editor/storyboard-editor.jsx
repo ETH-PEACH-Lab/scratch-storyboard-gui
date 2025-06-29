@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import classNames from 'classnames';
+import VM from 'scratch-vm';
 
 import Label from '../forms/label.jsx';
 import Input from '../forms/input.jsx';
@@ -91,12 +92,12 @@ const messages = defineMessages({
     behaviorSounds: {
         id: 'gui.storyboardEditor.behaviorSounds',
         description: 'Sounds of the behavior in the storyboard editor',
-        defaultMessage: 'Sounds (comma separated)'
+        defaultMessage: 'Sounds'
     },
     behaviorCostumes: {
         id: 'gui.storyboardEditor.behaviorCostumes',
         description: 'Costumes of the behavior in the storyboard editor',
-        defaultMessage: 'Costumes (comma separated)'
+        defaultMessage: 'Costumes'
     },
     behaviorPossibleBlocks: {
         id: 'gui.storyboardEditor.behaviorPossibleBlocks',
@@ -167,37 +168,37 @@ const StoryboardEditor = props => {
             <div className={styles.headerRow}>
                 <Label text={`${props.intl.formatMessage(messages.phase)} ${props.phase}`} />
                 <div className={styles.buttonGroupTopRight}>
-                    <button
-                        className={styles.button}
-                        disabled={!props.canUndo}
-                        title={props.intl.formatMessage(messages.undo)}
-                        onClick={props.onUndo}
+                    {props.phase === 'Planning' && (<button
+                        className={styles.phaseButton}
+                        disabled={props.phase !== 'Planning'}
+                        onClick={props.onUnderstanding}
                     >
+                        <span>{'Understanding Phase'}</span>
                         <img
                             className={styles.undoIcon}
                             draggable={false}
                             src={undoIcon}
                         />
-                    </button>
-                    <button
-                        className={styles.button}
-                        disabled={!props.canRedo}
-                        title={props.intl.formatMessage(messages.redo)}
-                        onClick={props.onRedo}
+                    </button>)
+                    }
+                    {props.phase === 'Understanding' && (<button
+                        className={styles.phaseButton}
+                        disabled={props.phase !== 'Understanding'}
+                        onClick={props.onPlanning}
                     >
-                        {/* <span>{'planning'}</span> */}
+                        <span>{'Planning Phase'}</span>
                         <img
                             className={styles.redoIcon}
                             draggable={false}
                             src={redoIcon}
                         />
-                    </button>
-                    <IconButton
+                    </button>)}
+                    {props.phase === 'Planning' && (<IconButton
                         className={styles.toolButton}
                         img={copyIcon}
                         title={props.intl.formatMessage(messages.copy)}
                         onClick={props.onCopy}
-                    />
+                    />)}
                 </div>
             </div>
             <div className={styles.row}>
@@ -286,7 +287,7 @@ const StoryboardEditor = props => {
                     </div>)
                 }
             </div>
-            {props.phase === 'loading' && (
+            {props.phase === 'Loading' && (
                 <div className="spinner-container">
                     <Label text={'waiting for feedback'} />
                     <SpinnerComponent className="spinner feedback large" />
@@ -317,10 +318,48 @@ const StoryboardEditor = props => {
                 </div>
             )}
             <div className={styles.divider} />
-            {props.phase === 'understanding' && (
-                <div>{'understanding content'}</div>
+            {props.phase === 'Understanding' && (
+                <div className={styles.wrapper}>
+                    {props.vm.runtime.targets.map(target => (
+                        !target.isStage && (
+                            <div
+                                key={target.sprite.name}
+                                className={styles.innerBox}
+                            >
+                                {/* Stick to top */}
+                                <div className={styles.spriteHeader}>
+                                    <div>{target.sprite.name}</div>
+                                    <div className={styles.divider} />
+                                </div>
+
+                                {/* Background fills to bottom */}
+                                <div className={styles.behaviorsList}>
+                                    {target.sprite.behaviors.map(behavior => (
+                                        <div key={behavior.name}>
+                                            {/* <button>
+                                                <img
+                                                    src={dropdownCaret}
+                                                    alt="Dropdown caret"
+                                                />
+                                            </button>
+                                            {false && (<div>{'dropdown menu for related sprites'}</div>)} */}
+                                            <BufferedInput
+                                                tabIndex="1"
+                                                type="text"
+                                                className={styles.nameInput}
+                                                value={behavior.name}
+                                                onSubmit={props.onChangeName}
+                                                disabled={target.sprite.name !== props.vm.editingTarget.getName()}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )
+                    ))}
+                </div>
             )}
-            {props.phase === 'planning' && (
+            {props.phase === 'Planning' && (
                 <div>{props.behaviors.length > 0 && props.selectedBehaviorIndex > -1 && (<>
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorName)}>
@@ -395,6 +434,8 @@ const StoryboardEditor = props => {
                                     data-tip={`Behavior Variable Feedback: ${
                                         props.behaviors[props.selectedBehaviorIndex].feedback.variables
                                     }`}
+                                    style={{backgroundColor: props.planningFeedbackColors[messages
+                                        .behaviorVariables.id] || '#4CAF50'}}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
@@ -431,6 +472,8 @@ const StoryboardEditor = props => {
                                     data-tip={`Behavior Description Feedback: ${
                                         props.behaviors[props.selectedBehaviorIndex].feedback.description
                                     }`}
+                                    style={{backgroundColor: props.planningFeedbackColors[messages
+                                        .behaviorDescription.id] || '#4CAF50'}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -512,6 +555,8 @@ const StoryboardEditor = props => {
                                     data-tip={`Behavior Related Sprites Feedback: ${
                                         props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites
                                     }`}
+                                    style={{backgroundColor: props.planningFeedbackColors[messages
+                                        .behaviorRelatedSprites.id] || '#4CAF50'}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -549,6 +594,8 @@ const StoryboardEditor = props => {
                                     data-tip={`Behavior Sounds Feedback: ${
                                         props.behaviors[props.selectedBehaviorIndex].feedback.sounds
                                     }`}
+                                    style={{backgroundColor: props.planningFeedbackColors[messages
+                                        .behaviorSounds.id] || '#4CAF50'}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -586,6 +633,8 @@ const StoryboardEditor = props => {
                                     data-tip={`Behavior Costumes Feedback: ${
                                         props.behaviors[props.selectedBehaviorIndex].feedback.costumes
                                     }`}
+                                    style={{backgroundColor: props.planningFeedbackColors[messages
+                                        .behaviorCostumes.id] || '#4CAF50'}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -649,10 +698,9 @@ const StoryboardEditor = props => {
 };
 
 StoryboardEditor.propTypes = {
-    canUndo: PropTypes.bool.isRequired,
-    canRedo: PropTypes.bool.isRequired,
     understandingFeedback: PropTypes.string,
     planningFeedback: PropTypes.string,
+    planningFeedbackColors: PropTypes.object.isRequired,
     phase: PropTypes.string,
     handleOpenFeedback: PropTypes.func,
     setRef: PropTypes.func.isRequired,
@@ -666,8 +714,8 @@ StoryboardEditor.propTypes = {
     storyboardVariables: PropTypes.string,
     behaviors: PropTypes.array.isRequired,
     selectedBehaviorIndex: PropTypes.number.isRequired,
-    onUndo: PropTypes.func.isRequired,
-    onRedo: PropTypes.func.isRequired,
+    onPlanning: PropTypes.func.isRequired,
+    onUnderstanding: PropTypes.func.isRequired,
     onCopy: PropTypes.func.isRequired,
     onChangeTitle: PropTypes.func.isRequired,
     onChangeStoryboardVariables: PropTypes.func.isRequired,
@@ -678,7 +726,8 @@ StoryboardEditor.propTypes = {
     onChangeSounds: PropTypes.func.isRequired,
     onChangeCostumes: PropTypes.func.isRequired,
     // onChangeRelatedSprites: PropTypes.func.isRequired,
-    onToggleVariable: PropTypes.func.isRequired
+    onToggleVariable: PropTypes.func.isRequired,
+    vm: PropTypes.instanceOf(VM).isRequired
 };
 
 export default injectIntl(StoryboardEditor);

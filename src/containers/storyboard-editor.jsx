@@ -23,15 +23,10 @@ class StoryboardEditor extends React.Component {
             'handleChangeStoryboardDescription',
             'handleDelete',
             'handleCopy',
-            'handleUndo',
-            'handleRedo',
             'setRef',
             'handleToggleVariable',
             'handleToggleRelatedSprites'
         ]);
-
-        this.redoStack = [];
-        this.undoStack = [];
 
         this.ref = null;
 
@@ -101,28 +96,41 @@ class StoryboardEditor extends React.Component {
         this.props.vm.copyStoryboardToComments();
     }
 
-    handleUndo () {
-        this.redoStack.push(this.getUndoItem());
-        const {samples, sampleRate, trimStart, trimEnd} = this.undoStack.pop();
-        if (samples) {
-            return this.submitNewSamples(samples, sampleRate, true).then(success => {
-                if (success) {
-                    this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
-                }
-            });
-        }
+    handlePlanning () {
+        console.log('Planning phase started');
+        this.setState({phase: 'Planning'});
+        this.forceUpdate();
+        console.log(this.state.phase);
+        console.log(this.props.phase);
     }
-    handleRedo () {
-        const {samples, sampleRate, trimStart, trimEnd} = this.redoStack.pop();
-        if (samples) {
-            this.undoStack.push(this.getUndoItem());
-            return this.submitNewSamples(samples, sampleRate, true).then(success => {
-                if (success) {
-                    this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
-                }
-            });
-        }
+
+    handleUnderstanding () {
+        this.setState({phase: 'Understanding'});
+        this.forceUpdate();
     }
+
+    // handleUndo () {
+    //     this.redoStack.push(this.getUndoItem());
+    //     const {samples, sampleRate, trimStart, trimEnd} = this.undoStack.pop();
+    //     if (samples) {
+    //         return this.submitNewSamples(samples, sampleRate, true).then(success => {
+    //             if (success) {
+    //                 this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
+    //             }
+    //         });
+    //     }
+    // }
+    // handleRedo () {
+    //     const {samples, sampleRate, trimStart, trimEnd} = this.redoStack.pop();
+    //     if (samples) {
+    //         this.undoStack.push(this.getUndoItem());
+    //         return this.submitNewSamples(samples, sampleRate, true).then(success => {
+    //             if (success) {
+    //                 this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
+    //             }
+    //         });
+    //     }
+    // }
 
     handleChangeName (name) {
         this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].name = name;
@@ -183,8 +191,6 @@ class StoryboardEditor extends React.Component {
         console.log('StoryboardEditor props:', this.props);
         return (
             <StoryboardEditorComponent
-                canRedo={this.redoStack.length > 0}
-                canUndo={this.undoStack.length > 0}
                 title={this.props.vm.storyboardOverall.title}
                 variables={this.variableList}
                 relatedSprites={this.relatedSprites}
@@ -210,8 +216,9 @@ class StoryboardEditor extends React.Component {
                 onToggleRelatedSprites={this.handleToggleRelatedSprites}
                 onDelete={this.handleDelete}
                 onCopy={this.handleCopy}
-                onUndo={this.handleUndo}
-                onRedo={this.handleRedo}
+                onPlanning={this.props.onHandlePlanning}
+                onUnderstanding={this.props.onHandleUnderstanding}
+                vm={this.props.vm}
             />
 
         );
@@ -224,6 +231,8 @@ StoryboardEditor.propTypes = {
     understandingFeedback: PropTypes.string,
     planningFeedback: PropTypes.string,
     phase: PropTypes.string,
+    onHandlePlanning: PropTypes.func.isRequired,
+    onHandleUnderstanding: PropTypes.func.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
