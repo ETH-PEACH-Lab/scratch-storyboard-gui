@@ -194,9 +194,9 @@ const mapDispatchToProps = dispatch => ({
     onRequestCloseBackdropLibrary: () => dispatch(closeBackdropLibrary()),
     onRequestCloseCostumeLibrary: () => dispatch(closeCostumeLibrary()),
     onRequestCloseDebugModal: () => dispatch(closeDebugModal()),
-    onRequestCloseAssistantModal: () => dispatch(closeAssistantModal()),
-    onRequestCloseComponentModal: () => dispatch(closeAssistantModal()),
-    onRequestCloseRelationshipModal: () => dispatch(closeAssistantModal()),
+    // onRequestCloseAssistantModal: () => dispatch(closeAssistantModal()),
+    // onRequestCloseComponentModal: () => dispatch(closeAssistantModal()),
+    // onRequestCloseRelationshipModal: () => dispatch(closeAssistantModal()),
     onRequestCloseTelemetryModal: () => dispatch(closeTelemetryModal())
 });
 

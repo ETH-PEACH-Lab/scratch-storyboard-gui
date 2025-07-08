@@ -9,6 +9,7 @@ import Input from '../forms/input.jsx';
 
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import dropdownCaret from './dropdown-caret.svg';
+import droprightCaret from './dropright-caret.svg';
 // import {MenuItem} from '../menu/menu.jsx';
 
 import styles from './storyboard-editor.css';
@@ -20,6 +21,7 @@ import copyIcon from './icon--copy.svg';
 import IconButton from '../icon-button/icon-button.jsx';
 import ReactTooltip from 'react-tooltip';
 import SpinnerComponent from '../spinner/spinner.jsx';
+// import getCostumeUrl from '../../lib/get-costume-url';
 
 const BufferedInput = BufferedInputHOC(Input);
 
@@ -148,6 +150,11 @@ const messages = defineMessages({
         id: 'gui.storyboardTab.feedback',
         description: 'Button to provide feedback on the storyboard in the editor tab',
         defaultMessage: 'Feedback'
+    },
+    feedbackLoading: {
+        id: 'gui.storyboardTab.feedbackLoading',
+        description: 'Loading state for feedback in the storyboard tab',
+        defaultMessage: 'Feedback is '
     }
 
 });
@@ -159,6 +166,12 @@ const StoryboardEditor = props => {
     const [expanded, setExpanded] = useState(true);
 
     const toggleExpanded = () => setExpanded(prev => !prev);
+
+    const currentSpriteName = props.vm.editingTarget?.sprite?.name;
+    const relatedSprites = props.vm.runtime.targets.map(target => target.getName())
+        .filter(name => name !== currentSpriteName);
+    const relatedSpritesImages = props.vm.runtime.targets
+        .filter(target => target.getName() !== currentSpriteName);
 
     return (
         <div
@@ -287,14 +300,15 @@ const StoryboardEditor = props => {
                     </div>)
                 }
             </div>
-            {props.phase === 'Loading' && (
-                <div className="spinner-container">
-                    <Label text={'waiting for feedback'} />
-                    <SpinnerComponent className="spinner feedback large" />
+            {props.feedbackLoading === 'Loading' && (
+                <div className={styles.loadingContainer}>
+                    <SpinnerComponent
+                        level="primary"
+                    />
+                    <Label text={`${props.intl.formatMessage(messages.feedbackLoading)} ${props.feedbackLoading}`} />
                 </div>
-            
             )}
-            {props.understandingFeedback && (
+            {props.understandingFeedback && props.phase === 'Understanding' && (
                 <div className={styles.feedbackTextBox}>
                     <Label text={props.intl.formatMessage(messages.feedback)}>
                         <div className={styles.textRow}>
@@ -338,11 +352,34 @@ const StoryboardEditor = props => {
                                         <div key={behavior.name}>
                                             {/* <button>
                                                 <img
-                                                    src={dropdownCaret}
-                                                    alt="Dropdown caret"
+                                                    src={droprightCaret}
+                                                    alt="Dropright caret"
                                                 />
                                             </button>
-                                            {false && (<div>{'dropdown menu for related sprites'}</div>)} */}
+                                            {true && (
+                                                <div className={styles.droprightMenu}>
+                                                    {relatedSpritesImages.map(option => (
+                                                        <label
+                                                            key={option.sprite.name}
+                                                            className={styles.droprightOption}
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={props.behaviors[props.selectedBehaviorIndex]
+                                                                    .relatedSprites.includes(option.getName())}
+                                                                // eslint-disable-next-line max-len, max-len
+                                                                // eslint-disable-next-line react/jsx-no-bind, react/prop-types, max-len
+                                                                onChange={() => props.onToggleRelatedSprites(option.getName())}
+                                                            />
+                                                            <img
+                                                                src={option.sprite.costumes[0]}
+                                                                alt="Sprite image"
+                                                            />
+                                                            <span className={styles.labelText}>{option.getName()}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            )} */}
                                             <BufferedInput
                                                 tabIndex="1"
                                                 type="text"
@@ -366,7 +403,7 @@ const StoryboardEditor = props => {
                             <BufferedInput
                                 tabIndex="1"
                                 type="text"
-                                value={props.behaviors[props.selectedBehaviorIndex].name}
+                                value={props.behaviors[props.selectedBehaviorIndex].name || ''}
                                 onSubmit={props.onChangeName}
                             />
                         </Label>
@@ -432,10 +469,10 @@ const StoryboardEditor = props => {
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorVariables.id}
                                     data-tip={`Behavior Variable Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.variables
+                                        props.behaviors[props.selectedBehaviorIndex].feedback.variables.text
                                     }`}
-                                    style={{backgroundColor: props.planningFeedbackColors[messages
-                                        .behaviorVariables.id] || '#4CAF50'}}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.variables.color}}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
@@ -470,10 +507,10 @@ const StoryboardEditor = props => {
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorDescription.id}
                                     data-tip={`Behavior Description Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.description
+                                        props.behaviors[props.selectedBehaviorIndex].feedback.description.text
                                     }`}
-                                    style={{backgroundColor: props.planningFeedbackColors[messages
-                                        .behaviorDescription.id] || '#4CAF50'}}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.description.color}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -525,7 +562,7 @@ const StoryboardEditor = props => {
                                     </button>
                                     {showRelatedSpritesDropdown && (
                                         <div className={styles.dropdownMenu}>
-                                            {props.relatedSprites.map(option => (
+                                            {relatedSprites.map(option => (
                                                 <label
                                                     key={option}
                                                     className={styles.dropdownOption}
@@ -553,10 +590,10 @@ const StoryboardEditor = props => {
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorRelatedSprites.id}
                                     data-tip={`Behavior Related Sprites Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites
+                                        props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites.text
                                     }`}
-                                    style={{backgroundColor: props.planningFeedbackColors[messages
-                                        .behaviorRelatedSprites.id] || '#4CAF50'}}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.relatedSprites.color}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -592,10 +629,10 @@ const StoryboardEditor = props => {
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorSounds.id}
                                     data-tip={`Behavior Sounds Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.sounds
+                                        props.behaviors[props.selectedBehaviorIndex].feedback.sounds.text
                                     }`}
-                                    style={{backgroundColor: props.planningFeedbackColors[messages
-                                        .behaviorSounds.id] || '#4CAF50'}}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.sounds.color}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -631,10 +668,10 @@ const StoryboardEditor = props => {
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorCostumes.id}
                                     data-tip={`Behavior Costumes Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.costumes
+                                        props.behaviors[props.selectedBehaviorIndex].feedback.costumes.text
                                     }`}
-                                    style={{backgroundColor: props.planningFeedbackColors[messages
-                                        .behaviorCostumes.id] || '#4CAF50'}}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.costumes.color}}
                                 // onClick={props.openFeedback}
                                 >
                                     <img
@@ -700,16 +737,13 @@ const StoryboardEditor = props => {
 StoryboardEditor.propTypes = {
     understandingFeedback: PropTypes.string,
     planningFeedback: PropTypes.string,
-    planningFeedbackColors: PropTypes.object.isRequired,
     phase: PropTypes.string,
+    feedbackLoading: PropTypes.string,
     handleOpenFeedback: PropTypes.func,
     setRef: PropTypes.func.isRequired,
     intl: intlShape,
     title: PropTypes.string,
     variables: PropTypes.arrayOf(PropTypes.string).isRequired,
-    // selectedVariables: PropTypes.arrayOf(PropTypes.string),
-    relatedSprites: PropTypes.arrayOf(PropTypes.string).isRequired,
-    // selectedRelatedSprites: PropTypes.arrayOf(PropTypes.string),
     storyboardDescription: PropTypes.string,
     storyboardVariables: PropTypes.string,
     behaviors: PropTypes.array.isRequired,

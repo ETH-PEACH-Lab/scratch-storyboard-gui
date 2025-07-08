@@ -79,11 +79,11 @@ const projectDataBehavior = translateFunction => {
                     sounds: '',
                     relatedSprites: [],
                     feedback: {
-                        variables: '',
-                        description: '',
-                        costumes: '',
-                        sounds: '',
-                        relatedSprites: ''
+                        variables: {text: '', color: null},
+                        description: {text: '', color: null},
+                        costumes: {text: '', color: null},
+                        sounds: {text: '', color: null},
+                        relatedSprites: {text: '', color: null}
                     }
                 },
                 {
@@ -94,11 +94,11 @@ const projectDataBehavior = translateFunction => {
                     sounds: 'bing',
                     relatedSprites: ['Red Apple'],
                     feedback: {
-                        variables: '',
-                        description: '',
-                        costumes: '',
-                        sounds: '',
-                        relatedSprites: ''
+                        variables: {text: '', color: null},
+                        description: {text: '', color: null},
+                        costumes: {text: '', color: null},
+                        sounds: {text: '', color: null},
+                        relatedSprites: {text: '', color: null}
                     }
                 },
                 {
@@ -109,11 +109,11 @@ const projectDataBehavior = translateFunction => {
                     sounds: 'bing',
                     relatedSprites: ['Golden Apple'],
                     feedback: {
-                        variables: '',
-                        description: '',
-                        costumes: '',
-                        sounds: '',
-                        relatedSprites: ''
+                        variables: {text: '', color: null},
+                        description: {text: '', color: null},
+                        costumes: {text: '', color: null},
+                        sounds: {text: '', color: null},
+                        relatedSprites: {text: '', color: null}
                     }
                 }],
                 volume: 100,

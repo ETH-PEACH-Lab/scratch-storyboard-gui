@@ -45,9 +45,6 @@ class StoryboardEditor extends React.Component {
             'timer'
         ];
 
-        this.relatedSprites = this.props.vm.runtime.targets.map(target => target.getName())
-            .filter(name => name !== this.props.vm.editingTarget.sprite.name);
-
     }
 
     componentWillReceiveProps (newProps) {
@@ -108,29 +105,6 @@ class StoryboardEditor extends React.Component {
         this.setState({phase: 'Understanding'});
         this.forceUpdate();
     }
-
-    // handleUndo () {
-    //     this.redoStack.push(this.getUndoItem());
-    //     const {samples, sampleRate, trimStart, trimEnd} = this.undoStack.pop();
-    //     if (samples) {
-    //         return this.submitNewSamples(samples, sampleRate, true).then(success => {
-    //             if (success) {
-    //                 this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
-    //             }
-    //         });
-    //     }
-    // }
-    // handleRedo () {
-    //     const {samples, sampleRate, trimStart, trimEnd} = this.redoStack.pop();
-    //     if (samples) {
-    //         this.undoStack.push(this.getUndoItem());
-    //         return this.submitNewSamples(samples, sampleRate, true).then(success => {
-    //             if (success) {
-    //                 this.setState({trimStart: trimStart, trimEnd: trimEnd}, this.handlePlay);
-    //             }
-    //         });
-    //     }
-    // }
 
     handleChangeName (name) {
         this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].name = name;
@@ -193,7 +167,6 @@ class StoryboardEditor extends React.Component {
             <StoryboardEditorComponent
                 title={this.props.vm.storyboardOverall.title}
                 variables={this.variableList}
-                relatedSprites={this.relatedSprites}
                 storyboardDescription={this.props.vm.storyboardOverall.description}
                 storyboardVariables={this.props.vm.storyboardOverall.globalVariables}
                 behaviors={this.props.vm.editingTarget.sprite.behaviors}
@@ -201,6 +174,7 @@ class StoryboardEditor extends React.Component {
                 understandingFeedback={this.props.understandingFeedback}
                 planningFeedback={this.props.planningFeedback}
                 phase={this.props.phase}
+                feedbackLoading={this.props.feedbackLoading}
                 setRef={this.setRef}
                 onChangeName={this.handleChangeName}
                 onChangeDescription={this.handleChangeDescription}
@@ -231,6 +205,7 @@ StoryboardEditor.propTypes = {
     understandingFeedback: PropTypes.string,
     planningFeedback: PropTypes.string,
     phase: PropTypes.string,
+    feedbackLoading: PropTypes.string,
     onHandlePlanning: PropTypes.func.isRequired,
     onHandleUnderstanding: PropTypes.func.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
