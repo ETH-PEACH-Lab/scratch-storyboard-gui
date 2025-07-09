@@ -256,20 +256,23 @@ class StoryboardTab extends React.Component {
         this.setState({feedbackLoading: feedbackLoading.Loading});
         const feedback = await this.props.vm.getPlanningFeedback();
         this.setState({feedbackLoading: feedbackLoading.Loaded});
-        this.setState({planningFeedback: feedback});
         // set the feedback colors based on the response
-
         this.props.vm.editingTarget.sprite.behaviors.forEach((behavior, index) => {
-            behavior.feedback.variables.color = feedbackColors.Incomplete;
-            behavior.feedback.description.color = feedbackColors.NeedsImprovement;
-            behavior.feedback.costumes.color = feedbackColors.Complete;
-            behavior.feedback.sounds.color = feedbackColors.Complete;
-            behavior.feedback.relatedSprites.color = feedbackColors.Complete;
+            behavior.feedback.variables.color = (feedbackColors[behavior.feedback.variables.color] ||
+                feedbackColors.Complete);
+            behavior.feedback.description.color = (feedbackColors[behavior.feedback.description.color] ||
+                feedbackColors.Complete);
+            behavior.feedback.costumes.color = (feedbackColors[behavior.feedback.costumes.color] ||
+                feedbackColors.Complete);
+            behavior.feedback.sounds.color = (feedbackColors[behavior.feedback.sounds.color] ||
+                feedbackColors.Complete);
+            behavior.feedback.relatedSprites.color = (feedbackColors[behavior.feedback.relatedSprites.color] ||
+                feedbackColors.Complete);
         });
         this.setState({planningFeedback: feedback});
 
-        // const projectJson = await this.props.vm.descriptionToBlocks();
-        // console.log(projectJson, 'Response for verification');
+        const projectJson = await this.props.vm.descriptionToBlocks();
+        console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
     }
