@@ -110,6 +110,7 @@ const GUIComponent = props => {
         onLogOut,
         onOpenRegistration,
         onToggleLoginOpen,
+        onActivateCodeTab,
         onActivateCostumesTab,
         onActivateSoundsTab,
         onActivateStoryboardTab,
@@ -288,7 +289,25 @@ const GUIComponent = props => {
                                 onSelect={onActivateTab}
                             >
                                 <TabList className={tabClassNames.tabList}>
-                                    <Tab className={tabClassNames.tab}>
+                                    <Tab
+                                        className={tabClassNames.tab}
+                                        onClick={onActivateStoryboardTab}
+                                    >
+                                        <img
+                                            className={styles.storyboardIcon}
+                                            draggable={false}
+                                            src={storyboardIcon}
+                                        />
+                                        <FormattedMessage
+                                            defaultMessage="Storyboard"
+                                            description="Button to get to the storyboard panel"
+                                            id="gui.gui.storyboardTab"
+                                        />
+                                    </Tab>
+                                    <Tab
+                                        className={tabClassNames.tab}
+                                        onClick={onActivateCodeTab}
+                                    >
                                         <img
                                             draggable={false}
                                             src={codeIcon}
@@ -335,22 +354,10 @@ const GUIComponent = props => {
                                             id="gui.gui.soundsTab"
                                         />
                                     </Tab>
-                                    <Tab
-                                        className={tabClassNames.tab}
-                                        onClick={onActivateStoryboardTab}
-                                    >
-                                        <img
-                                            className={styles.storyboardIcon}
-                                            draggable={false}
-                                            src={storyboardIcon}
-                                        />
-                                        <FormattedMessage
-                                            defaultMessage="Storyboard"
-                                            description="Button to get to the storyboard panel"
-                                            id="gui.gui.storyboardTab"
-                                        />
-                                    </Tab>
                                 </TabList>
+                                <TabPanel className={tabClassNames.tabPanel}>
+                                    {storyboardTabVisible ? <StoryboardTab vm={vm} /> : null}
+                                </TabPanel>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     <Box className={styles.blocksWrapper}>
                                         <Blocks
@@ -388,9 +395,6 @@ const GUIComponent = props => {
                                 </TabPanel>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     {soundsTabVisible ? <SoundTab vm={vm} /> : null}
-                                </TabPanel>
-                                <TabPanel className={tabClassNames.tabPanel}>
-                                    {storyboardTabVisible ? <StoryboardTab vm={vm} /> : null}
                                 </TabPanel>
                             </Tabs>
                             {backpackVisible ? (
@@ -459,6 +463,7 @@ GUIComponent.propTypes = {
     isTotallyNormal: PropTypes.bool,
     loading: PropTypes.bool,
     logo: PropTypes.string,
+    onActivateCodeTab: PropTypes.func,
     onActivateCostumesTab: PropTypes.func,
     onActivateSoundsTab: PropTypes.func,
     onActivateStoryboardTab: PropTypes.func,
