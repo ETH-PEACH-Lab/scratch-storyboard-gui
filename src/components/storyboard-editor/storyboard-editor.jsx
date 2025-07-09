@@ -9,7 +9,7 @@ import Input from '../forms/input.jsx';
 
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import dropdownCaret from './dropdown-caret.svg';
-import droprightCaret from './dropright-caret.svg';
+// import droprightCaret from './dropright-caret.svg';
 // import {MenuItem} from '../menu/menu.jsx';
 
 import styles from './storyboard-editor.css';
@@ -164,14 +164,12 @@ const StoryboardEditor = props => {
     const [showVariablesDropdown, setShowVariablesDropdown] = useState(false);
     const [showRelatedSpritesDropdown, setShowRelatedSpritesDropdown] = useState(false);
     const [expanded, setExpanded] = useState(true);
+    // const [openBehaviorName, setOpenBehaviorName] = useState(null);
 
     const toggleExpanded = () => setExpanded(prev => !prev);
 
-    const currentSpriteName = props.vm.editingTarget?.sprite?.name;
-    const relatedSprites = props.vm.runtime.targets.map(target => target.getName())
-        .filter(name => name !== currentSpriteName);
-    const relatedSpritesImages = props.vm.runtime.targets
-        .filter(target => target.getName() !== currentSpriteName);
+    const relatedSprites = props.vm.runtime.targets.map(target => target.getName());
+    // const relatedSpritesImages = props.vm.runtime.targets;
 
     return (
         <div
@@ -246,8 +244,9 @@ const StoryboardEditor = props => {
                             title={props.intl.formatMessage(messages.feedback)}
                             onClick={props.handleOpenFeedback}
                             data-for={messages.storyboardDescription.id}
-                            data-tip={'TDB Storyboard Description Feedback' +
-                            '\n more lines \n more lines not on multiple lines wrap around'}
+                            data-tip={`Storyboard Description Feedback: 
+                                ${props.vm.storyboardOverall.descriptionFeedback.text}`}
+                            style={{backgroundColor: props.vm.storyboardOverall.descriptionFeedback.text.color}}
                         >
                             <img
                                 className={styles.feedbackIcon}
@@ -281,8 +280,9 @@ const StoryboardEditor = props => {
                             disabled={!props.planningFeedback}
                             title={props.intl.formatMessage(messages.feedback)}
                             data-for={messages.storyboardVariables.id}
-                            data-tip={'TDB Storyboard Variables Feedback' +
-                            '\n more lines \n more lines not on multiple lines wrap around'}
+                            data-tip={`Storyboard Variables Feedback: 
+                                ${props.vm.storyboardOverall.globalVariablesFeedback.text}`}
+                            style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.text.color}}
                         // onClick={props.openFeedback}
                         >
                             <img
@@ -350,36 +350,6 @@ const StoryboardEditor = props => {
                                 <div className={styles.behaviorsList}>
                                     {target.sprite.behaviors.map(behavior => (
                                         <div key={behavior.name}>
-                                            {/* <button>
-                                                <img
-                                                    src={droprightCaret}
-                                                    alt="Dropright caret"
-                                                />
-                                            </button>
-                                            {true && (
-                                                <div className={styles.droprightMenu}>
-                                                    {relatedSpritesImages.map(option => (
-                                                        <label
-                                                            key={option.sprite.name}
-                                                            className={styles.droprightOption}
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={props.behaviors[props.selectedBehaviorIndex]
-                                                                    .relatedSprites.includes(option.getName())}
-                                                                // eslint-disable-next-line max-len, max-len
-                                                                // eslint-disable-next-line react/jsx-no-bind, react/prop-types, max-len
-                                                                onChange={() => props.onToggleRelatedSprites(option.getName())}
-                                                            />
-                                                            <img
-                                                                src={option.sprite.costumes[0]}
-                                                                alt="Sprite image"
-                                                            />
-                                                            <span className={styles.labelText}>{option.getName()}</span>
-                                                        </label>
-                                                    ))}
-                                                </div>
-                                            )} */}
                                             <BufferedInput
                                                 tabIndex="1"
                                                 type="text"
@@ -388,6 +358,57 @@ const StoryboardEditor = props => {
                                                 onSubmit={props.onChangeName}
                                                 disabled={target.sprite.name !== props.vm.editingTarget.getName()}
                                             />
+                                            {/* <div className={styles.droprightContainer}>
+                                                <button
+                                                    className={styles.droprightButton}
+                                                    // eslint-disable-next-line react/jsx-no-bind
+                                                    onClick={() => {
+                                                        if (target.sprite.name === props.vm.editingTarget.getName()) {
+                                                            setOpenBehaviorName(openBehaviorName === behavior.name ?
+                                                                null : behavior.name);
+                                                        }
+                                                    }}
+                                                    disabled={target.sprite.name !== props.vm.editingTarget.getName()}
+                                                >
+                                                    <span>
+                                                        {props.intl.formatMessage(
+                                                            messages.behaviorSelectedRelatedSprites
+                                                        )}
+                                                    </span>
+                                                    <img
+                                                        src={droprightCaret}
+                                                        alt="Dropright caret"
+                                                    />
+                                                </button>
+                                                {openBehaviorName === behavior.name && (
+                                                    <div className={styles.droprightMenu}>
+                                                        {relatedSpritesImages.map(option => (
+                                                            <label
+                                                                key={option.sprite.name}
+                                                                className={styles.droprightOption}
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={
+                                                                        props.behaviors[props.selectedBehaviorIndex]
+                                                                            .relatedSprites.includes(option.getName())
+                                                                    }
+                                                                    // eslint-disable-next-line max-len, max-len
+                                                                    // eslint-disable-next-line react/jsx-no-bind, react/prop-types, max-len
+                                                                    onChange={() => props.onToggleRelatedSprites(option.getName())}
+                                                                />
+                                                                <img
+                                                                    src={option.sprite.costumes[0]}
+                                                                    alt="Sprite image"
+                                                                />
+                                                                <span className={styles.labelText}>
+                                                                    {option.getName()}
+                                                                </span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div> */}
                                         </div>
                                     ))}
                                 </div>

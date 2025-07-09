@@ -47,13 +47,6 @@ class StoryboardEditor extends React.Component {
 
     }
 
-    componentWillReceiveProps (newProps) {
-        if (newProps.selectedBehaviorIndex !== this.props.selectedBehaviorIndex) {
-            this.redoStack = [];
-            this.undoStack = [];
-        }
-    }
-
     setRef (element) {
         this.ref = element;
     }

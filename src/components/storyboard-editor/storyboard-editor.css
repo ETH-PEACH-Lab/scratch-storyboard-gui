@@ -473,14 +473,29 @@ $border-radius: 0.25rem;
     display: flex; 
     flex-direction: row;
     gap: 12px;
+    border-radius: 0.5rem;
 }
 
 .droprightOption {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: 2px 2px;
     cursor: pointer;
+    font-size: 0.625rem;
 }
+
+.droprightButton {
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    height: 2rem;
+    width: 10rem;
+
+    img {
+        margin-left: 0.5rem;
+    }
+}
+
+
 
 .outerGrid {
   display: grid;
