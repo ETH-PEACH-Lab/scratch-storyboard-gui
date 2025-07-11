@@ -50,6 +50,13 @@ const Controls = function (props) {
             {turbo ? (
                 <TurboMode />
             ) : null}
+            {
+                <div className={styles.executionMode}>
+                    {`Mode: ${
+                        props.activeTabIndex === 0 ? 'Storyboard' : 'Code'
+                    }`}
+                </div>
+            }
         </div>
     );
 };
@@ -57,6 +64,7 @@ const Controls = function (props) {
 Controls.propTypes = {
     active: PropTypes.bool,
     className: PropTypes.string,
+    activeTabIndex: PropTypes.number.isRequired,
     intl: intlShape.isRequired,
     onGreenFlagClick: PropTypes.func.isRequired,
     onStopAllClick: PropTypes.func.isRequired,

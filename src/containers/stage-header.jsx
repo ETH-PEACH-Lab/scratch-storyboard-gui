@@ -48,6 +48,7 @@ StageHeader.propTypes = {
     onSetStageUnFull: PropTypes.func.isRequired,
     showBranding: PropTypes.bool,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
+    activeTabIndex: PropTypes.number.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 

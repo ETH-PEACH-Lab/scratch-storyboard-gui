@@ -22,7 +22,7 @@ class Controls extends React.Component {
             if (!this.props.isStarted) {
                 this.props.vm.start();
             }
-            this.props.vm.greenFlag();
+            this.props.vm.greenFlag(this.props.activeTabIndex);
         }
     }
     handleStopAllClick (e) {
@@ -35,11 +35,13 @@ class Controls extends React.Component {
             isStarted, // eslint-disable-line no-unused-vars
             projectRunning,
             turbo,
+            activeTabIndex,
             ...props
         } = this.props;
         return (
             <ControlsComponent
                 {...props}
+                activeTabIndex={activeTabIndex} // Assuming activeTabIndex is always 0 for storyboard execution
                 active={projectRunning}
                 turbo={turbo}
                 onGreenFlagClick={this.handleGreenFlagClick}
@@ -51,6 +53,7 @@ class Controls extends React.Component {
 
 Controls.propTypes = {
     isStarted: PropTypes.bool.isRequired,
+    activeTabIndex: PropTypes.number.isRequired,
     projectRunning: PropTypes.bool.isRequired,
     turbo: PropTypes.bool.isRequired,
     vm: PropTypes.instanceOf(VM)

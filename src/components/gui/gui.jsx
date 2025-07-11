@@ -408,6 +408,7 @@ const GUIComponent = props => {
                                 isRendererSupported={isRendererSupported}
                                 isRtl={isRtl}
                                 stageSize={stageSize}
+                                activeTabIndex={activeTabIndex}
                                 vm={vm}
                             />
                             <Box className={styles.targetWrapper}>

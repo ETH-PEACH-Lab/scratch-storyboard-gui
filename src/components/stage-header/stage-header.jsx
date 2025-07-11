@@ -58,7 +58,8 @@ const StageHeaderComponent = function (props) {
         onSetStageUnFull,
         showBranding,
         stageSizeMode,
-        vm
+        vm,
+        activeTabIndex
     } = props;
 
     let header = null;
@@ -135,7 +136,10 @@ const StageHeaderComponent = function (props) {
         header = (
             <Box className={styles.stageHeaderWrapper}>
                 <Box className={styles.stageMenuWrapper}>
-                    <Controls vm={vm} />
+                    <Controls
+                        vm={vm}
+                        activeTabIndex={activeTabIndex}
+                    />
                     <div className={styles.stageSizeRow}>
                         {stageControls}
                         <div>
@@ -177,6 +181,7 @@ StageHeaderComponent.propTypes = {
     onSetStageUnFull: PropTypes.func.isRequired,
     showBranding: PropTypes.bool.isRequired,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
+    activeTabIndex: PropTypes.number.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
