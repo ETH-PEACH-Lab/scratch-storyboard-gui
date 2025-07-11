@@ -16,6 +16,7 @@ import styles from './storyboard-editor.css';
 
 import redoIcon from './icon--redo.svg';
 import undoIcon from './icon--undo.svg';
+import tickIcon from './icon--tick.svg';
 import surpriseIcon from '../action-menu/icon--surprise.svg';
 import copyIcon from './icon--copy.svg';
 import IconButton from '../icon-button/icon-button.jsx';
@@ -29,12 +30,12 @@ const messages = defineMessages({
     storyboardTitle: {
         id: 'gui.storyboardEditor.storyboardTitle',
         description: 'Title of the storyboard editor',
-        defaultMessage: 'Storyboard Title'
+        defaultMessage: 'Project Title'
     },
     storyboardDescription: {
         id: 'gui.storyboardEditor.storyboardDescription',
         description: 'Description of the storyboard editor',
-        defaultMessage: 'Storyboard Description'
+        defaultMessage: 'Project Description'
     },
     storyboardVariables: {
         id: 'gui.storyboardEditor.storyboardVariables',
@@ -144,7 +145,7 @@ const messages = defineMessages({
     phase: {
         id: 'gui.storyboardTab.phase',
         description: 'Info about current phase of the storyboard in the editor tab',
-        defaultMessage: 'Storyboard Phase: '
+        defaultMessage: 'Project Phase'
     },
     feedback: {
         id: 'gui.storyboardTab.feedback',
@@ -159,6 +160,12 @@ const messages = defineMessages({
 
 });
 
+const feedbackColors = {
+    Complete: '#4CAF50', // Green
+    Incomplete: '#EE7600', // Orange
+    NeedsImprovement: '#FFC107'// Yellow
+};
+
 
 const StoryboardEditor = props => {
     const [showVariablesDropdown, setShowVariablesDropdown] = useState(false);
@@ -170,6 +177,7 @@ const StoryboardEditor = props => {
 
     const relatedSprites = props.vm.runtime.targets.map(target => target.getName());
     // const relatedSpritesImages = props.vm.runtime.targets;
+    const phases = ['Understanding', 'Planning', 'Coding'];
 
     return (
         <div
@@ -177,7 +185,40 @@ const StoryboardEditor = props => {
             ref={props.setRef}
         >
             <div className={styles.headerRow}>
-                <Label text={`${props.intl.formatMessage(messages.phase)} ${props.phase}`} />
+                <Label text={`${props.intl.formatMessage(messages.phase)}`} />
+                <div className={styles.phaseTrackerContainer}>
+                    <div className={styles.phaseLine} />
+                    <div className={styles.phaseTracker}>
+                        {phases.map((phase, index) => {
+                            const isCompleted = index < phases.indexOf(props.phase);
+                            const isCurrent = index === phases.indexOf(props.phase);
+
+                            return (
+                                <div
+                                    key={phase}
+                                    className={styles.phaseItem}
+                                >
+                                    <div
+                                        className={`${styles.phaseDot} ${
+                                            isCompleted ?
+                                                styles.completed :
+                                                isCurrent ?
+                                                    styles.current :
+                                                    styles.upcoming
+                                        }`}
+                                    />
+                                    <div
+                                        className={`${styles.phaseLabel} ${
+                                            isCurrent ? styles.active : ''
+                                        }`}
+                                    >
+                                        {phase}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
                 <div className={styles.buttonGroupTopRight}>
                     {props.phase === 'Planning' && (<button
                         className={styles.phaseButton}
@@ -246,12 +287,13 @@ const StoryboardEditor = props => {
                             data-for={messages.storyboardDescription.id}
                             data-tip={`Storyboard Description Feedback: 
                                 ${props.vm.storyboardOverall.descriptionFeedback.text}`}
-                            style={{backgroundColor: props.vm.storyboardOverall.descriptionFeedback.text.color}}
+                            style={{backgroundColor: props.vm.storyboardOverall.descriptionFeedback.color}}
                         >
                             <img
                                 className={styles.feedbackIcon}
                                 draggable={false}
-                                src={surpriseIcon}
+                                src={props.vm.storyboardOverall.descriptionFeedback.color ===
+                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
                             />
                         </button>
                         <ReactTooltip
@@ -282,13 +324,14 @@ const StoryboardEditor = props => {
                             data-for={messages.storyboardVariables.id}
                             data-tip={`Storyboard Variables Feedback: 
                                 ${props.vm.storyboardOverall.globalVariablesFeedback.text}`}
-                            style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.text.color}}
+                            style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.color}}
                         // onClick={props.openFeedback}
                         >
                             <img
                                 className={styles.feedbackIcon}
                                 draggable={false}
-                                src={surpriseIcon}
+                                src={props.vm.storyboardOverall.descriptionFeedback.color ===
+                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
                             />
                         </button>
                         <ReactTooltip
@@ -305,7 +348,10 @@ const StoryboardEditor = props => {
                     <SpinnerComponent
                         level="primary"
                     />
-                    <Label text={`${props.intl.formatMessage(messages.feedbackLoading)} ${props.feedbackLoading}`} />
+                    <Label
+                        text={`${props.intl.formatMessage(messages.feedbackLoading)} ${props.feedbackLoading} 
+                    \n Hast du für alle Sprites alle Verhalten aufgezählt?`}
+                    />
                 </div>
             )}
             {props.understandingFeedback && props.phase === 'Understanding' && (
@@ -333,32 +379,33 @@ const StoryboardEditor = props => {
             )}
             <div className={styles.divider} />
             {props.phase === 'Understanding' && (
-                <div className={styles.wrapper}>
-                    {props.vm.runtime.targets.map(target => (
-                        !target.isStage && (
-                            <div
-                                key={target.sprite.name}
-                                className={styles.innerBox}
-                            >
-                                {/* Stick to top */}
-                                <div className={styles.spriteHeader}>
-                                    <div>{target.sprite.name}</div>
-                                    <div className={styles.divider} />
-                                </div>
+                <div className={styles.scrollWrapper}>
+                    <div className={styles.wrapper}>
+                        {props.vm.runtime.targets.map(target => (
+                            !target.isStage && (
+                                <div
+                                    key={target.sprite.name}
+                                    className={styles.innerBox}
+                                >
+                                    {/* Stick to top */}
+                                    <div className={styles.spriteHeader}>
+                                        <div>{target.sprite.name}</div>
+                                        <div className={styles.divider} />
+                                    </div>
 
-                                {/* Background fills to bottom */}
-                                <div className={styles.behaviorsList}>
-                                    {target.sprite.behaviors.map(behavior => (
-                                        <div key={behavior.name}>
-                                            <BufferedInput
-                                                tabIndex="1"
-                                                type="text"
-                                                className={styles.nameInput}
-                                                value={behavior.name}
-                                                onSubmit={props.onChangeName}
-                                                disabled={target.sprite.name !== props.vm.editingTarget.getName()}
-                                            />
-                                            {/* <div className={styles.droprightContainer}>
+                                    {/* Background fills to bottom */}
+                                    <div className={styles.behaviorsList}>
+                                        {target.sprite.behaviors.map(behavior => (
+                                            <div key={behavior.name}>
+                                                <BufferedInput
+                                                    tabIndex="1"
+                                                    type="text"
+                                                    className={styles.nameInput}
+                                                    value={behavior.name}
+                                                    onSubmit={props.onChangeName}
+                                                    disabled={target.sprite.name !== props.vm.editingTarget.getName()}
+                                                />
+                                                {/* <div className={styles.droprightContainer}>
                                                 <button
                                                     className={styles.droprightButton}
                                                     // eslint-disable-next-line react/jsx-no-bind
@@ -409,12 +456,13 @@ const StoryboardEditor = props => {
                                                     </div>
                                                 )}
                                             </div> */}
-                                        </div>
-                                    ))}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    ))}
+                            )
+                        ))}
+                    </div>
                 </div>
             )}
             {props.phase === 'Planning' && (
@@ -498,7 +546,9 @@ const StoryboardEditor = props => {
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={surpriseIcon}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.variables.color ===
+                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -537,7 +587,9 @@ const StoryboardEditor = props => {
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={surpriseIcon}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.description.color ===
+                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -620,7 +672,9 @@ const StoryboardEditor = props => {
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={surpriseIcon}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.relatedSprites.color ===
+                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -659,7 +713,9 @@ const StoryboardEditor = props => {
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={surpriseIcon}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.sounds.color ===
+                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -698,7 +754,9 @@ const StoryboardEditor = props => {
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={surpriseIcon}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.costumes.color ===
+                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
                                     />
                                 </button>
                                 <ReactTooltip

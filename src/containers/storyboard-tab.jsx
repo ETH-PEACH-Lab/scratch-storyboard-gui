@@ -90,7 +90,7 @@ const feedbackLoading = {
 
 const feedbackColors = {
     Complete: '#4CAF50', // Green
-    Incomplete: '#FF5733', // Red
+    Incomplete: '#EE7600', // Orange
     NeedsImprovement: '#FFC107'// Yellow
 };
 
@@ -271,8 +271,8 @@ class StoryboardTab extends React.Component {
         });
         this.setState({planningFeedback: feedback});
 
-        const projectJson = await this.props.vm.descriptionToBlocks();
-        console.log(projectJson, 'Response for verification');
+        // const projectJson = await this.props.vm.descriptionToBlocks();
+        // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
     }

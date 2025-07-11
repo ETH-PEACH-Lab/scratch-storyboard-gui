@@ -222,6 +222,70 @@ const projectDataBehavior = translateFunction => {
                 draggable: false,
                 rotationStyle: 'all around'
             }
+            // ,{
+            //     isStage: false,
+            //     name: 'You Win 2',
+            //     variables: {},
+            //     lists: {},
+            //     broadcasts: {},
+            //     blocks: {},
+            //     comments: {},
+            //     currentCostume: 0,
+            //     costumes: [
+            //         {
+            //             name: 'YOU WIN!',
+            //             bitmapResolution: 1,
+            //             dataFormat: 'svg',
+            //             assetId: '0bc49167d951e5a8b23de48ed7113c92',
+            //             md5ext: '0bc49167d951e5a8b23de48ed7113c92.svg',
+            //             rotationCenterX: 99.63777644610988,
+            //             rotationCenterY: 31.910556608884065
+            //         }
+            //     ],
+            //     sounds: [],
+            //     behaviors: [],
+            //     volume: 100,
+            //     layerOrder: 3,
+            //     visible: true,
+            //     x: 120,
+            //     y: 0,
+            //     size: 100,
+            //     direction: 90,
+            //     draggable: false,
+            //     rotationStyle: 'all around'
+            // },
+            // {
+            //     isStage: false,
+            //     name: 'You Win 3',
+            //     variables: {},
+            //     lists: {},
+            //     broadcasts: {},
+            //     blocks: {},
+            //     comments: {},
+            //     currentCostume: 0,
+            //     costumes: [
+            //         {
+            //             name: 'YOU WIN!',
+            //             bitmapResolution: 1,
+            //             dataFormat: 'svg',
+            //             assetId: '0bc49167d951e5a8b23de48ed7113c92',
+            //             md5ext: '0bc49167d951e5a8b23de48ed7113c92.svg',
+            //             rotationCenterX: 99.63777644610988,
+            //             rotationCenterY: 31.910556608884065
+            //         }
+            //     ],
+            //     sounds: [],
+            //     behaviors: [],
+            //     volume: 100,
+            //     layerOrder: 3,
+            //     visible: true,
+            //     x: 120,
+            //     y: 0,
+            //     size: 100,
+            //     direction: 90,
+            //     draggable: false,
+            //     rotationStyle: 'all around'
+            // }
         ],
         monitors: [
             {
