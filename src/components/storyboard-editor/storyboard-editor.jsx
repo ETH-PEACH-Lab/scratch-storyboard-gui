@@ -17,7 +17,8 @@ import styles from './storyboard-editor.css';
 import redoIcon from './icon--redo.svg';
 import undoIcon from './icon--undo.svg';
 import tickIcon from './icon--tick.svg';
-import surpriseIcon from '../action-menu/icon--surprise.svg';
+import cautionIcon from './icon--caution.svg';
+// import surpriseIcon from '../action-menu/icon--surprise.svg';
 import copyIcon from './icon--copy.svg';
 import IconButton from '../icon-button/icon-button.jsx';
 import ReactTooltip from 'react-tooltip';
@@ -293,7 +294,7 @@ const StoryboardEditor = props => {
                                 className={styles.feedbackIcon}
                                 draggable={false}
                                 src={props.vm.storyboardOverall.descriptionFeedback.color ===
-                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                        feedbackColors.Complete ? tickIcon : cautionIcon}
                             />
                         </button>
                         <ReactTooltip
@@ -330,8 +331,8 @@ const StoryboardEditor = props => {
                             <img
                                 className={styles.feedbackIcon}
                                 draggable={false}
-                                src={props.vm.storyboardOverall.descriptionFeedback.color ===
-                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                src={props.vm.storyboardOverall.globalVariablesFeedback.color ===
+                                        feedbackColors.Complete ? tickIcon : cautionIcon}
                             />
                         </button>
                         <ReactTooltip
@@ -440,8 +441,6 @@ const StoryboardEditor = props => {
                                                                         props.behaviors[props.selectedBehaviorIndex]
                                                                             .relatedSprites.includes(option.getName())
                                                                     }
-                                                                    // eslint-disable-next-line max-len, max-len
-                                                                    // eslint-disable-next-line react/jsx-no-bind, react/prop-types, max-len
                                                                     onChange={() => props.onToggleRelatedSprites(option.getName())}
                                                                 />
                                                                 <img
@@ -548,7 +547,7 @@ const StoryboardEditor = props => {
                                         draggable={false}
                                         src={props.behaviors[props.selectedBehaviorIndex]
                                             .feedback.variables.color ===
-                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                                feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -589,7 +588,7 @@ const StoryboardEditor = props => {
                                         draggable={false}
                                         src={props.behaviors[props.selectedBehaviorIndex]
                                             .feedback.description.color ===
-                                        feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                        feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -674,7 +673,7 @@ const StoryboardEditor = props => {
                                         draggable={false}
                                         src={props.behaviors[props.selectedBehaviorIndex]
                                             .feedback.relatedSprites.color ===
-                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                                feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -715,7 +714,7 @@ const StoryboardEditor = props => {
                                         draggable={false}
                                         src={props.behaviors[props.selectedBehaviorIndex]
                                             .feedback.sounds.color ===
-                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                                feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>
                                 <ReactTooltip
@@ -756,7 +755,7 @@ const StoryboardEditor = props => {
                                         draggable={false}
                                         src={props.behaviors[props.selectedBehaviorIndex]
                                             .feedback.costumes.color ===
-                                                feedbackColors.Complete ? tickIcon : surpriseIcon}
+                                                feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>
                                 <ReactTooltip

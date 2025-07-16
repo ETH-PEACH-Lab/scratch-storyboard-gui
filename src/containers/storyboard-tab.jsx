@@ -269,9 +269,15 @@ class StoryboardTab extends React.Component {
             behavior.feedback.relatedSprites.color = (feedbackColors[behavior.feedback.relatedSprites.color] ||
                 feedbackColors.Complete);
         });
+        // eslint-disable-next-line max-len
+        this.props.vm.storyboardOverall.descriptionFeedback.color = (feedbackColors[this.props.vm
+            .storyboardOverall.descriptionFeedback.color] || feedbackColors.Complete);
+        this.props.vm.storyboardOverall.globalVariablesFeedback.color = (feedbackColors[this.props.vm
+            .storyboardOverall.globalVariablesFeedback.color] || feedbackColors.Complete);
         this.setState({planningFeedback: feedback});
 
         // const projectJson = await this.props.vm.descriptionToBlocks();
+        // this.setState({feedbackLoading: feedbackLoading.Loaded});
         // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
