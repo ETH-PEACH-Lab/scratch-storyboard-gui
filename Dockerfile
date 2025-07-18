@@ -1,21 +1,18 @@
-# Use node 18 image
-FROM node:18
+# Stage 1: Build scratch-vm
+FROM node:18 AS build-vm
+WORKDIR /app/scratch-vm
+COPY ../scratch-vm ./
+RUN npm install && npm run build
 
-# Set working directory inside container
-WORKDIR /app
-
-# Copy scratch-gui and scratch-vm into the container
-COPY scratch-vm ./scratch-vm
-COPY scratch-gui ./scratch-gui
-
-# Enter scratch-gui directory
+# Stage 2: Build scratch-gui
+FROM node:18 AS build-gui
 WORKDIR /app/scratch-gui
 
-# Install dependencies, respecting the file:../scratch-vm path
-RUN npm install
+# Copy scratch-gui into image
+COPY scratch-storyboard-gui/ ./
 
-# Build the React app
-RUN npm run build
+# Install all dependencies (including scratch-vm)
+RUN npm install
 
 # Expose the port your app runs on
 EXPOSE 8601
