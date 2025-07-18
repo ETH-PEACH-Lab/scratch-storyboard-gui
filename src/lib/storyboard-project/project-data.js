@@ -71,6 +71,7 @@ const projectData = translateFunction => {
                     }
                 ],
                 sounds: [],
+                behaviors: [],
                 volume: 100,
                 layerOrder: 4,
                 visible: true,
@@ -102,6 +103,7 @@ const projectData = translateFunction => {
                     }
                 ],
                 sounds: [],
+                behaviors: [],
                 volume: 100,
                 layerOrder: 2,
                 visible: true,
@@ -133,6 +135,7 @@ const projectData = translateFunction => {
                     }
                 ],
                 sounds: [],
+                behaviors: [],
                 volume: 100,
                 layerOrder: 1,
                 visible: true,
@@ -164,6 +167,7 @@ const projectData = translateFunction => {
                     }
                 ],
                 sounds: [],
+                behaviors: [],
                 volume: 100,
                 layerOrder: 3,
                 visible: true,

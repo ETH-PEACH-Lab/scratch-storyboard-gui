@@ -19,8 +19,8 @@ import undoIcon from './icon--undo.svg';
 import tickIcon from './icon--tick.svg';
 import cautionIcon from './icon--caution.svg';
 // import surpriseIcon from '../action-menu/icon--surprise.svg';
-import copyIcon from './icon--copy.svg';
-import IconButton from '../icon-button/icon-button.jsx';
+// import copyIcon from './icon--copy.svg';
+// import IconButton from '../icon-button/icon-button.jsx';
 import ReactTooltip from 'react-tooltip';
 import SpinnerComponent from '../spinner/spinner.jsx';
 // import getCostumeUrl from '../../lib/get-costume-url';
@@ -245,13 +245,39 @@ const StoryboardEditor = props => {
                             draggable={false}
                             src={redoIcon}
                         />
-                    </button>)}
-                    {props.phase === 'Planning' && (<IconButton
+                    </button>
+                    )}
+                    {props.phase === 'Planning' && (
+                        <div>
+                            <button
+                                className={styles.phaseButton}
+                                disabled={props.phase !== 'Planning'}
+                                onClick={props.onCopy}
+                                data-tip="Your storyboard will be copied to the code tab as comments."
+                                data-for={messages.copy.id}
+                            >
+                                <span>{'Prepare Coding Phase'}</span>
+                                <img
+                                    className={styles.redoIcon}
+                                    draggable={false}
+                                    src={redoIcon}
+                                />
+                            </button>
+
+                            <ReactTooltip
+                                id={messages.copy.id}
+                                place="right"
+                                effect="solid"
+                                className={styles.tooltip}
+                            />
+                        </div>
+                    )}
+                    {/* {props.phase === 'Planning' && (<IconButton
                         className={styles.toolButton}
                         img={copyIcon}
                         title={props.intl.formatMessage(messages.copy)}
                         onClick={props.onCopy}
-                    />)}
+                    />)} */}
                 </div>
             </div>
             <div className={styles.row}>

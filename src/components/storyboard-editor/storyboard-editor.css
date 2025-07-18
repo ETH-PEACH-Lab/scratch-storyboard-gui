@@ -249,7 +249,7 @@ $border-radius: 0.25rem;
     justify-content: flex-start;
     gap: 1rem;
     margin-bottom: 1rem;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
 }
 
 .titleLabel {
@@ -329,6 +329,7 @@ $border-radius: 0.25rem;
     border: 1px solid $ui-black-transparent;
     cursor: pointer;
     background: white;
+    margin-left: 0.5rem;
 }
 
 .phaseButton:disabled > img {
@@ -543,8 +544,8 @@ $border-radius: 0.25rem;
     height: 100%; 
     min-height: 300px; 
     min-width: 160px;
-    max-width: 240px;
-    flex: 0 0 auto; 
+    /* max-width: 260px; */
+    /* flex: 0 0 auto;  */
 }
 
 .spriteHeader {
