@@ -72,7 +72,7 @@ const projectDataBehavior = translateFunction => {
                 ],
                 sounds: [],
                 behaviors: [{
-                    name: 'Moving',
+                    name: 'Bewegen',
                     description: '',
                     variables: ['x position'],
                     costumes: '',
@@ -87,12 +87,12 @@ const projectDataBehavior = translateFunction => {
                     }
                 },
                 {
-                    name: 'Touching Red Apple',
+                    name: 'Roter Apfel berühren',
                     description: '',
-                    variables: ['Points'],
+                    variables: ['Punkte'],
                     costumes: '',
                     sounds: 'bing',
-                    relatedSprites: ['Red Apple'],
+                    relatedSprites: ['Roter Apfel'],
                     feedback: {
                         variables: {text: '', color: null},
                         description: {text: '', color: null},
@@ -102,9 +102,9 @@ const projectDataBehavior = translateFunction => {
                     }
                 },
                 {
-                    name: 'Touching Golden Apple',
+                    name: 'Goldener Apfel berühren',
                     description: '',
-                    variables: ['Points'],
+                    variables: ['Punkte'],
                     costumes: '',
                     sounds: 'bing',
                     relatedSprites: ['Golden Apple'],

@@ -19,6 +19,11 @@ const messages = defineMessages({
         id: 'gui.controls.stop',
         defaultMessage: 'Stop',
         description: 'Stop button title'
+    },
+    mode: {
+        id: 'gui.controls.mode',
+        defaultMessage: 'Mode',
+        description: 'Execution mode label'
     }
 });
 
@@ -52,7 +57,7 @@ const Controls = function (props) {
             ) : null}
             {
                 <div className={styles.executionMode}>
-                    {`Mode: ${
+                    {`${intl.formatMessage(messages.mode)}: ${
                         props.activeTabIndex === 0 ? 'Storyboard' : 'Code'
                     }`}
                 </div>

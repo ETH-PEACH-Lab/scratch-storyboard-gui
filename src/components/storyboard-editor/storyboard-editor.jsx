@@ -111,7 +111,7 @@ const messages = defineMessages({
     copy: {
         id: 'gui.storyboardEditor.copy',
         description: 'Title of the button to copy the storyboard',
-        defaultMessage: 'Copy to Comments' // 'Copy Storyboard to Comments in Coding Area'
+        defaultMessage: 'Your storyboard will be copied to the code tab as comments.'
     },
     paste: {
         id: 'gui.storyboardEditor.paste',
@@ -144,19 +144,54 @@ const messages = defineMessages({
         defaultMessage: 'Verify Storyboard'
     },
     phase: {
-        id: 'gui.storyboardTab.phase',
+        id: 'gui.storyboardEditor.phase',
         description: 'Info about current phase of the storyboard in the editor tab',
         defaultMessage: 'Project Phase'
     },
+    planning: {
+        id: 'gui.storyboardEditor.planning',
+        description: 'Planning phase of the storyboard in the editor tab',
+        defaultMessage: 'Planning'
+    },
+    understanding: {
+        id: 'gui.storyboardEditor.understanding',
+        description: 'Understanding phase of the storyboard in the editor tab',
+        defaultMessage: 'Understanding'
+    },
+    coding: {
+        id: 'gui.storyboardEditor.coding',
+        description: 'Coding phase of the storyboard in the editor tab',
+        defaultMessage: 'Coding'
+    },
+    planningPhase: {
+        id: 'gui.storyboardEditor.planningPhase',
+        description: 'Planning phase of the storyboard in the editor tab',
+        defaultMessage: 'Planning Phase'
+    },
+    understandingPhase: {
+        id: 'gui.storyboardEditor.understandingPhase',
+        description: 'Understanding phase of the storyboard in the editor tab',
+        defaultMessage: 'Understanding Phase'
+    },
+    prepareCodingPhase: {
+        id: 'gui.storyboardEditor.prepareCodingPhase',
+        description: 'Button to prepare the coding phase in the storyboard editor',
+        defaultMessage: 'Prepare Coding Phase'
+    },
     feedback: {
-        id: 'gui.storyboardTab.feedback',
+        id: 'gui.storyboardEditor.feedback',
         description: 'Button to provide feedback on the storyboard in the editor tab',
         defaultMessage: 'Feedback'
     },
     feedbackLoading: {
-        id: 'gui.storyboardTab.feedbackLoading',
-        description: 'Loading state for feedback in the storyboard tab',
-        defaultMessage: 'Feedback is '
+        id: 'gui.storyboardEditor.feedbackLoading',
+        description: 'Loading state for feedback in the storyboard editor',
+        defaultMessage: 'Feedback is loading ...'
+    },
+    question: {
+        id: 'gui.storyboardEditor.question',
+        description: 'Question for the user in the storyboard tab',
+        defaultMessage: 'Have you listed all behaviors for all sprites?'
     }
 
 });
@@ -213,7 +248,11 @@ const StoryboardEditor = props => {
                                             isCurrent ? styles.active : ''
                                         }`}
                                     >
-                                        {phase}
+                                        {messages[phase.toLowerCase()].id ? (
+                                            props.intl.formatMessage(messages[phase.toLowerCase()])
+                                        ) : (
+                                            phase
+                                        )}
                                     </div>
                                 </div>
                             );
@@ -226,7 +265,7 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Planning'}
                         onClick={props.onUnderstanding}
                     >
-                        <span>{'Understanding Phase'}</span>
+                        <span>{props.intl.formatMessage(messages.understandingPhase)}</span>
                         <img
                             className={styles.undoIcon}
                             draggable={false}
@@ -239,7 +278,7 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Understanding'}
                         onClick={props.onPlanning}
                     >
-                        <span>{'Planning Phase'}</span>
+                        <span>{props.intl.formatMessage(messages.planningPhase)}</span>
                         <img
                             className={styles.redoIcon}
                             draggable={false}
@@ -253,10 +292,10 @@ const StoryboardEditor = props => {
                                 className={styles.phaseButton}
                                 disabled={props.phase !== 'Planning'}
                                 onClick={props.onCopy}
-                                data-tip="Your storyboard will be copied to the code tab as comments."
+                                data-tip={props.intl.formatMessage(messages.copy)}
                                 data-for={messages.copy.id}
                             >
-                                <span>{'Prepare Coding Phase'}</span>
+                                <span>{props.intl.formatMessage(messages.prepareCodingPhase)}</span>
                                 <img
                                     className={styles.redoIcon}
                                     draggable={false}
@@ -349,8 +388,7 @@ const StoryboardEditor = props => {
                             disabled={!props.planningFeedback}
                             title={props.intl.formatMessage(messages.feedback)}
                             data-for={messages.storyboardVariables.id}
-                            data-tip={`Storyboard Variables Feedback: 
-                                ${props.vm.storyboardOverall.globalVariablesFeedback.text}`}
+                            data-tip={props.vm.storyboardOverall.globalVariablesFeedback.text}
                             style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.color}}
                         // onClick={props.openFeedback}
                         >
@@ -376,8 +414,8 @@ const StoryboardEditor = props => {
                         level="primary"
                     />
                     <Label
-                        text={`${props.intl.formatMessage(messages.feedbackLoading)} ${props.feedbackLoading} 
-                    \n Hast du für alle Sprites alle Verhalten aufgezählt?`}
+                        text={`${props.intl.formatMessage(messages.feedbackLoading)}
+                    \n ${props.intl.formatMessage(messages.question)} `}
                     />
                 </div>
             )}
@@ -562,9 +600,7 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorVariables.id}
-                                    data-tip={`Behavior Variable Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.variables.text
-                                    }`}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.variables.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.variables.color}}
                                 >
@@ -602,9 +638,7 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorDescription.id}
-                                    data-tip={`Behavior Description Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.description.text
-                                    }`}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.description.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.description.color}}
                                 // onClick={props.openFeedback}
@@ -687,9 +721,7 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorRelatedSprites.id}
-                                    data-tip={`Behavior Related Sprites Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites.text
-                                    }`}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.relatedSprites.color}}
                                 // onClick={props.openFeedback}
@@ -728,9 +760,7 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorSounds.id}
-                                    data-tip={`Behavior Sounds Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.sounds.text
-                                    }`}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.sounds.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.sounds.color}}
                                 // onClick={props.openFeedback}
@@ -769,9 +799,7 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorCostumes.id}
-                                    data-tip={`Behavior Costumes Feedback: ${
-                                        props.behaviors[props.selectedBehaviorIndex].feedback.costumes.text
-                                    }`}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.costumes.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.costumes.color}}
                                 // onClick={props.openFeedback}

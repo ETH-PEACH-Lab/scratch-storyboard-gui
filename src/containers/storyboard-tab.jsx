@@ -254,30 +254,30 @@ class StoryboardTab extends React.Component {
 
     async handlePlanningVerification (){
         this.setState({feedbackLoading: feedbackLoading.Loading});
-        const feedback = await this.props.vm.getPlanningFeedback();
-        this.setState({feedbackLoading: feedbackLoading.Loaded});
-        // set the feedback colors based on the response
-        this.props.vm.editingTarget.sprite.behaviors.forEach((behavior, index) => {
-            behavior.feedback.variables.color = (feedbackColors[behavior.feedback.variables.color] ||
-                feedbackColors.Complete);
-            behavior.feedback.description.color = (feedbackColors[behavior.feedback.description.color] ||
-                feedbackColors.Complete);
-            behavior.feedback.costumes.color = (feedbackColors[behavior.feedback.costumes.color] ||
-                feedbackColors.Complete);
-            behavior.feedback.sounds.color = (feedbackColors[behavior.feedback.sounds.color] ||
-                feedbackColors.Complete);
-            behavior.feedback.relatedSprites.color = (feedbackColors[behavior.feedback.relatedSprites.color] ||
-                feedbackColors.Complete);
-        });
-        // eslint-disable-next-line max-len
-        this.props.vm.storyboardOverall.descriptionFeedback.color = (feedbackColors[this.props.vm
-            .storyboardOverall.descriptionFeedback.color] || feedbackColors.Complete);
-        this.props.vm.storyboardOverall.globalVariablesFeedback.color = (feedbackColors[this.props.vm
-            .storyboardOverall.globalVariablesFeedback.color] || feedbackColors.Complete);
-        this.setState({planningFeedback: feedback});
-
-        // const projectJson = await this.props.vm.descriptionToBlocks();
+        // const feedback = await this.props.vm.getPlanningFeedback();
         // this.setState({feedbackLoading: feedbackLoading.Loaded});
+        // // set the feedback colors based on the response
+        // this.props.vm.editingTarget.sprite.behaviors.forEach((behavior, index) => {
+        //     behavior.feedback.variables.color = (feedbackColors[behavior.feedback.variables.color] ||
+        //         feedbackColors.Complete);
+        //     behavior.feedback.description.color = (feedbackColors[behavior.feedback.description.color] ||
+        //         feedbackColors.Complete);
+        //     behavior.feedback.costumes.color = (feedbackColors[behavior.feedback.costumes.color] ||
+        //         feedbackColors.Complete);
+        //     behavior.feedback.sounds.color = (feedbackColors[behavior.feedback.sounds.color] ||
+        //         feedbackColors.Complete);
+        //     behavior.feedback.relatedSprites.color = (feedbackColors[behavior.feedback.relatedSprites.color] ||
+        //         feedbackColors.Complete);
+        // });
+        // // eslint-disable-next-line max-len
+        // this.props.vm.storyboardOverall.descriptionFeedback.color = (feedbackColors[this.props.vm
+        //     .storyboardOverall.descriptionFeedback.color] || feedbackColors.Complete);
+        // this.props.vm.storyboardOverall.globalVariablesFeedback.color = (feedbackColors[this.props.vm
+        //     .storyboardOverall.globalVariablesFeedback.color] || feedbackColors.Complete);
+        // this.setState({planningFeedback: feedback});
+
+        const projectJson = await this.props.vm.descriptionToBlocks();
+        this.setState({feedbackLoading: feedbackLoading.Loaded});
         // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
