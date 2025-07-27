@@ -17,7 +17,7 @@ class GreenFlagOverlay extends React.Component {
 
     handleClick () {
         this.props.vm.start();
-        this.props.vm.greenFlag();
+        this.props.vm.greenFlag(this.props.activeTabIndex);
     }
 
     render () {
@@ -41,7 +41,8 @@ class GreenFlagOverlay extends React.Component {
 GreenFlagOverlay.propTypes = {
     className: PropTypes.string,
     vm: PropTypes.instanceOf(VM),
-    wrapperClass: PropTypes.string
+    wrapperClass: PropTypes.string,
+    activeTabIndex: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => ({

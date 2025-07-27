@@ -41,7 +41,7 @@ class Controls extends React.Component {
         return (
             <ControlsComponent
                 {...props}
-                activeTabIndex={activeTabIndex} // Assuming activeTabIndex is always 0 for storyboard execution
+                activeTabIndex={activeTabIndex} // Assuming activeTabIndex is always 0 for code execution
                 active={projectRunning}
                 turbo={turbo}
                 onGreenFlagClick={this.handleGreenFlagClick}

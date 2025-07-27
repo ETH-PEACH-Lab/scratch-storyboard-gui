@@ -291,6 +291,20 @@ const GUIComponent = props => {
                                 <TabList className={tabClassNames.tabList}>
                                     <Tab
                                         className={tabClassNames.tab}
+                                        onClick={onActivateCodeTab}
+                                    >
+                                        <img
+                                            draggable={false}
+                                            src={codeIcon}
+                                        />
+                                        <FormattedMessage
+                                            defaultMessage="Code"
+                                            description="Button to get to the code panel"
+                                            id="gui.gui.codeTab"
+                                        />
+                                    </Tab>
+                                    <Tab
+                                        className={tabClassNames.tab}
                                         onClick={onActivateStoryboardTab}
                                     >
                                         <img
@@ -302,20 +316,6 @@ const GUIComponent = props => {
                                             defaultMessage="Storyboard"
                                             description="Button to get to the storyboard panel"
                                             id="gui.gui.storyboardTab"
-                                        />
-                                    </Tab>
-                                    <Tab
-                                        className={tabClassNames.tab}
-                                        onClick={onActivateCodeTab}
-                                    >
-                                        <img
-                                            draggable={false}
-                                            src={codeIcon}
-                                        />
-                                        <FormattedMessage
-                                            defaultMessage="Code"
-                                            description="Button to get to the code panel"
-                                            id="gui.gui.codeTab"
                                         />
                                     </Tab>
                                     <Tab
@@ -354,10 +354,7 @@ const GUIComponent = props => {
                                             id="gui.gui.soundsTab"
                                         />
                                     </Tab>
-                                </TabList>
-                                <TabPanel className={tabClassNames.tabPanel}>
-                                    {storyboardTabVisible ? <StoryboardTab vm={vm} /> : null}
-                                </TabPanel>
+                                </TabList>                               
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     <Box className={styles.blocksWrapper}>
                                         <Blocks
@@ -389,6 +386,9 @@ const GUIComponent = props => {
                                     <Box className={styles.watermark}>
                                         <Watermark />
                                     </Box>
+                                </TabPanel>
+                                <TabPanel className={tabClassNames.tabPanel}>
+                                    {storyboardTabVisible ? <StoryboardTab vm={vm} /> : null}
                                 </TabPanel>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     {costumesTabVisible ? <CostumeTab vm={vm} /> : null}

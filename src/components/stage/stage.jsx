@@ -121,6 +121,7 @@ const StageComponent = props => {
                     <GreenFlagOverlay
                         className={styles.greenFlagOverlay}
                         wrapperClass={styles.greenFlagOverlayWrapper}
+                        // activeTabIndex={activeTabIndex}
                     />
                 )}
             </Box>

@@ -6,10 +6,12 @@ import styles from './asset-panel.css';
 
 const AssetPanel = props => (
     <Box className={styles.wrapper}>
-        <Selector
+        {props.visible && (
+            <Selector
             className={styles.selector}
             {...props}
         />
+        )}
         <Box className={styles.detailArea}>
             {props.children}
         </Box>

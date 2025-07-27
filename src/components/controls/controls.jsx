@@ -24,6 +24,16 @@ const messages = defineMessages({
         id: 'gui.controls.mode',
         defaultMessage: 'Mode',
         description: 'Execution mode label'
+    },
+    storyboard: {
+        id: 'gui.controls.storyboard',
+        defaultMessage: 'Storyboard',
+        description: 'Storyboard tab label'
+    },
+    code: {
+        id: 'gui.controls.code',
+        defaultMessage: 'Code',
+        description: 'Code tab label'
     }
 });
 
@@ -57,9 +67,12 @@ const Controls = function (props) {
             ) : null}
             {
                 <div className={styles.executionMode}>
-                    {`${intl.formatMessage(messages.mode)}: ${
-                        props.activeTabIndex === 0 ? 'Storyboard' : 'Code'
-                    }`}
+                    <button
+                        onClick={() => props.onTabChange(props.activeTabIndex === 0 ? 1 : 0)}
+                        className={styles.toggleButton}
+                    >
+                        {`${intl.formatMessage(messages.mode)}: ${props.activeTabIndex === 0 ? intl.formatMessage(messages.code) : intl.formatMessage(messages.storyboard)}`}
+                    </button>
                 </div>
             }
         </div>

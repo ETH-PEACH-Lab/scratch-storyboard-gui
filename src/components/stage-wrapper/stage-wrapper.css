@@ -8,7 +8,10 @@
 
 .stage-canvas-wrapper {
     /* Hides negative space between edge of rounded corners + container, when selected */
+    position: relative;
     user-select: none;
+    transition: background-color 0.3s ease;
+    border-radius: $space;
 }
 
 .stage-wrapper.full-screen {
@@ -27,4 +30,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.storyboardMode {
+    /* background-color: red !important; */
+    background-color: #292828; 
+    filter: grayscale(0.9);  
 }

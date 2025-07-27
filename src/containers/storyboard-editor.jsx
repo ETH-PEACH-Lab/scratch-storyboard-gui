@@ -19,19 +19,20 @@ class StoryboardEditor extends React.Component {
             'handleChangeCostumes',
             'handleChangeSounds',
             'handleChangeTitle',
-            'handleChangeStoryboardVariables',
             'handleChangeStoryboardDescription',
-            'handleDelete',
+            'handleDeleteBehavior',
             'handleCopy',
             'setRef',
             'handleToggleVariable',
-            'handleToggleRelatedSprites'
+            'handleToggleRelatedSprites',
+            'handleAddGlobalVariable',
+            'handleChangeGlobalVariable',
         ]);
 
         this.ref = null;
 
         this.variableList = [
-            ...this.props.vm.storyboardOverall.globalVariables,
+            ...this.props.vm.storyboardOverall.globalVariables.filter(variable => variable !== ''),
             'x position',
             'y position',
             'direction',
@@ -77,27 +78,22 @@ class StoryboardEditor extends React.Component {
         this.forceUpdate();
     }
 
-    handleDelete () {
-        if (this.ref) {
-            this.ref.handleDelete();
-        }
-    }
     handleCopy () {
         this.props.vm.copyStoryboardToComments();
-    }
-
-    handlePlanning () {
-        console.log('Planning phase started');
-        this.setState({phase: 'Planning'});
-        this.forceUpdate();
-        console.log(this.state.phase);
-        console.log(this.props.phase);
-    }
-
-    handleUnderstanding () {
-        this.setState({phase: 'Understanding'});
+        this.setState({phase: 'Coding'});
+        this.props.onHandleCoding();
         this.forceUpdate();
     }
+
+    // handlePlanning () {
+    //     this.setState({phase: 'Planning'});
+    //     this.forceUpdate();
+    // }
+
+    // handleUnderstanding () {
+    //     this.setState({phase: 'Understanding'});
+    //     this.forceUpdate();
+    // }
 
     handleChangeName (name) {
         this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex].name = name;
@@ -139,14 +135,44 @@ class StoryboardEditor extends React.Component {
         this.forceUpdate();
     }
 
-    handleChangeStoryboardVariables (variables) {
-        this.props.vm.setStoryboardGlobalVariables(variables);
-        this.forceUpdate();
-    }
     handleChangeStoryboardDescription (description) {
         this.props.vm.setStoryboardDescription(description);
         this.forceUpdate();
     }
+
+    handleAddGlobalVariable () {
+        this.props.vm.addGlobalVariable();
+        this.forceUpdate();
+    };
+
+    handleChangeGlobalVariable (variable, index) {
+        this.props.vm.setGlobalVariable(variable, index);
+        this.variableList = [
+            ...this.props.vm.storyboardOverall.globalVariables.filter(variable => variable !== ''),
+            'x position',
+            'y position',
+            'direction',
+            'mouse-x',
+            'mouse-y',
+            'mouse-pointer',
+            'answer',
+            'username',
+            'loudness',
+            'volume',
+            'timer'
+        ];
+        this.forceUpdate();
+    };
+
+    handleDeleteBehavior (behaviorName) {
+        const behaviors = this.props.vm.editingTarget.sprite.behaviors;
+        const index = behaviors.findIndex(behavior => behavior.name === behaviorName);
+        if (index !== -1) {
+            behaviors.splice(index, 1);
+            this.props.vm.editingTarget.sprite.behaviors = behaviors;
+            this.forceUpdate();
+        }
+    };
 
     // handleOpenFeedback = () => {
     //     // This function should handle opening the feedback modal or redirecting to a feedback page
@@ -177,14 +203,18 @@ class StoryboardEditor extends React.Component {
                 onChangeRelatedSprites={this.handleChangeRelatedSprites}
                 onChangePossibleBlocks={this.handleChangePossibleBlocks}
                 onChangeTitle={this.handleChangeTitle}
-                onChangeStoryboardVariables={this.handleChangeStoryboardVariables}
+                onAddGlobalVariable={this.handleAddGlobalVariable}
+                onChangeGlobalVariable={this.handleChangeGlobalVariable}
                 onChangeStoryboardDescription={this.handleChangeStoryboardDescription}
                 onToggleVariable={this.handleToggleVariable}
                 onToggleRelatedSprites={this.handleToggleRelatedSprites}
-                onDelete={this.handleDelete}
+                onDeleteBehavior={this.handleDeleteBehavior}
+                onAddBehavior={this.props.onHandleNewBehavior}
                 onCopy={this.handleCopy}
                 onPlanning={this.props.onHandlePlanning}
                 onUnderstanding={this.props.onHandleUnderstanding}
+                onUnderstandingFeedback={this.props.onUnderstandingFeedback}
+                onPlanningFeedback={this.props.onPlanningFeedback}
                 vm={this.props.vm}
             />
 
@@ -201,6 +231,7 @@ StoryboardEditor.propTypes = {
     feedbackLoading: PropTypes.string,
     onHandlePlanning: PropTypes.func.isRequired,
     onHandleUnderstanding: PropTypes.func.isRequired,
+    onHandleCoding: PropTypes.func.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 

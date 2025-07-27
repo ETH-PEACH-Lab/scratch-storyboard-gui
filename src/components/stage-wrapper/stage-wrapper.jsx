@@ -37,15 +37,15 @@ const StageWrapperComponent = function (props) {
                     vm={vm}
                 />
             </Box>
-            <Box className={styles.stageCanvasWrapper}>
-                {
-                    isRendererSupported ?
-                        <Stage
-                            stageSize={stageSize}
-                            vm={vm}
-                        /> :
-                        null
-                }
+            <Box
+                className={classNames(
+                    styles.stageCanvasWrapper,
+                    { [styles.storyboardMode]: activeTabIndex === 1 }
+                )}
+            >
+                {isRendererSupported ? (
+                    <Stage stageSize={stageSize} vm={vm} />
+                ) : null}
             </Box>
             {loading ? (
                 <Loader isFullScreen={isFullScreen} />

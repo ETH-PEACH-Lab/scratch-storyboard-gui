@@ -1,8 +1,8 @@
 const ACTIVATE_TAB = 'scratch-gui/navigation/ACTIVATE_TAB';
 
 // Constants use numbers to make it easier to work with react-tabs
-const STORYBOARD_TAB_INDEX = 0;
-const BLOCKS_TAB_INDEX = 1;
+const BLOCKS_TAB_INDEX = 0;
+const STORYBOARD_TAB_INDEX = 1;
 const COSTUMES_TAB_INDEX = 2;
 const SOUNDS_TAB_INDEX = 3;
 
