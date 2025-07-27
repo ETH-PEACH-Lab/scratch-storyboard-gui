@@ -73,7 +73,7 @@ const projectDataBehavior = translateFunction => {
                 sounds: [],
                 behaviors: [{
                     name: 'Bewegen',
-                    description: '',
+                    description: 'Die Schale bewegt sich links und rechts mit den Pfeiltasten.',
                     variables: ['x position'],
                     costumes: '',
                     sounds: '',
@@ -88,10 +88,10 @@ const projectDataBehavior = translateFunction => {
                 },
                 {
                     name: 'Roter Apfel berühren',
-                    description: '',
+                    description: 'Wenn die Schale den roten Apfel berührt, dann wird der Punktestand um 1 erhöht.',
                     variables: ['Punkte'],
                     costumes: '',
-                    sounds: 'bing',
+                    sounds: 'Wenn die Schale den roten Apfel berührt, dann gibt es eine Ton bing.',
                     relatedSprites: ['Roter Apfel'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -103,10 +103,10 @@ const projectDataBehavior = translateFunction => {
                 },
                 {
                     name: 'Goldener Apfel berühren',
-                    description: '',
+                    description: 'Wenn die Schale den goldenen Apfel berührt, dann wird der Punktestand um 2 erhöht.',
                     variables: ['Punkte'],
                     costumes: '',
-                    sounds: 'bing',
+                    sounds: 'Wenn die Schale den goldenen Apfel berührt, dann gibt es eine Ton bing.',
                     relatedSprites: ['Golden Apple'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -147,7 +147,53 @@ const projectDataBehavior = translateFunction => {
                     }
                 ],
                 sounds: [],
-                behaviors: [],
+                behaviors: [
+                    {
+                        name: 'Fallen',
+                        description: 'Der rote Apfel fällt von oben nach unten.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    },
+                    {
+                        name: 'Schale berühren',
+                        description: 'Wenn die Schale den roten Apfel berührt, dann geht sie an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: ['Bowl'],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    },
+                    {
+                        name: 'Boden berühren',
+                        description: 'Wenn der rote Apfel den Boden berührt, dann geht er an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    }
+                ],
                 volume: 100,
                 layerOrder: 2,
                 visible: true,
@@ -179,7 +225,53 @@ const projectDataBehavior = translateFunction => {
                     }
                 ],
                 sounds: [],
-                behaviors: [],
+                behaviors: [
+                    {
+                        name: 'Fallen',
+                        description: 'Der goldene Apfel fällt von oben nach unten.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    },
+                    {
+                        name: 'Schale berühren',
+                        description: 'Wenn die Schale den goldene Apfel berührt, dann geht sie an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: ['Bowl'],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    },
+                    {
+                        name: 'Boden berühren',
+                        description: 'Wenn der goldene Apfel den Boden berührt, dann geht er an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    }
+                ],
                 volume: 100,
                 layerOrder: 1,
                 visible: true,
@@ -211,7 +303,23 @@ const projectDataBehavior = translateFunction => {
                     }
                 ],
                 sounds: [],
-                behaviors: [],
+                behaviors: [
+                    {
+                        name: 'Gewinnen',
+                        description: 'Versteck dich bei Spielstart und wenn die Punktzahl 10 erreicht ist, dann erscheine und zeige den Text "YOU WIN!" an.',
+                        variables: ['Punkte'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
+                    }
+                ],
                 volume: 100,
                 layerOrder: 3,
                 visible: true,
