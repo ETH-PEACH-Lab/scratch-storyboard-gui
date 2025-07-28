@@ -736,6 +736,19 @@ const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
     </category>
     `;
 };
+
+const storyBlocks = function (isInitialSetup, isStage, targetId, colors) {
+    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    return `
+    <category
+        name="Plan"
+        id="planComments"
+        colour="${colors.primary}"
+        secondaryColour="${colors.tertiary}">
+        <button text="Describe a Behavior" callbackKey="CREATE_BEHAVIOR_DESCRIPTION"></button>
+    </category>
+    `;
+};
 /* eslint-enable no-unused-vars */
 
 const xmlOpen = '<xml style="display: none">';
@@ -786,6 +799,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
+    const storyBlocksXML = moveCategory('storyBlocks') || storyBlocks(isInitialSetup, isStage, targetId, colors.story);
 
     const everything = [
         xmlOpen,
@@ -797,7 +811,8 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         sensingXML, gap,
         operatorsXML, gap,
         variablesXML, gap,
-        myBlocksXML
+        myBlocksXML, gap,
+        storyBlocksXML
     ];
 
     for (const extensionCategory of categoriesXML) {

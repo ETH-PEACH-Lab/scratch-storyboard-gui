@@ -65,6 +65,7 @@ class Blocks extends React.Component {
             'handlePromptCallback',
             'handlePromptClose',
             'handleCustomProceduresClose',
+            'handleBehaviorDescriptionComment',
             'onScriptGlowOn',
             'onScriptGlowOff',
             'onBlockGlowOn',
@@ -120,6 +121,14 @@ class Blocks extends React.Component {
         toolboxWorkspace.registerButtonCallback('MAKE_A_VARIABLE', varListButtonCallback(''));
         toolboxWorkspace.registerButtonCallback('MAKE_A_LIST', varListButtonCallback('list'));
         toolboxWorkspace.registerButtonCallback('MAKE_A_PROCEDURE', procButtonCallback);
+        
+        // Register behavior description button callback
+        const behaviorDescriptionCallback = () => {
+            // Add a comment to the coding area
+            this.handleBehaviorDescriptionComment();
+        };
+        toolboxWorkspace.registerButtonCallback('CREATE_BEHAVIOR_DESCRIPTION', behaviorDescriptionCallback);
+
 
         // Store the xml of the toolbox that is actually rendered.
         // This is used in componentDidUpdate instead of prevProps, because
@@ -534,6 +543,12 @@ class Blocks extends React.Component {
         const ws = this.workspace;
         ws.refreshToolboxSelection_();
         ws.toolbox_.scrollToCategoryById('myBlocks');
+    }
+    handleBehaviorDescriptionComment () {
+        const index = Object.keys(this.props.vm.editingTarget.comments).length;
+        const id = "story_" + String(index);
+        this.props.vm.editingTarget.createComment(id, null, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis]', 500, 500 - (index * 250), 500, 200, false);
+        this.props.vm.refreshWorkspace();
     }
     handleDrop (dragInfo) {
         fetch(dragInfo.payload.bodyUrl)

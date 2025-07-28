@@ -67,6 +67,12 @@ const blockColors = {
         tertiary: '#FF3355',
         quaternary: '#FF3355'
     },
+    story: {
+        primary: '#fef49c',
+        secondary: '#bcA903',
+        tertiary: '#bcA903',
+        quaternary: '#bcA903'
+    },
     text: '#FFFFFF',
     workspace: '#F9F9F9',
     toolboxHover: '#4C97FF',

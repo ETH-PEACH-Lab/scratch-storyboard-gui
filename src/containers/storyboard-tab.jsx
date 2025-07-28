@@ -223,12 +223,11 @@ class StoryboardTab extends React.Component {
         this.forceUpdate();
     }
 
-    async handleVerifyStoryboard () {
-
-        const feedback = await this.props.vm.getFeedback();
-        console.log('Feedback response', feedback);
-
-        this.setState({feedback: feedback});
+    async handleVerifyStoryboard (behaviorIndex) {
+        this.setState({feedbackLoading: feedbackLoading.Loading});
+        const behaviorFeedback = await this.props.vm.getBehaviorFeedback(behaviorIndex);
+        console.log('Feedback response', behaviorFeedback);
+        this.setState({feedbackLoading: feedbackLoading.Loaded});
     }
 
     async handleUnderstandingVerification (){
