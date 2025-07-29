@@ -34,7 +34,7 @@ const projectDataBehavior = translateFunction => {
                 currentCostume: 1,
                 costumes: [
                     {
-                        name: 'Background',
+                        name: 'Hintergrund1',
                         dataFormat: 'svg',
                         assetId: 'cd21514d0531fdffb22204e0ec5ed84a',
                         md5ext: 'cd21514d0531fdffb22204e0ec5ed84a.svg',
@@ -72,8 +72,8 @@ const projectDataBehavior = translateFunction => {
                 ],
                 sounds: [],
                 behaviors: [{
-                    name: 'moving',
-                    description: 'Moves left and right with the arrow keys.',
+                    name: 'Bewegen',
+                    description: 'Die Schale bewegt sich links und rechts mit den Pfeiltasten.',
                     variables: ['x position'],
                     costumes: '',
                     sounds: '',
@@ -87,11 +87,11 @@ const projectDataBehavior = translateFunction => {
                     }
                 },
                 {
-                    name: 'touching Red Apple',
-                    description: 'When it touches the red apple, the score is increased by 1.',
-                    variables: ['Score'],
+                    name: 'Roter Apfel berühren',
+                    description: 'Wenn die Schale den roten Apfel berührt, dann wird der Punktestand um 1 erhöht.',
+                    variables: ['Punkte'],
                     costumes: '',
-                    sounds: 'When it touches the red apple, the sound plays.',
+                    sounds: 'Wenn die Schale den roten Apfel berührt, dann gibt es eine Ton bing.',
                     relatedSprites: ['Red Apple'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -102,11 +102,11 @@ const projectDataBehavior = translateFunction => {
                     }
                 },
                 {
-                    name: 'touching Golden Apple',
-                    description: 'When it touches the golden apple, the score is increased by 2.',
-                    variables: ['Score'],
+                    name: 'Goldener Apfel berühren',
+                    description: 'Wenn die Schale den goldenen Apfel berührt, dann wird der Punktestand um 2 erhöht.',
+                    variables: ['Punkte'],
                     costumes: '',
-                    sounds: 'When it touches the golden apple, the sound plays.',
+                    sounds: 'Wenn die Schale den goldenen Apfel berührt, dann gibt es eine Ton bing.',
                     relatedSprites: ['Golden Apple'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -149,8 +149,8 @@ const projectDataBehavior = translateFunction => {
                 sounds: [],
                 behaviors: [
                     {
-                        name: 'falling',
-                        description: 'It falls from top to bottom.',
+                        name: 'Fallen',
+                        description: 'Der rote Apfel fällt von oben nach unten.',
                         variables: ['y position'],
                         costumes: '',
                         sounds: '',
@@ -164,8 +164,8 @@ const projectDataBehavior = translateFunction => {
                         }
                     },
                     {
-                        name: 'touching Bowl',
-                        description: 'When it touches the bowl, it goes to a random position above the background.',
+                        name: 'Schale berühren',
+                        description: 'Wenn die Schale den roten Apfel berührt, dann geht sie an einen zufälligen Ort oberhalb des Hintergrundes.',
                         variables: ['y position'],
                         costumes: '',
                         sounds: '',
@@ -177,23 +177,22 @@ const projectDataBehavior = translateFunction => {
                             sounds: {text: '', color: null},
                             relatedSprites: {text: '', color: null}
                         }
+                    },
+                    {
+                        name: 'Boden berühren',
+                        description: 'Wenn der rote Apfel den Boden berührt, dann geht er an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
                     }
-                    // ,
-                    // {
-                    //     name: 'touching Ground',
-                    //     description: 'When it touches the ground, it goes to a random position above the background.',
-                    //     variables: ['y position'],
-                    //     costumes: '',
-                    //     sounds: '',
-                    //     relatedSprites: [],
-                    //     feedback: {
-                    //         variables: {text: '', color: null},
-                    //         description: {text: '', color: null},
-                    //         costumes: {text: '', color: null},
-                    //         sounds: {text: '', color: null},
-                    //         relatedSprites: {text: '', color: null}
-                    //     }
-                    // }
                 ],
                 volume: 100,
                 layerOrder: 2,
@@ -228,8 +227,8 @@ const projectDataBehavior = translateFunction => {
                 sounds: [],
                 behaviors: [
                     {
-                        name: 'falling',
-                        description: 'It falls from top to bottom.',
+                        name: 'Fallen',
+                        description: 'Der goldene Apfel fällt von oben nach unten.',
                         variables: ['y position'],
                         costumes: '',
                         sounds: '',
@@ -243,8 +242,8 @@ const projectDataBehavior = translateFunction => {
                         }
                     },
                     {
-                        name: 'touching Bowl',
-                        description: 'When it touches the golden apple, it goes to a random position above the background.',
+                        name: 'Schale berühren',
+                        description: 'Wenn die Schale den goldene Apfel berührt, dann geht sie an einen zufälligen Ort oberhalb des Hintergrundes.',
                         variables: ['y position'],
                         costumes: '',
                         sounds: '',
@@ -256,23 +255,22 @@ const projectDataBehavior = translateFunction => {
                             sounds: {text: '', color: null},
                             relatedSprites: {text: '', color: null}
                         }
+                    },
+                    {
+                        name: 'Boden berühren',
+                        description: 'Wenn der goldene Apfel den Boden berührt, dann geht er an einen zufälligen Ort oberhalb des Hintergrundes.',
+                        variables: ['y position'],
+                        costumes: '',
+                        sounds: '',
+                        relatedSprites: [],
+                        feedback: {
+                            variables: {text: '', color: null},
+                            description: {text: '', color: null},
+                            costumes: {text: '', color: null},
+                            sounds: {text: '', color: null},
+                            relatedSprites: {text: '', color: null}
+                        }
                     }
-                    // ,
-                    // {
-                    //     name: 'touching Ground',
-                    //     description: 'When it touches the ground, it goes to a random position above the background.',
-                    //     variables: ['y position'],
-                    //     costumes: '',
-                    //     sounds: '',
-                    //     relatedSprites: [],
-                    //     feedback: {
-                    //         variables: {text: '', color: null},
-                    //         description: {text: '', color: null},
-                    //         costumes: {text: '', color: null},
-                    //         sounds: {text: '', color: null},
-                    //         relatedSprites: {text: '', color: null}
-                    //     }
-                    // }
                 ],
                 volume: 100,
                 layerOrder: 1,
@@ -307,9 +305,9 @@ const projectDataBehavior = translateFunction => {
                 sounds: [],
                 behaviors: [
                     {
-                        name: 'winning',
-                        description: 'Hide at the start of the game and when the score reaches 10, show "YOU WIN!".',
-                        variables: ['Score'],
+                        name: 'Gewinnen',
+                        description: 'Versteck dich bei Spielstart und wenn die Punktzahl 10 erreicht ist, dann erscheine und zeige den Text "YOU WIN!" an.',
+                        variables: ['Punkte'],
                         costumes: '',
                         sounds: '',
                         relatedSprites: [],
