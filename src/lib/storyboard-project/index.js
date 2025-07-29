@@ -1,5 +1,6 @@
 // import projectData from './project-data';
 import projectDataBehavior from './project-data-behavior'; // for testing purposes
+// import projectDataBehavior from './project-data-behavior-german'; // for testing purposes
 
 /* eslint-disable import/no-unresolved */
 import backdrop from '!raw-loader!./cd21514d0531fdffb22204e0ec5ed84a.svg?';

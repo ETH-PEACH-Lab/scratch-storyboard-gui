@@ -235,7 +235,6 @@ class StoryboardTab extends React.Component {
         const feedback = await this.props.vm.getUnderstandingFeedback();
         this.setState({feedbackLoading: feedbackLoading.Loaded});
         this.setState({understandingFeedback: feedback});
-        // console.log('TODO test verification logic edge cases');
     }
 
     async handlePlanningVerification (){
@@ -266,8 +265,8 @@ class StoryboardTab extends React.Component {
             .storyboardOverall.globalVariablesFeedback.color] || feedbackColors.Complete);
         this.setState({planningFeedback: feedback});
 
-        const projectJson = await this.props.vm.descriptionToBlocks();
-        this.setState({feedbackLoading: feedbackLoading.Loaded});
+        // const projectJson = await this.props.vm.descriptionToBlocks();
+        // this.setState({feedbackLoading: feedbackLoading.Loaded});
         // console.log(projectJson, 'Response for verification');
         // console.log('TODO test project json format');
         // console.log('TODO implement description to blocks conversion');
@@ -425,16 +424,17 @@ class StoryboardTab extends React.Component {
                 title: intl.formatMessage(messages.addBehavior),
                 img: addBehaviorIcon,
                 onClick: this.handleNewBehavior
-            },
-            ...(this.state.phase === Phase.Understanding ? [{
-                title: intl.formatMessage(messages.verifyUnderstanding),
-                img: surpriseIcon,
-                onClick: this.handleUnderstandingVerification
-            }] : [{
-                title: intl.formatMessage(messages.verifyPlanning),
-                img: surpriseIcon,
-                onClick: this.handlePlanningVerification
-            }])
+            }
+            // ,
+            // ...(this.state.phase === Phase.Understanding ? [{
+            //     title: intl.formatMessage(messages.verifyUnderstanding),
+            //     img: surpriseIcon,
+            //     onClick: this.handleUnderstandingVerification
+            // }] : [{
+            //     title: intl.formatMessage(messages.verifyPlanning),
+            //     img: surpriseIcon,
+            //     onClick: this.handlePlanningVerification
+            // }])
             // , {
             //     title: intl.formatMessage(messages.fileUploadReference),
             //     img: fileUploadIcon,

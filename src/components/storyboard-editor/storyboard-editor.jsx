@@ -190,7 +190,7 @@ const messages = defineMessages({
     prepareCodingPhase: {
         id: 'gui.storyboardEditor.prepareCodingPhase',
         description: 'Button to prepare the coding phase in the storyboard editor',
-        defaultMessage: 'Prepare Coding Phase'
+        defaultMessage: 'Prepare Coding'
     },
     feedback: {
         id: 'gui.storyboardEditor.feedback',
@@ -298,10 +298,9 @@ const StoryboardEditor = props => {
                     </div>
                 </div>
                 <div className={styles.buttonGroupTopRight}>
-                    {props.phase === 'Understanding' && ( <button
+                    {(props.phase === 'Understanding' || props.phase === 'Planning') && ( <button
                         className={styles.phaseButton}
-                        disabled={props.phase != 'Understanding'}
-                        onClick={props.onUnderstandingFeedback}
+                        onClick={props.phase === 'Understanding' ? props.onUnderstandingFeedback : props.onPlanningFeedback}
                     >
                         <span>{props.intl.formatMessage(messages.feedback)}</span>
                         <img
@@ -315,7 +314,7 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Planning'}
                         onClick={props.onUnderstanding}
                     >
-                        <span>{props.intl.formatMessage(messages.understandingPhase)}</span>
+                        <span>{props.intl.formatMessage(messages.understanding)}</span>
                         <img
                             className={styles.undoIcon}
                             draggable={false}
@@ -328,7 +327,7 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Understanding'}
                         onClick={props.onPlanning}
                     >
-                        <span>{props.intl.formatMessage(messages.planningPhase)}</span>
+                        <span>{props.intl.formatMessage(messages.planning)}</span>
                         <img
                             className={styles.redoIcon}
                             draggable={false}
@@ -385,6 +384,7 @@ const StoryboardEditor = props => {
                     />)} */}
                 </div>
             </div>
+            <div className={styles.divider} />
             <div className={styles.row}>
                 <Label
                     text={props.intl.formatMessage(messages.storyboardTitle)}
@@ -547,7 +547,7 @@ const StoryboardEditor = props => {
                                         <div className={styles.nameAndImage}>
                                             <div className={styles.spriteName}>{target.sprite.name}</div>
                                             <img
-                                                className={styles.spriteUnderstanding}
+                                                className={`${styles.spriteUnderstanding} ${target.sprite.name === props.vm.editingTarget.getName() ? styles.editable : ''}`}
                                                 draggable={false}
                                                 src={require(`../../lib/storyboard-project/${target.sprite.costumes[0].assetId}.svg`)}
                                             />
@@ -640,7 +640,7 @@ const StoryboardEditor = props => {
                 </div>
             )}
             {props.phase === 'Planning' && (
-                <div>{props.behaviors.length > 0 && props.selectedBehaviorIndex > -1 && (<>
+                <div>{props.behaviors.length > 0 && props.selectedBehaviorIndex > -1 && props.behaviors[props.selectedBehaviorIndex] && (<>
                     <div className={styles.info}>{props.intl.formatMessage(messages.planningInfo)}
                         <img
                             className={styles.infoImage}
@@ -667,7 +667,7 @@ const StoryboardEditor = props => {
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorVariables)}>
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex].variables.map(variable => (
+                                {props.behaviors[props.selectedBehaviorIndex]?.variables.map(variable => (
                                     <span
                                         key={variable}
                                         className={styles.selectedItem}
@@ -691,7 +691,7 @@ const StoryboardEditor = props => {
                                     </button>
                                     {showVariablesDropdown && (
                                         <div className={styles.dropdownMenu}>
-                                            {props.variables.map(option => (
+                                            {props.variables?.map(option => (
                                                 <label
                                                     key={option}
                                                     className={styles.dropdownOption}
@@ -718,15 +718,13 @@ const StoryboardEditor = props => {
                                     disabled={!props.planningFeedback}
                                     title={props.intl.formatMessage(messages.feedback)}
                                     data-for={messages.behaviorVariables.id}
-                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.variables.text}
-                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
-                                        .feedback.variables.color}}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.variables?.text}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex].feedback.variables.color}}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
                                         draggable={false}
-                                        src={props.behaviors[props.selectedBehaviorIndex]
-                                            .feedback.variables.color ===
+                                        src={props.behaviors[props.selectedBehaviorIndex].feedback.variables.color ===
                                                 feedbackColors.Complete ? tickIcon : cautionIcon}
                                     />
                                 </button>

@@ -16272,7 +16272,7 @@ export default {
     "gui.storyboardEditor.coding": "Coding",
     "gui.storyboardEditor.planningPhase": "Planning Phase",
     "gui.storyboardEditor.understandingPhase": "Understanding Phase",
-    "gui.storyboardEditor.prepareCodingPhase": "Prepare Coding Phase",
+    "gui.storyboardEditor.prepareCodingPhase": "Prepare Coding",
     "gui.storyboardEditor.feedback": "Feedback",
     "gui.storyboardEditor.feedbackLoading": "Feedback is loading ...",
     "gui.storyboardEditor.question": "Have you listed all behaviors for all sprites?"

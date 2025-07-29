@@ -257,8 +257,6 @@ $border-radius: 0.25rem;
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
-    margin-bottom: 1rem;
-    /* margin-top: 0.5rem; */
 }
 
 .titleLabel {
@@ -542,7 +540,9 @@ $border-radius: 0.25rem;
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-color: #999 #f3f3f3; 
 }
 
 .innerBox {
@@ -554,8 +554,9 @@ $border-radius: 0.25rem;
     height: 100%; 
     min-height: 300px; 
     min-width: 200px;
-    /* max-width: 260px; */
+    max-height: 400px;
     /* flex: 0 0 auto;  */
+    overflow-y: hidden;
 }
 
 .spriteHeader {
@@ -693,7 +694,11 @@ $border-radius: 0.25rem;
 .spriteUnderstanding {
   width: 2rem;
   height: 2rem;
-  /* filter: sepia(20%) brightness(130%) contrast(90%); */
+  opacity: 0.35;
+}
+
+.editable {
+  opacity: 1;
 }
 
 .spriteImage {
@@ -704,6 +709,7 @@ $border-radius: 0.25rem;
     right: 0;
     display: flex;
     margin-right: 1.5rem;
+    opacity: 0.35;
 }
 
 .info {
@@ -731,8 +737,8 @@ $border-radius: 0.25rem;
 }
 
 .deleteButton img {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   margin: 0 !important;
 }
 

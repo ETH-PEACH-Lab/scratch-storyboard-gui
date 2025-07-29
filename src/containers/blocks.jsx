@@ -127,7 +127,13 @@ class Blocks extends React.Component {
             // Add a comment to the coding area
             this.handleBehaviorDescriptionComment();
         };
+
+        const behaviorFeedbackCallback = () => {
+            // Add a comment to the coding area
+            this.handleBehaviorFeedbackComment();
+        };
         toolboxWorkspace.registerButtonCallback('CREATE_BEHAVIOR_DESCRIPTION', behaviorDescriptionCallback);
+        toolboxWorkspace.registerButtonCallback('GET_FEEDBACK', behaviorFeedbackCallback);
 
 
         // Store the xml of the toolbox that is actually rendered.
@@ -548,8 +554,37 @@ class Blocks extends React.Component {
         const index = Object.keys(this.props.vm.editingTarget.comments).length;
         const id = "story_" + String(index);
         this.props.vm.editingTarget.createComment(id, null, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis]', 500, 500 - (index * 250), 500, 200, false);
+        // this.props.vm.editingTarget.createComment(id, null, 'Moving \n\non green flag clicked, the bowl moves left and right with the left and right arrow key', 500, 500 - (index * 250), 400, 200, false);
+        const vmBehavior = {
+            id: id,
+            description: '',
+            feedback: {
+                is_specific: false,
+                explanation: '',
+                clarification: '',
+                description: ''
+            }
+        };
+        this.props.vm.editingTarget.addBehavior(vmBehavior);
         this.props.vm.refreshWorkspace();
     }
+    async handleBehaviorFeedbackComment () {
+        const behaviorComments = Object.keys(this.props.vm.editingTarget.comments).filter(id => id.startsWith('story_'));
+        behaviorComments.forEach(async id => {
+                const comment = this.props.vm.editingTarget.comments[id];
+                if (comment && comment.text) {
+                    this.props.vm.editingTarget.sprite.behaviors.filter(behavior => behavior.id === id)[0].description = comment.text;
+                    const feedback = await this.props.vm.getBehaviorFeedback(id);
+                    const feedbackJson = JSON.parse(feedback);
+                    console.log('Adding feedback comment', feedback);
+                    comment.text = comment.text + '\n\nDescription: ' + (feedbackJson.is_specific ? feedbackJson.description : 'not specific enough') + '\n\nExplanation: ' + feedbackJson.explanation + '\n\nClarification: ' + feedbackJson.clarification;
+                    comment.height = 2 * comment.height;
+                    this.props.vm.emitTargetsUpdate();
+                }
+            }
+        );
+    }
+
     handleDrop (dragInfo) {
         fetch(dragInfo.payload.bodyUrl)
             .then(response => response.json())
