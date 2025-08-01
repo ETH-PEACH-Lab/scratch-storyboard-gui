@@ -553,8 +553,10 @@ class Blocks extends React.Component {
     handleBehaviorDescriptionComment () {
         const index = Object.keys(this.props.vm.editingTarget.comments).length;
         const id = "story_" + String(index);
-        this.props.vm.editingTarget.createComment(id, null, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis]', 500, 500 - (index * 250), 500, 200, false);
+        // this.props.vm.editingTarget.createComment(id, null, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis, use scratch block names to describe the behavior]', 500, 500 - (index * 250), 500, 200, false);
         // this.props.vm.editingTarget.createComment(id, null, 'Moving \n\non green flag clicked, the bowl moves left and right with the left and right arrow key', 500, 500 - (index * 250), 400, 200, false);
+        this.props.vm.editingTarget.createComment(id, null, 'On green flag in a forever loop the bowl hides, waits 2 seconds, shows, waits 2 seconds', 500, 500 - (index * 250), 500, 200, false);
+
         const vmBehavior = {
             id: id,
             description: '',
@@ -577,8 +579,8 @@ class Blocks extends React.Component {
                     const feedback = await this.props.vm.getBehaviorFeedback(id);
                     const feedbackJson = JSON.parse(feedback);
                     console.log('Adding feedback comment', feedback);
-                    comment.text = comment.text + '\n\nDescription: ' + (feedbackJson.is_specific ? feedbackJson.description : 'not specific enough') + '\n\nExplanation: ' + feedbackJson.explanation + '\n\nClarification: ' + feedbackJson.clarification;
                     comment.height = 2 * comment.height;
+                    comment.text = comment.text + '\n\nDescription: ' + (feedbackJson.is_specific ? feedbackJson.description : 'not specific enough') + '\n\nExplanation: ' + feedbackJson.explanation + '\n\nClarification: ' + (feedbackJson.is_specific ? 'no clarification needed' : feedbackJson.clarification);
                     this.props.vm.emitTargetsUpdate();
                 }
             }
