@@ -25,6 +25,8 @@ class StoryboardEditor extends React.Component {
             'setRef',
             'handleToggleVariable',
             'handleToggleRelatedSprites',
+            'handleToggleCostume',
+            'handleToggleSound',
             'handleAddGlobalVariable',
             'handleChangeGlobalVariable',
         ]);
@@ -74,6 +76,32 @@ class StoryboardEditor extends React.Component {
         } else {
             this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
                 .relatedSprites.pop(option);
+        }
+        this.forceUpdate();
+    }
+
+    handleToggleCostume (option){
+        // eslint-disable-next-line no-negated-condition
+        if (!this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+            .costumes.includes(option)) {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .costumes.push(option);
+        } else {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .costumes.pop(option);
+        }
+        this.forceUpdate();
+    }
+
+    handleToggleSound (option){
+        // eslint-disable-next-line no-negated-condition
+        if (!this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+            .sounds.includes(option)) {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .sounds.push(option);
+        } else {
+            this.props.vm.editingTarget.sprite.behaviors[this.props.selectedBehaviorIndex]
+                .sounds.pop(option);
         }
         this.forceUpdate();
     }
@@ -208,6 +236,8 @@ class StoryboardEditor extends React.Component {
                 onChangeStoryboardDescription={this.handleChangeStoryboardDescription}
                 onToggleVariable={this.handleToggleVariable}
                 onToggleRelatedSprites={this.handleToggleRelatedSprites}
+                onToggleCostume={this.handleToggleCostume}
+                onToggleSound={this.handleToggleSound}
                 onDeleteBehavior={this.handleDeleteBehavior}
                 onAddBehavior={this.props.onHandleNewBehavior}
                 onCopy={this.handleCopy}

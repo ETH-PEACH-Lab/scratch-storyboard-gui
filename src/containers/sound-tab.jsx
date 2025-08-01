@@ -255,6 +255,7 @@ class SoundTab extends React.Component {
                 onDuplicateClick={this.handleDuplicateSound}
                 onExportClick={this.handleExportSound}
                 onItemClick={this.handleSelectSound}
+                visible={true}
             >
                 {sprite.sounds && sprite.sounds[this.state.selectedSoundIndex] ? (
                     <SoundEditor soundIndex={this.state.selectedSoundIndex} />

@@ -314,6 +314,7 @@ class CostumeTab extends React.Component {
                 onDuplicateClick={this.handleDuplicateCostume}
                 onExportClick={this.handleExportCostume}
                 onItemClick={this.handleSelectCostume}
+                visible={true}
             >
                 {target.costumes ?
                     <PaintEditorWrapper

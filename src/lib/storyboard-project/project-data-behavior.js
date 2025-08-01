@@ -70,13 +70,23 @@ const projectDataBehavior = translateFunction => {
                         rotationCenterY: 15
                     }
                 ],
-                sounds: [],
+                sounds: [
+                    // {
+                    //     name: 'Chomp',
+                    //     assetId: '0b1e3033140d094563248e61de4039e5',
+                    //     dataFormat: 'wav',
+                    //     format: '',
+                    //     rate: 48000,
+                    //     sampleCount: 12678,
+                    //     md5ext: '0b1e3033140d094563248e61de4039e5.wav'
+                    // }
+                ],
                 behaviors: [{
                     name: 'moving',
                     description: 'Moves left and right with the arrow keys.',
                     variables: ['x position'],
-                    costumes: '',
-                    sounds: '',
+                    costumes: [],
+                    sounds: [],
                     relatedSprites: [],
                     feedback: {
                         variables: {text: '', color: null},
@@ -90,8 +100,8 @@ const projectDataBehavior = translateFunction => {
                     name: 'touching Red Apple',
                     description: 'When it touches the red apple, the score is increased by 1.',
                     variables: ['Score'],
-                    costumes: '',
-                    sounds: 'When it touches the red apple, the sound plays.',
+                    costumes: [],
+                    sounds: ['Chomp'],
                     relatedSprites: ['Red Apple'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -105,8 +115,8 @@ const projectDataBehavior = translateFunction => {
                     name: 'touching Golden Apple',
                     description: 'When it touches the golden apple, the score is increased by 2.',
                     variables: ['Score'],
-                    costumes: '',
-                    sounds: 'When it touches the golden apple, the sound plays.',
+                    costumes: [],
+                    sounds: ['Chomp'],
                     relatedSprites: ['Golden Apple'],
                     feedback: {
                         variables: {text: '', color: null},
@@ -152,8 +162,8 @@ const projectDataBehavior = translateFunction => {
                         name: 'falling',
                         description: 'It falls from top to bottom.',
                         variables: ['y position'],
-                        costumes: '',
-                        sounds: '',
+                        costumes: [],
+                        sounds: [],
                         relatedSprites: [],
                         feedback: {
                             variables: {text: '', color: null},
@@ -167,8 +177,8 @@ const projectDataBehavior = translateFunction => {
                         name: 'touching Bowl',
                         description: 'When it touches the bowl, it goes to a random position above the background.',
                         variables: ['y position'],
-                        costumes: '',
-                        sounds: '',
+                        costumes: [],
+                        sounds: [],
                         relatedSprites: ['Bowl'],
                         feedback: {
                             variables: {text: '', color: null},
@@ -183,8 +193,8 @@ const projectDataBehavior = translateFunction => {
                     //     name: 'touching Ground',
                     //     description: 'When it touches the ground, it goes to a random position above the background.',
                     //     variables: ['y position'],
-                    //     costumes: '',
-                    //     sounds: '',
+                    //     costumes: [],
+                    //     sounds: [],
                     //     relatedSprites: [],
                     //     feedback: {
                     //         variables: {text: '', color: null},
@@ -231,8 +241,8 @@ const projectDataBehavior = translateFunction => {
                         name: 'falling',
                         description: 'It falls from top to bottom.',
                         variables: ['y position'],
-                        costumes: '',
-                        sounds: '',
+                        costumes: [],
+                        sounds: [],
                         relatedSprites: [],
                         feedback: {
                             variables: {text: '', color: null},
@@ -246,8 +256,8 @@ const projectDataBehavior = translateFunction => {
                         name: 'touching Bowl',
                         description: 'When it touches the golden apple, it goes to a random position above the background.',
                         variables: ['y position'],
-                        costumes: '',
-                        sounds: '',
+                        costumes: [],
+                        sounds: [],
                         relatedSprites: ['Bowl'],
                         feedback: {
                             variables: {text: '', color: null},
@@ -262,8 +272,8 @@ const projectDataBehavior = translateFunction => {
                     //     name: 'touching Ground',
                     //     description: 'When it touches the ground, it goes to a random position above the background.',
                     //     variables: ['y position'],
-                    //     costumes: '',
-                    //     sounds: '',
+                    //     costumes: [],
+                    //     sounds: [],
                     //     relatedSprites: [],
                     //     feedback: {
                     //         variables: {text: '', color: null},
@@ -310,8 +320,8 @@ const projectDataBehavior = translateFunction => {
                         name: 'winning',
                         description: 'Hide at the start of the game and when the score reaches 10, show "YOU WIN!".',
                         variables: ['Score'],
-                        costumes: '',
-                        sounds: '',
+                        costumes: [],
+                        sounds: [],
                         relatedSprites: [],
                         feedback: {
                             variables: {text: '', color: null},
@@ -403,7 +413,7 @@ const projectDataBehavior = translateFunction => {
                 mode: 'default',
                 opcode: 'data_variable',
                 params: {
-                    VARIABLE: 'Punkte'
+                    VARIABLE: 'Score'
                 },
                 spriteName: null,
                 value: 10,

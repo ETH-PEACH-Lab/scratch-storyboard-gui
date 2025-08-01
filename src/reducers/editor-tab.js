@@ -8,7 +8,7 @@ const SOUNDS_TAB_INDEX = 3;
 
 
 const initialState = {
-    activeTabIndex: STORYBOARD_TAB_INDEX
+    activeTabIndex: BLOCKS_TAB_INDEX // STORYBOARD_TAB_INDEX: results in bug not visualizing all blocks correctly
 };
 
 const reducer = function (state, action) {

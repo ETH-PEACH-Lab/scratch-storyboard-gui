@@ -271,7 +271,7 @@ $border-radius: 0.25rem;
 
 .descriptionInput {
     flex-grow: 1;
-    min-width: 500px;
+    min-width: 650px;
     width: flex;
 }
 

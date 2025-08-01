@@ -171,8 +171,8 @@ class StoryboardTab extends React.Component {
             name: '',
             description: '',
             variables: [],
-            costumes: '',
-            sounds: '',
+            costumes: [],
+            sounds: [],
             relatedSprites: [],
             feedback: {
                 variables: {text: '', color: null},
@@ -272,123 +272,6 @@ class StoryboardTab extends React.Component {
         // console.log('TODO implement description to blocks conversion');
     }
 
-    // handleReferenceUpload (e) {
-    //     const file = e.target.files[0];
-    //     if (!file || !file.name.endsWith('.json')) {
-    //         return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     this.props.onShowImporting();
-
-    //     const storage = this.props.vm.runtime.storage;
-
-    //     reader.onload = () => {
-    //         try {
-    //             const json = JSON.parse(reader.result);
-
-    //             if (!json.targets || !Array.isArray(json.targets)) {
-    //                 throw new Error('Invalid Scratch project structure.');
-    //             }
-
-    //             // add minimal sprites
-    //             for (const target of json.targets) {
-    //                 if (target.isStage) {
-    //                     continue; // Skip stage targets
-    //                 }
-    //                 const copyTarget = JSON.parse(JSON.stringify(target));
-    //                 copyTarget.blocks = {}; // No blocks
-    //                 copyTarget.currentCostume = 0; // Default to first costume
-    //                 copyTarget.comments = {}; // No comments
-    //                 copyTarget.list = []; // No lists
-    //                 copyTarget.variables = {}; // No variables
-    //                 copyTarget.clones = []; // No clones
-    //                 copyTarget.visible = true; // Ensure the sprite is visible
-    //                 copyTarget.x = 0; // Default position
-    //                 copyTarget.y = 0; // Default position
-    //                 copyTarget.size = 100; // Default size
-    //                 copyTarget.direction = 90; // Default direction
-    //                 copyTarget.rotationStyle = 'all around'; // Default rotation style
-    //                 copyTarget.costumes = copyTarget.costumes.slice(0, 1); // Keep only the first costume
-
-    //                 const loadCostumePromises = [];
-    //                 copyTarget.costumes.forEach(costume => {
-    //                     const md5ext = costume.md5ext;
-    //                     const [assetId, ext] = md5ext.split('.');
-    //                     const assetType = ext === 'svg' ?
-    //                         storage.AssetType.ImageVector :
-    //                         storage.AssetType.ImageBitmap;
-
-    //                     const loadPromise = storage.load(assetType, assetId, ext)
-    //                         .then(asset => {
-    //                             costume.asset = asset;
-    //                         });
-
-    //                     loadCostumePromises.push(loadPromise);
-    //                 });
-
-    //                 copyTarget.sounds = []; // No sounds
-    //                 copyTarget.behaviors = []; // No behaviors
-
-    //                 // Wait for all assets to be loaded
-    //                 Promise.all([...loadCostumePromises])
-    //                     .then(() => {
-    //                         // All assets are in storage, safe to add sprite
-    //                         this.props.vm.addSprite(JSON.stringify({
-    //                             targets: [copyTarget],
-    //                             meta: {
-    //                                 semver: '3.0.0',
-    //                                 vm: '0.2.0',
-    //                                 agent: 'sprite-import'
-    //                             }
-    //                         })).then(() => {
-    //                             console.log('Sprite added successfully');
-    //                         })
-    //                             .catch(err => {
-    //                                 console.error('Error adding sprite:', err);
-    //                             });
-    //                     })
-    //                     .catch(err => {
-    //                         console.error('Error loading assets:', err);
-    //                     });
-
-    //                 // const spriteJson = {
-    //                 //     targets: [copyTarget],
-    //                 //     meta: {
-    //                 //         semver: '3.0.0',
-    //                 //         vm: '0.2.0',
-    //                 //         agent: 'custom-import'
-    //                 //     }
-    //                 // };
-
-    //                 // const response = this.props.vm.addSprite(JSON.stringify(spriteJson));
-    //                 // console.log(response, 'A sprite after upload');
-    //             }
-
-    //             console.log(this.props.sprites, 'A sprites after upload');
-    //             console.log(this.props.vm.runtime.targets, 'B sprites after upload');
-
-    //             // Set a name from the file
-    //             json.name = file.name.replace(/\.json$/, '');
-
-    //             // Save reference project json as string for verification
-    //             this.props.vm.addReferenceProject(json);
-
-    //             this.setState({
-    //                 referenceProject: json
-    //             });
-
-    //             this.props.onCloseImporting();
-
-    //         } catch (err) {
-    //             console.error('Failed to parse project JSON:', err);
-    //             this.props.onCloseImporting();
-    //         }
-    //     };
-
-    //     reader.readAsText(file);
-    // }
-
 
     render () {
         const {
@@ -472,7 +355,7 @@ class StoryboardTab extends React.Component {
                 onDeleteClick={this.handleDeleteBehavior}
                 onDrop={this.handleDrop}
                 onItemClick={this.handleSelectBehavior}
-                visible={this.state.phase !== 'Understanding'}
+                visible={this.state.phase == 'Planning'}
             >
                 {sprite.behaviors ? (
                     <StoryboardEditor

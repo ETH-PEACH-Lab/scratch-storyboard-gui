@@ -112,10 +112,20 @@ const messages = defineMessages({
         description: 'Sounds of the behavior in the storyboard editor',
         defaultMessage: 'Sounds'
     },
+    behaviorSelectedSounds: {
+        id: 'gui.storyboardEditor.behaviorSelectedSounds',
+        description: 'Selected sounds of the behavior in the storyboard editor',
+        defaultMessage: 'Select Sounds'
+    },
     behaviorCostumes: {
         id: 'gui.storyboardEditor.behaviorCostumes',
         description: 'Costumes of the behavior in the storyboard editor',
         defaultMessage: 'Costumes'
+    },
+    behaviorSelectedCostumes: {
+        id: 'gui.storyboardEditor.behaviorSelectedCostumes',
+        description: 'Selected costumes of the behavior in the storyboard editor',
+        defaultMessage: 'Select Costumes'
     },
     behaviorPossibleBlocks: {
         id: 'gui.storyboardEditor.behaviorPossibleBlocks',
@@ -245,6 +255,8 @@ const feedbackColors = {
 const StoryboardEditor = props => {
     const [showVariablesDropdown, setShowVariablesDropdown] = useState(false);
     const [showRelatedSpritesDropdown, setShowRelatedSpritesDropdown] = useState(false);
+    const [showSoundsDropdown, setShowSoundsDropdown] = useState(false);
+    const [showCostumesDropdown, setShowCostumesDropdown] = useState(false);
     const [expanded, setExpanded] = useState(true);
 
     const toggleExpanded = () => setExpanded(prev => !prev);
@@ -664,6 +676,45 @@ const StoryboardEditor = props => {
                             src={require(`../../lib/storyboard-project/${props.vm.editingTarget.sprite.costumes[0].assetId}.svg`)}
                         />
                     </div>
+                                        <div className={styles.row}>
+                        <Label text={props.intl.formatMessage(messages.behaviorDescription)}>
+                            <BufferedInput
+                                tabIndex="1"
+                                type="text"
+                                className={styles.descriptionInput}
+                                value={props.behaviors[props.selectedBehaviorIndex].description}
+                                onSubmit={props.onChangeDescription}
+                            />
+                        </Label>
+                        {props.planningFeedback && (
+                            <div className={styles.feedbackButtonGroup}>
+                                <button
+                                    className={styles.feedbackButton}
+                                    disabled={!props.planningFeedback}
+                                    title={props.intl.formatMessage(messages.feedback)}
+                                    data-for={messages.behaviorDescription.id}
+                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.description.text}
+                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
+                                        .feedback.description.color}}
+                                // onClick={props.openFeedback}
+                                >
+                                    <img
+                                        className={styles.feedbackIcon}
+                                        draggable={false}
+                                        src={props.behaviors[props.selectedBehaviorIndex]
+                                            .feedback.description.color ===
+                                        feedbackColors.Complete ? tickIcon : cautionIcon}
+                                    />
+                                </button>
+                                <ReactTooltip
+                                    className={styles.tooltip}
+                                    effect="solid"
+                                    id={messages.behaviorDescription.id}
+                                    place={'left'}
+                                />
+                            </div>)
+                        }
+                    </div>
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorVariables)}>
                             <div className={styles.selectedItemsContainer}>
@@ -738,45 +789,6 @@ const StoryboardEditor = props => {
                         }
                     </div>
                     <div className={styles.row}>
-                        <Label text={props.intl.formatMessage(messages.behaviorDescription)}>
-                            <BufferedInput
-                                tabIndex="1"
-                                type="text"
-                                className={styles.descriptionInput}
-                                value={props.behaviors[props.selectedBehaviorIndex].description}
-                                onSubmit={props.onChangeDescription}
-                            />
-                        </Label>
-                        {props.planningFeedback && (
-                            <div className={styles.feedbackButtonGroup}>
-                                <button
-                                    className={styles.feedbackButton}
-                                    disabled={!props.planningFeedback}
-                                    title={props.intl.formatMessage(messages.feedback)}
-                                    data-for={messages.behaviorDescription.id}
-                                    data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.description.text}
-                                    style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
-                                        .feedback.description.color}}
-                                // onClick={props.openFeedback}
-                                >
-                                    <img
-                                        className={styles.feedbackIcon}
-                                        draggable={false}
-                                        src={props.behaviors[props.selectedBehaviorIndex]
-                                            .feedback.description.color ===
-                                        feedbackColors.Complete ? tickIcon : cautionIcon}
-                                    />
-                                </button>
-                                <ReactTooltip
-                                    className={styles.tooltip}
-                                    effect="solid"
-                                    id={messages.behaviorDescription.id}
-                                    place={'left'}
-                                />
-                            </div>)
-                        }
-                    </div>
-                    <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorRelatedSprites)}>
                             {/* <BufferedInput
                             tabIndex="1"
@@ -786,12 +798,12 @@ const StoryboardEditor = props => {
                             onSubmit={props.onChangeRelatedSprites}
                         /> */}
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex].relatedSprites.map(variable => (
+                                {props.behaviors[props.selectedBehaviorIndex].relatedSprites.map(sprite => (
                                     <span
-                                        key={variable}
+                                        key={sprite}
                                         className={styles.selectedItem}
                                     >
-                                        {variable}
+                                        {sprite}
                                     </span>
                                 ))}
                                 <div className={styles.dropdownWrapper}>
@@ -860,14 +872,51 @@ const StoryboardEditor = props => {
                         }
                     </div>
                     <div className={styles.row}>
-                        <Label text={props.intl.formatMessage(messages.behaviorSounds)}>
-                            <BufferedInput
-                                tabIndex="1"
-                                type="text"
-                                className={styles.descriptionInput}
-                                value={props.behaviors[props.selectedBehaviorIndex].sounds}
-                                onSubmit={props.onChangeSounds}
-                            />
+                            <Label text={props.intl.formatMessage(messages.behaviorSounds)}>
+                            <div className={styles.selectedItemsContainer}>
+                                {props.behaviors[props.selectedBehaviorIndex].sounds.map(sound => (
+                                    <span
+                                        key={sound}
+                                        className={styles.selectedItem}
+                                    >
+                                        {sound}
+                                    </span>
+                                ))}
+                                <div className={styles.dropdownWrapper}>
+                                    <button
+                                        type="button"
+                                        className={styles.dropdownButton}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => setShowSoundsDropdown(prev => !prev)}
+                                    >
+                                        {props.intl.formatMessage(messages.behaviorSelectedSounds)}
+                                        <img
+                                            src={dropdownCaret}
+                                            alt="Dropdown caret"
+                                            style={{marginLeft: '4px'}}
+                                        />
+                                    </button>
+                                    {showSoundsDropdown && (
+                                        <div className={styles.dropdownMenu}>
+                                            {props.vm.editingTarget.sprite.sounds.map(option => (
+                                                <label
+                                                    key={option.name}
+                                                    className={styles.dropdownOption}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={props.behaviors[props.selectedBehaviorIndex]
+                                                            .sounds.includes(option.name)}
+                                                        // eslint-disable-next-line react/jsx-no-bind
+                                                        onChange={() => props.onToggleSound(option.name)}
+                                                    />
+                                                    <span className={styles.labelText}>{option.name}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </Label>
                         {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
@@ -900,13 +949,50 @@ const StoryboardEditor = props => {
                     </div>
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorCostumes)}>
-                            <BufferedInput
-                                tabIndex="1"
-                                type="text"
-                                className={styles.descriptionInput}
-                                value={props.behaviors[props.selectedBehaviorIndex].costumes}
-                                onSubmit={props.onChangeCostumes}
-                            />
+                            <div className={styles.selectedItemsContainer}>
+                                {props.behaviors[props.selectedBehaviorIndex].costumes.map(costume => (
+                                    <span
+                                        key={costume}
+                                        className={styles.selectedItem}
+                                    >
+                                        {costume}
+                                    </span>
+                                ))}
+                                <div className={styles.dropdownWrapper}>
+                                    <button
+                                        type="button"
+                                        className={styles.dropdownButton}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => setShowCostumesDropdown(prev => !prev)}
+                                    >
+                                        {props.intl.formatMessage(messages.behaviorSelectedCostumes)}
+                                        <img
+                                            src={dropdownCaret}
+                                            alt="Dropdown caret"
+                                            style={{marginLeft: '4px'}}
+                                        />
+                                    </button>
+                                    {showCostumesDropdown && (
+                                        <div className={styles.dropdownMenu}>
+                                            {props.vm.editingTarget?.sprite?.costumes?.map(option => (
+                                                <label
+                                                    key={option.name}
+                                                    className={styles.dropdownOption}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={props.behaviors[props.selectedBehaviorIndex]
+                                                            .costumes.includes(option.name)}
+                                                        // eslint-disable-next-line react/jsx-no-bind
+                                                        onChange={() => props.onToggleCostume(option.name)}
+                                                    />
+                                                    <span className={styles.labelText}>{option.name}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </Label>
                         {props.planningFeedback && (
                             <div className={styles.feedbackButtonGroup}>
@@ -1015,12 +1101,14 @@ StoryboardEditor.propTypes = {
     onDeleteBehavior: PropTypes.func.isRequired,
     onAddBehavior: PropTypes.func.isRequired,
     // onChangeVariables: PropTypes.func.isRequired,
-    onChangeSounds: PropTypes.func.isRequired,
-    onChangeCostumes: PropTypes.func.isRequired,
+    // onChangeSounds: PropTypes.func.isRequired,
+    // onChangeCostumes: PropTypes.func.isRequired,
     // onChangeRelatedSprites: PropTypes.func.isRequired,
     onUnderstandingFeedback: PropTypes.func.isRequired,
     onPlanningFeedback: PropTypes.func.isRequired,
     onToggleVariable: PropTypes.func.isRequired,
+    onToggleSound: PropTypes.func.isRequired,
+    onToggleCostume: PropTypes.func.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
