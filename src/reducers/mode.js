@@ -1,11 +1,13 @@
 const SET_FULL_SCREEN = 'scratch-gui/mode/SET_FULL_SCREEN';
 const SET_PLAYER = 'scratch-gui/mode/SET_PLAYER';
+const SET_STORYBOARD_MODE = 'scratch-gui/mode/SET_STORYBOARD_MODE';
 
 const initialState = {
     showBranding: false,
     isFullScreen: false,
     isPlayerOnly: false,
-    hasEverEnteredEditor: true
+    hasEverEnteredEditor: true,
+    storyboardMode: false
 };
 
 const reducer = function (state, action) {
@@ -20,6 +22,11 @@ const reducer = function (state, action) {
             isPlayerOnly: action.isPlayerOnly,
             hasEverEnteredEditor: state.hasEverEnteredEditor || !action.isPlayerOnly
         });
+    case SET_STORYBOARD_MODE:
+        return {
+            ...state,
+            storyboardMode: action.enabled
+        };    
     default:
         return state;
     }
@@ -38,9 +45,17 @@ const setPlayer = function (isPlayerOnly) {
     };
 };
 
+const setStoryboardMode = function (enabled) {
+    return {
+        type: SET_STORYBOARD_MODE,
+        enabled
+    };
+};
+
 export {
     reducer as default,
     initialState as modeInitialState,
     setFullScreen,
-    setPlayer
+    setPlayer,
+    setStoryboardMode
 };

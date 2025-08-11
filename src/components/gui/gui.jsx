@@ -135,6 +135,7 @@ const GUIComponent = props => {
         showComingSoon,
         soundsTabVisible,
         storyboardTabVisible,
+        storyboardMode,
         stageSizeMode,
         targetIsStage,
         telemetryModalVisible,
@@ -170,6 +171,7 @@ const GUIComponent = props => {
                 isRtl={isRtl}
                 loading={loading}
                 stageSize={STAGE_SIZE_MODES.large}
+                storyboardMode={storyboardMode}
                 vm={vm}
             >
                 {alertsVisible ? (
@@ -409,6 +411,7 @@ const GUIComponent = props => {
                                 isRtl={isRtl}
                                 stageSize={stageSize}
                                 activeTabIndex={activeTabIndex}
+                                storyboardMode={storyboardMode}
                                 vm={vm}
                             />
                             <Box className={styles.targetWrapper}>
@@ -493,6 +496,7 @@ GUIComponent.propTypes = {
     showComingSoon: PropTypes.bool,
     soundsTabVisible: PropTypes.bool,
     storyboardTabVisible: PropTypes.bool,
+    storyboardMode: PropTypes.bool,
     stageSizeMode: PropTypes.oneOf(Object.keys(STAGE_SIZE_MODES)),
     targetIsStage: PropTypes.bool,
     telemetryModalVisible: PropTypes.bool,
@@ -528,7 +532,8 @@ const mapStateToProps = state => ({
     // This is the button's mode, as opposed to the actual current state
     blocksId: state.scratchGui.timeTravel.year.toString(),
     stageSizeMode: state.scratchGui.stageSize.stageSize,
-    theme: state.scratchGui.theme.theme
+    theme: state.scratchGui.theme.theme,
+    storyboardMode: state.scratchGui.mode.storyboardMode
 });
 
 export default injectIntl(connect(

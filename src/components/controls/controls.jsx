@@ -30,6 +30,11 @@ const messages = defineMessages({
         defaultMessage: 'Storyboard',
         description: 'Storyboard tab label'
     },
+    plan: {
+        id: 'gui.controls.plan',
+        defaultMessage: 'Plan',
+        description: 'Plan mode'
+    },
     code: {
         id: 'gui.controls.code',
         defaultMessage: 'Code',
@@ -44,6 +49,7 @@ const Controls = function (props) {
         intl,
         onGreenFlagClick,
         onStopAllClick,
+        onModeToggle,
         turbo,
         ...componentProps
     } = props;
@@ -68,10 +74,10 @@ const Controls = function (props) {
             {
                 <div className={styles.executionMode}>
                     <button
-                        onClick={() => props.onTabChange(props.activeTabIndex === 0 ? 1 : 0)}
+                        onClick={onModeToggle}
                         className={styles.toggleButton}
                     >
-                        {`${intl.formatMessage(messages.mode)}: ${props.activeTabIndex === 0 ? intl.formatMessage(messages.code) : intl.formatMessage(messages.storyboard)}`}
+                        {`${intl.formatMessage(messages.mode)}: ${props.activeTabIndex === 1 ? intl.formatMessage(messages.storyboard) : (props.storyboardMode ? intl.formatMessage(messages.plan) : intl.formatMessage(messages.code))}`}
                     </button>
                 </div>
             }
@@ -83,9 +89,11 @@ Controls.propTypes = {
     active: PropTypes.bool,
     className: PropTypes.string,
     activeTabIndex: PropTypes.number.isRequired,
+    storyboardMode: PropTypes.bool.isRequired,
     intl: intlShape.isRequired,
     onGreenFlagClick: PropTypes.func.isRequired,
     onStopAllClick: PropTypes.func.isRequired,
+    onModeToggle: PropTypes.func.isRequired,
     turbo: PropTypes.bool
 };
 

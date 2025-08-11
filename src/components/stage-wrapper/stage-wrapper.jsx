@@ -19,6 +19,7 @@ const StageWrapperComponent = function (props) {
         loading,
         stageSize,
         activeTabIndex,
+        storyboardMode,
         vm
     } = props;
 
@@ -33,6 +34,7 @@ const StageWrapperComponent = function (props) {
             <Box className={styles.stageMenuWrapper}>
                 <StageHeader
                     activeTabIndex={activeTabIndex}
+                    storyboardMode={storyboardMode}
                     stageSize={stageSize}
                     vm={vm}
                 />
@@ -40,7 +42,7 @@ const StageWrapperComponent = function (props) {
             <Box
                 className={classNames(
                     styles.stageCanvasWrapper,
-                    { [styles.storyboardMode]: activeTabIndex === 1 }
+                    { [styles.storyboardMode]: activeTabIndex === 1 || storyboardMode }
                 )}
             >
                 {isRendererSupported ? (
@@ -61,6 +63,7 @@ StageWrapperComponent.propTypes = {
     loading: PropTypes.bool,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     activeTabIndex: PropTypes.number.isRequired,
+    storyboardMode: PropTypes.bool.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
