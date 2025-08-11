@@ -24,7 +24,6 @@ class Controls extends React.Component {
             if (!this.props.isStarted) {
                 this.props.vm.start();
             }
-            // this.props.vm.greenFlag(this.props.activeTabIndex);
             this.props.vm.greenFlag(this.props.storyboardMode ? 1 : 0);
         }
     }

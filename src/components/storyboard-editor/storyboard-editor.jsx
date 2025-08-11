@@ -681,7 +681,7 @@ const StoryboardEditor = props => {
                             <BufferedInput
                                 tabIndex="1"
                                 type="text"
-                                className={styles.descriptionInput}
+                                className={styles.behaviorDescriptionInput}
                                 value={props.behaviors[props.selectedBehaviorIndex].description}
                                 onSubmit={props.onChangeDescription}
                             />

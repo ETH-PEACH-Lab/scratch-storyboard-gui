@@ -275,6 +275,12 @@ $border-radius: 0.25rem;
     width: flex;
 }
 
+.behaviorDescriptionInput {
+    flex-grow: 1;
+    min-width: 600px;
+    width: flex;
+}
+
 .variableInput {
     flex-grow: 1;
     min-width: 490px;

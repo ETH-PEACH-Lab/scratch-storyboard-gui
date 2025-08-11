@@ -746,7 +746,6 @@ const storyBlocks = function (isInitialSetup, isStage, targetId, colors) {
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
         <button text="Describe a Behavior" callbackKey="CREATE_BEHAVIOR_DESCRIPTION"></button>
-        <button text="Get Feedback" callbackKey="GET_FEEDBACK"></button>
     </category>
     `;
 };

@@ -48,6 +48,15 @@ const DroppableBlocks = DropAreaHOC([
     DragConstants.BACKPACK_CODE
 ])(BlocksComponent);
 
+/**
+ * Generates a random 8-character string ID.
+ * @returns {string} The generated ID.
+ */
+const generateId = function () {
+    return Math.random().toString(36)
+        .substr(2, 20);
+};
+
 class Blocks extends React.Component {
     constructor (props) {
         super(props);
@@ -128,12 +137,7 @@ class Blocks extends React.Component {
             this.handleBehaviorDescriptionComment();
         };
 
-        const behaviorFeedbackCallback = () => {
-            // Add a comment to the coding area
-            this.handleBehaviorFeedbackComment();
-        };
         toolboxWorkspace.registerButtonCallback('CREATE_BEHAVIOR_DESCRIPTION', behaviorDescriptionCallback);
-        toolboxWorkspace.registerButtonCallback('GET_FEEDBACK', behaviorFeedbackCallback);
 
 
         // Store the xml of the toolbox that is actually rendered.
@@ -552,10 +556,12 @@ class Blocks extends React.Component {
     }
     handleBehaviorDescriptionComment () {
         const index = Object.keys(this.props.vm.editingTarget.comments).length;
-        const id = "story_" + String(index);
-        // this.props.vm.editingTarget.createComment(id, null, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis, use scratch block names to describe the behavior]', 500, 500 - (index * 250), 500, 200, false);
-        // this.props.vm.editingTarget.createComment(id, null, 'Moving \n\non green flag clicked, the bowl moves left and right with the left and right arrow key', 500, 500 - (index * 250), 400, 200, false);
-        this.props.vm.editingTarget.createComment(id, null, 'On green flag in a forever loop the bowl hides, waits 2 seconds, shows, waits 2 seconds', 500, 500 - (index * 250), 500, 200, false);
+        // const index = Object.keys(this.props.vm.editingTarget.storyboardComments).length;
+        const id = "story_" + this.props.vm.editingTarget.getName() + generateId();
+        console.log(this.props.vm.editingTarget.comments);
+        // this.props.vm.editingTarget.createStoryboardComment(id, 'On green flag in a forever loop if y < -100 go to a random position then set y to 200 end if then change y by 10', 500, (index * 400), 500, 350, false);
+        // this.props.vm.editingTarget.createStoryboardComment(id, 'On green flag in a forever loop the bowl hides, waits 2 seconds, shows, waits 2 seconds', 500, (index * 400), 500, 350, false);
+        this.props.vm.editingTarget.createStoryboardComment(id, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis, use scratch block names to describe the behavior]', 500, (index * 400), 500, 350, false);
 
         const vmBehavior = {
             id: id,
@@ -564,27 +570,12 @@ class Blocks extends React.Component {
                 is_specific: false,
                 explanation: '',
                 clarification: '',
-                description: ''
+                description: '',
+                parsing: ''
             }
         };
         this.props.vm.editingTarget.addBehavior(vmBehavior);
         this.props.vm.refreshWorkspace();
-    }
-    async handleBehaviorFeedbackComment () {
-        const behaviorComments = Object.keys(this.props.vm.editingTarget.comments).filter(id => id.startsWith('story_'));
-        behaviorComments.forEach(async id => {
-                const comment = this.props.vm.editingTarget.comments[id];
-                if (comment && comment.text) {
-                    this.props.vm.editingTarget.sprite.behaviors.filter(behavior => behavior.id === id)[0].description = comment.text;
-                    const feedback = await this.props.vm.getBehaviorFeedback(id);
-                    const feedbackJson = JSON.parse(feedback);
-                    console.log('Adding feedback comment', feedback);
-                    comment.height = 2 * comment.height;
-                    comment.text = comment.text + '\n\nDescription: ' + (feedbackJson.is_specific ? feedbackJson.description : 'not specific enough') + '\n\nExplanation: ' + feedbackJson.explanation + '\n\nClarification: ' + (feedbackJson.is_specific ? 'no clarification needed' : feedbackJson.clarification);
-                    this.props.vm.emitTargetsUpdate();
-                }
-            }
-        );
     }
 
     handleDrop (dragInfo) {
