@@ -741,14 +741,17 @@ const storyBlocks = function (isInitialSetup, isStage, targetId, colors) {
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
-        name="Plan"
+        name="%{BKY_CATEGORY_PLAN}"
         id="planComments"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
-        <button text="Describe a Behavior" callbackKey="CREATE_BEHAVIOR_DESCRIPTION"></button>
+        <button text="%{BKY_ADD_BEHAVIOR}" callbackKey="CREATE_BEHAVIOR_DESCRIPTION"></button>
     </category>
     `;
 };
+
+// <button text="Describe a Behavior" callbackKey="CREATE_BEHAVIOR_DESCRIPTION"></button>
+
 /* eslint-enable no-unused-vars */
 
 const xmlOpen = '<xml style="display: none">';

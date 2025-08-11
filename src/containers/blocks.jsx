@@ -561,7 +561,7 @@ class Blocks extends React.Component {
         console.log(this.props.vm.editingTarget.comments);
         // this.props.vm.editingTarget.createStoryboardComment(id, 'On green flag in a forever loop if y < -100 go to a random position then set y to 200 end if then change y by 10', 500, (index * 400), 500, 350, false);
         // this.props.vm.editingTarget.createStoryboardComment(id, 'On green flag in a forever loop the bowl hides, waits 2 seconds, shows, waits 2 seconds', 500, (index * 400), 500, 350, false);
-        this.props.vm.editingTarget.createStoryboardComment(id, '[Replace this with a Behavior Name] \n\n[Add a description, be specific, think about related sprites, variables, the relevant axis, use scratch block names to describe the behavior]', 500, (index * 400), 500, 350, false);
+        this.props.vm.editingTarget.createStoryboardComment(id, '', 100, 100 + (index * 400), 500, 350, false);
 
         const vmBehavior = {
             id: id,

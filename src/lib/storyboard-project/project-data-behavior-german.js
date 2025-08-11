@@ -105,8 +105,8 @@ const projectDataBehavior = translateFunction => {
                     name: 'Goldener Apfel berühren',
                     description: 'Wenn die Schale den goldenen Apfel berührt, dann wird der Punktestand um 2 erhöht.',
                     variables: ['Punkte'],
-                    costumes: '',
-                    sounds: 'Wenn die Schale den goldenen Apfel berührt, dann gibt es eine Ton bing.',
+                    costumes: [],
+                    sounds: ['Chomp'],
                     relatedSprites: ['Golden Apple'],
                     feedback: {
                         variables: {text: '', color: null},

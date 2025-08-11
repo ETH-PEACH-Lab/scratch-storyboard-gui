@@ -107,7 +107,7 @@ class StoryboardEditor extends React.Component {
     }
 
     handleCopy () {
-        this.props.vm.copyStoryboardToComments();
+        this.props.vm.copyStoryboardToComments(this.props.variables_string, this.props.related_sprites_string);
         this.setState({phase: 'Coding'});
         this.props.onHandleCoding();
         this.forceUpdate();
@@ -262,6 +262,8 @@ StoryboardEditor.propTypes = {
     onHandlePlanning: PropTypes.func.isRequired,
     onHandleUnderstanding: PropTypes.func.isRequired,
     onHandleCoding: PropTypes.func.isRequired,
+    variables_string: PropTypes.string.isRequired,
+    related_sprites_string: PropTypes.string.isRequired,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 

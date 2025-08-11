@@ -1,5 +1,5 @@
-// import projectData from './project-data';
-import projectDataBehavior from './project-data-behavior'; // for testing purposes
+import projectData from './project-data';
+// import projectDataBehavior from './project-data-behavior'; // for testing purposes
 // import projectDataBehavior from './project-data-behavior-german'; // for testing purposes
 
 /* eslint-disable import/no-unresolved */
@@ -20,7 +20,7 @@ const storyboardProject = translator => {
     }
     const encoder = new _TextEncoder();
 
-    const projectJson = projectDataBehavior(translator);
+    const projectJson = projectData(translator);
     return [{
         id: 0,
         assetType: 'Project',

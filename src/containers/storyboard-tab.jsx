@@ -75,6 +75,16 @@ const messages = defineMessages({
         defaultMessage: 'Get Planning Feedback',
         description: 'Button to get planning feedback in the editor tab',
         id: 'gui.storyboardTab.verifyPlanning'
+    },
+    variables: {
+        defaultMessage: 'Variables: ',
+        description: 'Label for variables in the editor tab',
+        id: 'gui.storyboardTab.variables'
+    },
+    relatedSprites: {
+        defaultMessage: 'Related Sprites: ',
+        description: 'Label for related sprites in the editor tab',
+        id: 'gui.storyboardTab.relatedSprites'
     }
 });
 const Phase = {
@@ -272,6 +282,13 @@ class StoryboardTab extends React.Component {
         // console.log('TODO implement description to blocks conversion');
     }
 
+    handleCopy (variable_string, related_sprites_string) {
+        this.props.vm.copyStoryboardToComments(variable_string, related_sprites_string);
+        this.setState({phase: 'Coding'});
+        // this.props.onHandleCoding();
+        this.forceUpdate();
+    }
+
 
     render () {
         const {
@@ -371,6 +388,10 @@ class StoryboardTab extends React.Component {
                         onPlanningFeedback={this.handlePlanningVerification}
                         onUnderstandingFeedback={this.handleUnderstandingVerification}
                         onHandleNewBehavior={this.handleNewBehavior}
+                        onHandleCopy={this.handleCopy}
+                        onSelectBehavior={this.handleSelectBehavior}
+                        variables_string={intl.formatMessage(messages.variables)}
+                        related_sprites_string={intl.formatMessage(messages.relatedSprites)}
                         vm={vm}
                     />
                 ) : null}

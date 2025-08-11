@@ -241,7 +241,18 @@ const messages = defineMessages({
         defaultMessage: 'Get Planning Feedback',
         description: 'Button to get planning feedback in the editor tab',
         id: 'gui.storyboardTab.verifyPlanning'
+    },
+    showless: {
+        defaultMessage: 'Show less',
+        description: 'Minimization of Understanding Feedback',
+        id: 'gui.storyboardEditor.showless'
+    },
+    showmore: {
+        defaultMessage: 'Show more',
+        description: 'Maximization of Understanding Feedback',
+        id: 'gui.storyboardEditor.showmore'
     }
+
 });
 
 const feedbackColors = {
@@ -531,7 +542,7 @@ const StoryboardEditor = props => {
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onClick={toggleExpanded}
                             >
-                                {expanded ? 'Show less' : 'Show more'}
+                                {expanded ? props.intl.formatMessage(messages.showless) : props.intl.formatMessage(messages.showmore)}
                             </button>
                         </div>
                     </Label>
