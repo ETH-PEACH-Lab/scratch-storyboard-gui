@@ -13,6 +13,8 @@ import dropdownCaret from './dropdown-caret.svg';
 // import {MenuItem} from '../menu/menu.jsx';
 
 import styles from './storyboard-editor.css';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 import redoIcon from './icon--redo.svg';
 import undoIcon from './icon--undo.svg';
@@ -481,8 +483,9 @@ const StoryboardEditor = props => {
                                     [styles.expanded]: expanded
                                 })}
                                 style={{whiteSpace: 'pre-wrap'}}
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(props.understandingFeedback || 'No feedback available')) }}
                             >
-                                {props.understandingFeedback || 'No feedback available'}
+                                {/* {props.understandingFeedback || 'No feedback available'} */}
                             </div>
                             <button
                                 className={styles.toggleButton}

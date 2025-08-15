@@ -363,6 +363,14 @@ $border-radius: 0.25rem;
   transition: max-height 0.3s ease;
 }
 
+.textContainer * {
+  margin: 0;
+  padding: 0;
+}
+.textContainer p + p {
+  margin-top: 0.0em;
+}
+
 /* Chrome, Edge, Safari */
 .textContainer::-webkit-scrollbar {
   width: 8px;
