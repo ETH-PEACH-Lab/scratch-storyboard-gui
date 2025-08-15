@@ -117,6 +117,11 @@ const messages = defineMessages({
         description: 'Selected sounds of the behavior in the storyboard editor',
         defaultMessage: 'Select Sounds'
     },
+    noSoundsAvailable: {
+        id: 'gui.storyboardEditor.noSoundsAvailable',
+        description: 'Message when no sounds are available in the storyboard editor',
+        defaultMessage: 'No sounds available'
+    },
     behaviorCostumes: {
         id: 'gui.storyboardEditor.behaviorCostumes',
         description: 'Costumes of the behavior in the storyboard editor',
@@ -399,16 +404,10 @@ const StoryboardEditor = props => {
                             </button>
                         </div>
                     )}
-                    {/* {props.phase === 'Planning' && (<IconButton
-                        className={styles.toolButton}
-                        img={copyIcon}
-                        title={props.intl.formatMessage(messages.copy)}
-                        onClick={props.onCopy}
-                    />)} */}
                 </div>
             </div>
             <div className={styles.divider} />
-            <div className={styles.row}>
+            <div className={styles.row} styles={{ backgroundColor: '#999'}}>
                 <Label
                     text={props.intl.formatMessage(messages.storyboardTitle)}
                     className={styles.titleLabel}
@@ -434,39 +433,12 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Understanding'}
                     />
                 </Label>
-                {/* {props.planningFeedback && (
-                    <div className={styles.feedbackButtonGroup}>
-                        <button
-                            className={styles.feedbackButton}
-                            disabled={!props.planningFeedback}
-                            title={props.intl.formatMessage(messages.feedback)}
-                            onClick={props.handleOpenFeedback}
-                            data-for={messages.storyboardDescription.id}
-                            data-tip={`Storyboard Description Feedback: 
-                                ${props.vm.storyboardOverall.descriptionFeedback.text}`}
-                            style={{backgroundColor: props.vm.storyboardOverall.descriptionFeedback.color}}
-                        >
-                            <img
-                                className={styles.feedbackIcon}
-                                draggable={false}
-                                src={props.vm.storyboardOverall.descriptionFeedback.color ===
-                                        feedbackColors.Complete ? tickIcon : cautionIcon}
-                            />
-                        </button>
-                        <ReactTooltip
-                            className={styles.tooltip}
-                            effect="solid"
-                            id={messages.storyboardDescription.id}
-                            place={'left'}
-                        />
-                    </div>)
-                } */}
             </div>
             <div className={styles.row}>
                 <Label text={props.intl.formatMessage(messages.storyboardVariables)}></Label>
                 <div className={styles.variableList}>
                     {props.storyboardVariables.map((variable, index) => (
-                        <div key={variable}>
+                        <div key={variable} className={styles.inputWrapper}>
                             <BufferedInput
                                 tabIndex="1"
                                 type="text"
@@ -475,6 +447,7 @@ const StoryboardEditor = props => {
                                 onSubmit={(newVar) =>props.onChangeGlobalVariable(newVar, index)}
                                 disabled={props.phase !== 'Understanding'}
                             />
+                            <DeleteButton className={styles.deleteButton} onClick={() => props.onDeleteGlobalVariable(index)} />
                         </div>
                     ))}
                 </div>   
@@ -487,32 +460,6 @@ const StoryboardEditor = props => {
                         draggable={false}
                     ></img>
                 </button></div>)}
-                {/* {props.planningFeedback && (
-                    <div className={styles.feedbackButtonGroup}>
-                        <button
-                            className={styles.feedbackButton}
-                            disabled={!props.planningFeedback}
-                            title={props.intl.formatMessage(messages.feedback)}
-                            data-for={messages.storyboardVariables.id}
-                            data-tip={props.vm.storyboardOverall.globalVariablesFeedback.text}
-                            style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.color}}
-                        // onClick={props.openFeedback}
-                        >
-                            <img
-                                className={styles.feedbackIcon}
-                                draggable={false}
-                                src={props.vm.storyboardOverall.globalVariablesFeedback.color ===
-                                        feedbackColors.Complete ? tickIcon : cautionIcon}
-                            />
-                        </button>
-                        <ReactTooltip
-                            className={styles.tooltip}
-                            effect="solid"
-                            id={messages.storyboardVariables.id}
-                            place={'left'}
-                        />
-                    </div>)
-                } */}
             </div>
             {props.feedbackLoading === 'Loading' && (
                 <div className={styles.loadingContainer}>
@@ -593,55 +540,6 @@ const StoryboardEditor = props => {
                                                 {props.vm.editingTarget && target.sprite.name == props.vm.editingTarget.getName() && (
                                                     <DeleteButton className={styles.deleteButton} onClick={() => props.onDeleteBehavior(behavior.name)} />
                                                 )}
-                                                {/* <div className={styles.droprightContainer}>
-                                                <button
-                                                    className={styles.droprightButton}
-                                                    // eslint-disable-next-line react/jsx-no-bind
-                                                    onClick={() => {
-                                                        if (target.sprite.name === props.vm.editingTarget.getName()) {
-                                                            setOpenBehaviorName(openBehaviorName === behavior.name ?
-                                                                null : behavior.name);
-                                                        }
-                                                    }}
-                                                    disabled={target.sprite.name !== props.vm.editingTarget.getName()}
-                                                >
-                                                    <span>
-                                                        {props.intl.formatMessage(
-                                                            messages.behaviorSelectedRelatedSprites
-                                                        )}
-                                                    </span>
-                                                    <img
-                                                        src={droprightCaret}
-                                                        alt="Dropright caret"
-                                                    />
-                                                </button>
-                                                {openBehaviorName === behavior.name && (
-                                                    <div className={styles.droprightMenu}>
-                                                        {relatedSpritesImages.map(option => (
-                                                            <label
-                                                                key={option.sprite.name}
-                                                                className={styles.droprightOption}
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={
-                                                                        props.behaviors[props.selectedBehaviorIndex]
-                                                                            .relatedSprites.includes(option.getName())
-                                                                    }
-                                                                    onChange={() => props.onToggleRelatedSprites(option.getName())}
-                                                                />
-                                                                <img
-                                                                    src={option.sprite.costumes[0]}
-                                                                    alt="Sprite image"
-                                                                />
-                                                                <span className={styles.labelText}>
-                                                                    {option.getName()}
-                                                                </span>
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div> */}
                                             </div>
                                         ))}
                                         {target.sprite && target.sprite.name == props.vm.editingTarget.getName() && (
@@ -707,7 +605,6 @@ const StoryboardEditor = props => {
                                     data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.description.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.description.color}}
-                                // onClick={props.openFeedback}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
@@ -801,13 +698,6 @@ const StoryboardEditor = props => {
                     </div>
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorRelatedSprites)}>
-                            {/* <BufferedInput
-                            tabIndex="1"
-                            type="text"
-                            className={styles.descriptionInput}
-                            value={props.behaviors[props.selectedBehaviorIndex].relatedSprites}
-                            onSubmit={props.onChangeRelatedSprites}
-                        /> */}
                             <div className={styles.selectedItemsContainer}>
                                 {props.behaviors[props.selectedBehaviorIndex].relatedSprites.map(sprite => (
                                     <span
@@ -863,7 +753,6 @@ const StoryboardEditor = props => {
                                     data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.relatedSprites.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.relatedSprites.color}}
-                                // onClick={props.openFeedback}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
@@ -909,21 +798,24 @@ const StoryboardEditor = props => {
                                     </button>
                                     {showSoundsDropdown && (
                                         <div className={styles.dropdownMenu}>
-                                            {props.vm.editingTarget.sprite.sounds.map(option => (
-                                                <label
-                                                    key={option.name}
-                                                    className={styles.dropdownOption}
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={props.behaviors[props.selectedBehaviorIndex]
-                                                            .sounds.includes(option.name)}
-                                                        // eslint-disable-next-line react/jsx-no-bind
-                                                        onChange={() => props.onToggleSound(option.name)}
-                                                    />
-                                                    <span className={styles.labelText}>{option.name}</span>
-                                                </label>
-                                            ))}
+                                            {props.vm.editingTarget.sprite.sounds.length > 0 ? (
+                                                props.vm.editingTarget.sprite.sounds.map(option => (
+                                                    <label
+                                                        key={option.name}
+                                                        className={styles.dropdownOption}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={props.behaviors[props.selectedBehaviorIndex]
+                                                                .sounds.includes(option.name)}
+                                                            onChange={() => props.onToggleSound(option.name)}
+                                                        />
+                                                        <span className={styles.labelText}>{option.name}</span>
+                                                    </label>
+                                                ))
+                                            ) : (
+                                                <div className={styles.noOption}>{props.intl.formatMessage(messages.noSoundsAvailable)}</div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -939,7 +831,6 @@ const StoryboardEditor = props => {
                                     data-tip={props.behaviors[props.selectedBehaviorIndex].feedback.sounds.text}
                                     style={{backgroundColor: props.behaviors[props.selectedBehaviorIndex]
                                         .feedback.sounds.color}}
-                                // onClick={props.openFeedback}
                                 >
                                     <img
                                         className={styles.feedbackIcon}
@@ -1110,6 +1001,7 @@ StoryboardEditor.propTypes = {
     onChangeName: PropTypes.func.isRequired,
     onChangeDescription: PropTypes.func.isRequired,
     onDeleteBehavior: PropTypes.func.isRequired,
+    onDeleteGlobalVariable: PropTypes.func.isRequired,
     onAddBehavior: PropTypes.func.isRequired,
     // onChangeVariables: PropTypes.func.isRequired,
     // onChangeSounds: PropTypes.func.isRequired,

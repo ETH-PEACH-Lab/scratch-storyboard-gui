@@ -29,7 +29,8 @@ import {
     activateTab,
     SOUNDS_TAB_INDEX,
     COSTUMES_TAB_INDEX,
-    STORYBOARD_TAB_INDEX
+    STORYBOARD_TAB_INDEX,
+    BLOCKS_TAB_INDEX
 } from '../reducers/editor-tab';
 
 import {setRestore} from '../reducers/restore-deletion';
@@ -277,15 +278,12 @@ class StoryboardTab extends React.Component {
 
         // const projectJson = await this.props.vm.descriptionToBlocks();
         // this.setState({feedbackLoading: feedbackLoading.Loaded});
-        // console.log(projectJson, 'Response for verification');
-        // console.log('TODO test project json format');
-        // console.log('TODO implement description to blocks conversion');
     }
 
     handleCopy (variable_string, related_sprites_string) {
         this.props.vm.copyStoryboardToComments(variable_string, related_sprites_string);
         this.setState({phase: 'Coding'});
-        // this.props.onHandleCoding();
+        this.props.onActivateBlocksTab();
         this.forceUpdate();
     }
 
@@ -325,25 +323,6 @@ class StoryboardTab extends React.Component {
                 img: addBehaviorIcon,
                 onClick: this.handleNewBehavior
             }
-            // ,
-            // ...(this.state.phase === Phase.Understanding ? [{
-            //     title: intl.formatMessage(messages.verifyUnderstanding),
-            //     img: surpriseIcon,
-            //     onClick: this.handleUnderstandingVerification
-            // }] : [{
-            //     title: intl.formatMessage(messages.verifyPlanning),
-            //     img: surpriseIcon,
-            //     onClick: this.handlePlanningVerification
-            // }])
-            // , {
-            //     title: intl.formatMessage(messages.fileUploadReference),
-            //     img: fileUploadIcon,
-            //     onClick: this.handleFileUploadClick,
-            //     fileAccept: '.json', // '.sb,.sb2,.sb3',
-            //     fileChange: this.handleReferenceUpload,
-            //     fileInput: this.setFileInput,
-            //     fileMultiple: true
-            // }
         ];
 
         // if (sprite) {
@@ -437,6 +416,7 @@ const mapDispatchToProps = dispatch => ({
     onActivateCostumesTab: () => dispatch(activateTab(COSTUMES_TAB_INDEX)),
     onActivateSoundsTab: () => dispatch(activateTab(SOUNDS_TAB_INDEX)),
     onActiveStoryboardTab: () => dispatch(activateTab(STORYBOARD_TAB_INDEX)),
+    onActivateBlocksTab: () => dispatch(activateTab(BLOCKS_TAB_INDEX)),
     dispatchUpdateRestore: restoreState => {
         dispatch(setRestore(restoreState));
     },

@@ -13691,6 +13691,7 @@ export default {
     "gui.storyboardEditor.planningInfo": "Wähl das Verhalten, dass du beschreiben möchtest, links aus.",
     "gui.storyboardEditor.showmore": "Zeige mehr",
     "gui.storyboardEditor.showless": "Zeige weniger",
+    "gui.storyboardEditor.noSoundsAvailable": "Keine Geräusche verfügbar"
   },
   "et": {
     "gui.alerts.lostPeripheralConnection": "Scratch kaotas ühenduse {extensionName}-ga.",

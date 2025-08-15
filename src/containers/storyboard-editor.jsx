@@ -21,6 +21,7 @@ class StoryboardEditor extends React.Component {
             'handleChangeTitle',
             'handleChangeStoryboardDescription',
             'handleDeleteBehavior',
+            'handleDeleteGlobalVariable',
             'handleCopy',
             'setRef',
             'handleToggleVariable',
@@ -202,6 +203,31 @@ class StoryboardEditor extends React.Component {
         }
     };
 
+    handleDeleteGlobalVariable (index) {
+        const globalVariables = this.props.vm.storyboardOverall.globalVariables;
+        if (index !== -1) {
+            globalVariables.splice(index, 1);
+            this.props.vm.storyboardOverall.globalVariables = globalVariables;
+
+            this.variableList = [
+                ...this.props.vm.storyboardOverall.globalVariables.filter(variable => variable !== ''),
+                'x position',
+                'y position',
+                'direction',
+                'mouse-x',
+                'mouse-y',
+                'mouse-pointer',
+                'answer',
+                'username',
+                'loudness',
+                'volume',
+                'timer'
+            ];
+
+            this.forceUpdate();
+        }
+    };    
+
     // handleOpenFeedback = () => {
     //     // This function should handle opening the feedback modal or redirecting to a feedback page
     //     // For now, we will just log a message to the console
@@ -239,6 +265,7 @@ class StoryboardEditor extends React.Component {
                 onToggleCostume={this.handleToggleCostume}
                 onToggleSound={this.handleToggleSound}
                 onDeleteBehavior={this.handleDeleteBehavior}
+                onDeleteGlobalVariable={this.handleDeleteGlobalVariable}
                 onAddBehavior={this.props.onHandleNewBehavior}
                 onCopy={this.handleCopy}
                 onPlanning={this.props.onHandlePlanning}
