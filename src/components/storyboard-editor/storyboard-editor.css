@@ -416,6 +416,7 @@ $border-radius: 0.25rem;
 
     background: $looks-secondary-dark;
     position: absolute;
+    max-width: 300px;
     /* overflow-y: hidden; */
 }
 
@@ -557,6 +558,7 @@ $border-radius: 0.25rem;
     overflow-x: hidden;
     scroll-behavior: smooth;
     scrollbar-color: #999 #f3f3f3; 
+    margin-top: 1rem;
 }
 
 .innerBox {
@@ -718,18 +720,15 @@ $border-radius: 0.25rem;
 .spriteImage {
     width: 2.5rem;
     height: 2rem;
-    position: absolute;
     align-items: center;
-    right: 0;
     display: flex;
-    margin-right: 1.5rem;
+    margin-left: 1.5rem;
     opacity: 0.35;
 }
 
 .info {
     font-size: 0.75rem;
     color: #666;
-    margin-bottom: 0.5rem;
 }
 
 .infoImage {

@@ -328,17 +328,6 @@ const StoryboardEditor = props => {
                     </div>
                 </div>
                 <div className={styles.buttonGroupTopRight}>
-                    {(props.phase === 'Understanding' || props.phase === 'Planning') && ( <button
-                        className={styles.phaseButton}
-                        onClick={props.phase === 'Understanding' ? props.onUnderstandingFeedback : props.onPlanningFeedback}
-                    >
-                        <span>{props.intl.formatMessage(messages.feedback)}</span>
-                        <img
-                            className={styles.feedbackIcon}
-                            draggable={false}
-                            src={feedbackIcon}
-                        />
-                    </button>)}
                     {props.phase === 'Planning' && (<button
                         className={styles.phaseButton}
                         disabled={props.phase !== 'Planning'}
@@ -423,6 +412,21 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Understanding'}
                     />
                 </Label>
+                {props.phase === 'Understanding' && ( 
+                    <div className={styles.buttonGroupTopRight}>
+                    <button
+                        className={styles.phaseButton}
+                        onClick={props.onUnderstandingFeedback}
+                    >
+                        <span>{props.intl.formatMessage(messages.feedback)}</span>
+                        <img
+                            className={styles.feedbackIcon}
+                            draggable={false}
+                            src={feedbackIcon}
+                        />
+                    </button>
+                    </div>
+                )}
             </div>
             <div className={styles.row}>
                 <Label text={props.intl.formatMessage(messages.storyboardDescription)}>
@@ -453,7 +457,8 @@ const StoryboardEditor = props => {
                         </div>
                     ))}
                 </div>   
-                {props.phase === 'Understanding' && (<div className={styles.buttonGroupTopRight}><button className={styles.phaseButton} onClick={props.onAddGlobalVariable}>
+                {props.phase === 'Understanding' && (<div className={styles.buttonGroupTopRight}>
+                <button className={styles.phaseButton} onClick={props.onAddGlobalVariable}>
                     {props.intl.formatMessage(messages.addVariable)}
                     <img
                         className={styles.addIcon}
@@ -565,12 +570,35 @@ const StoryboardEditor = props => {
             )}
             {props.phase === 'Planning' && (
                 <div>{props.behaviors.length > 0 && props.selectedBehaviorIndex > -1 && props.behaviors[props.selectedBehaviorIndex] && (<>
-                    <div className={styles.info}>{props.intl.formatMessage(messages.planningInfo)}
+                    <div className={styles.row}>
+                        <div className={styles.info}>{props.intl.formatMessage(messages.planningInfo)}
                         <img
                             className={styles.infoImage}
                             draggable={false}
                             src={infoIcon}
                             alt="Info icon"
+                        />
+                    </div>
+                    <div className={styles.buttonGroupTopRight}>
+                        <button
+                            className={styles.phaseButton}
+                            onClick={props.onPlanningFeedback}
+                        >
+                            <span>{props.intl.formatMessage(messages.feedback)}</span>
+                            <img
+                                className={styles.feedbackIcon}
+                                draggable={false}
+                                src={feedbackIcon}
+                            />
+                        </button>
+                    </div>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.info}>{props.vm.editingTarget.sprite.name}</div>
+                        <img
+                            className={styles.spriteImage}
+                            draggable={false}
+                            src={require(`../../lib/storyboard-project/${props.vm.editingTarget.sprite.costumes[0].assetId}.svg`)}
                         />
                     </div>
                     <div className={styles.row}>
@@ -582,13 +610,8 @@ const StoryboardEditor = props => {
                                 onSubmit={props.onChangeName}
                             />
                         </Label>
-                        <img
-                            className={styles.spriteImage}
-                            draggable={false}
-                            src={require(`../../lib/storyboard-project/${props.vm.editingTarget.sprite.costumes[0].assetId}.svg`)}
-                        />
                     </div>
-                                        <div className={styles.row}>
+                    <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorDescription)}>
                             <BufferedInput
                                 tabIndex="1"
