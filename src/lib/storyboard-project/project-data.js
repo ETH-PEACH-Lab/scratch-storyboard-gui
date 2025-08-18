@@ -6,6 +6,11 @@ let messages = defineMessages({
         defaultMessage: 'my variable',
         description: 'Name for the default variable',
         id: 'gui.defaultProject.variable'
+    },
+    score: {
+        defaultMessage: 'Score',
+        description: 'Name for the default score variable',
+        id: 'gui.defaultProject.score'
     }
 });
 
@@ -26,7 +31,12 @@ const projectData = translateFunction => {
             {
                 isStage: true,
                 name: 'Stage',
-                variables: {},
+                variables: {
+                        '.Y)aBg@ubyoduhtAR^7*.-Score': [
+                        translator(messages.score),
+                        0
+                    ]
+                },
                 lists: {},
                 broadcasts: {},
                 blocks: {},
@@ -185,7 +195,7 @@ const projectData = translateFunction => {
                 mode: 'default',
                 opcode: 'data_variable',
                 params: {
-                    VARIABLE: 'Punkte'
+                    VARIABLE: 'Score'
                 },
                 spriteName: null,
                 value: 10,
