@@ -9,6 +9,7 @@ import bowl from '!raw-loader!./d147f16e3e2583719c073ac5b55fe3ca.svg?';
 import redapple from '!raw-loader!./3826a4091a33e4d26f87a2fac7cf796b.svg?';
 import goldenapple from '!raw-loader!./577a057445419d23249460ad66718951.svg?';
 import youwin from '!raw-loader!./0bc49167d951e5a8b23de48ed7113c92.svg?';
+import chomp from '!arraybuffer-loader!./0b1e3033140d094563248e61de4039e5.wav?';
 /* eslint-enable import/no-unresolved */
 
 const storyboardProject = translator => {
@@ -56,6 +57,12 @@ const storyboardProject = translator => {
         assetType: 'ImageVector',
         dataFormat: 'SVG',
         data: encoder.encode(youwin)
+    },
+    {
+        id: '0b1e3033140d094563248e61de4039e5',
+        assetType: 'Sound',
+        dataFormat: 'WAV',
+        data: new Uint8Array(chomp)
     }];
 };
 

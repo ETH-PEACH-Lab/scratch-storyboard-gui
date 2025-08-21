@@ -453,7 +453,9 @@ const StoryboardEditor = props => {
                                 onSubmit={(newVar) =>props.onChangeGlobalVariable(newVar, index)}
                                 disabled={props.phase !== 'Understanding'}
                             />
-                            <DeleteButton className={styles.deleteButton} onClick={() => props.onDeleteGlobalVariable(index)} />
+                            {props.phase === 'Understanding' && (
+                                <DeleteButton className={styles.deleteButton} onClick={() => props.onDeleteGlobalVariable(index)} />
+                            )}
                         </div>
                     ))}
                 </div>   

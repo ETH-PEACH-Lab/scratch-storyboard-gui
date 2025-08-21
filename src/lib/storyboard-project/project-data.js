@@ -35,6 +35,10 @@ const projectData = translateFunction => {
                         '.Y)aBg@ubyoduhtAR^7*.-Score': [
                         translator(messages.score),
                         0
+                    ],
+                    '`jEk@4|i[#Fk?(8x)AV.-my variable': [
+                        translator(messages.variable),
+                        0
                     ]
                 },
                 lists: {},
@@ -80,7 +84,17 @@ const projectData = translateFunction => {
                         rotationCenterY: 15
                     }
                 ],
-                sounds: [],
+                sounds: [
+                    {
+                        assetId: '0b1e3033140d094563248e61de4039e5',
+                        name: 'Chomp',
+                        dataFormat: 'wav',
+                        format: '',
+                        rate: 11025,
+                        sampleCount: 258,
+                        md5ext: '0b1e3033140d094563248e61de4039e5.wav'
+                    }
+                ],
                 behaviors: [],
                 volume: 100,
                 layerOrder: 4,
@@ -112,7 +126,17 @@ const projectData = translateFunction => {
                         rotationCenterY: 31
                     }
                 ],
-                sounds: [],
+                sounds: [
+                    {
+                        assetId: '0b1e3033140d094563248e61de4039e5',
+                        name: 'Chomp',
+                        dataFormat: 'wav',
+                        format: '',
+                        rate: 11025,
+                        sampleCount: 258,
+                        md5ext: '0b1e3033140d094563248e61de4039e5.wav'
+                    }
+                ],
                 behaviors: [],
                 volume: 100,
                 layerOrder: 2,
@@ -144,7 +168,17 @@ const projectData = translateFunction => {
                         rotationCenterY: 30.993214533924885
                     }
                 ],
-                sounds: [],
+                sounds: [
+                    {
+                        assetId: '0b1e3033140d094563248e61de4039e5',
+                        name: 'Chomp',
+                        dataFormat: 'wav',
+                        format: '',
+                        rate: 11025,
+                        sampleCount: 258,
+                        md5ext: '0b1e3033140d094563248e61de4039e5.wav'
+                    }
+                ],
                 behaviors: [],
                 volume: 100,
                 layerOrder: 1,
