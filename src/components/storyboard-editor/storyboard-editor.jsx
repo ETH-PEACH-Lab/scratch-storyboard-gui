@@ -459,7 +459,7 @@ const StoryboardEditor = props => {
                         </div>
                     ))}
                 </div>   
-                {props.phase === 'Understanding' && (<div className={styles.buttonGroupTopRight}>
+                {props.phase === 'Understanding' && 
                 <button className={styles.phaseButton} onClick={props.onAddGlobalVariable}>
                     {props.intl.formatMessage(messages.addVariable)}
                     <img
@@ -468,7 +468,7 @@ const StoryboardEditor = props => {
                         alt=""
                         draggable={false}
                     ></img>
-                </button></div>)}
+                </button>}
             </div>
             {props.feedbackLoading === 'Loading' && (
                 <div className={styles.loadingContainer}>
@@ -827,7 +827,7 @@ const StoryboardEditor = props => {
                                     {showSoundsDropdown && (
                                         <div className={styles.dropdownMenu}>
                                             {props.vm.editingTarget.sprite.sounds.length > 0 ? (
-                                                props.vm.editingTarget.sprite.sounds.map(option => (
+                                                props.vm.editingTarget?.sprite?.sounds?.map(option => (
                                                     <label
                                                         key={option.name}
                                                         className={styles.dropdownOption}
@@ -1015,8 +1015,8 @@ StoryboardEditor.propTypes = {
     intl: intlShape,
     title: PropTypes.string,
     variables: PropTypes.arrayOf(PropTypes.string).isRequired,
-    storyboardDescription: PropTypes.string,
-    storyboardVariables: PropTypes.string,
+    storyboardDescription: PropTypes.string.isRequired,
+    storyboardVariables: PropTypes.string.isRequired,
     behaviors: PropTypes.array.isRequired,
     selectedBehaviorIndex: PropTypes.number.isRequired,
     onPlanning: PropTypes.func.isRequired,

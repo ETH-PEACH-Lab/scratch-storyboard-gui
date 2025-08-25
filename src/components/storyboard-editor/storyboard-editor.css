@@ -698,6 +698,7 @@ $border-radius: 0.25rem;
   flex-direction: row;
   flex-wrap: wrap; /* optional: allow wrapping to next line */
   gap: 8px;         /* spacing between items */
+  padding-right: 1rem; /* space for delete button */
 }
 
 .nameAndImage {
@@ -758,7 +759,6 @@ $border-radius: 0.25rem;
 .inputWrapper {
   position: relative;
   display: inline-block; 
-  margin-bottom: 8px;    
 }
 
 .feedbackIcon {
