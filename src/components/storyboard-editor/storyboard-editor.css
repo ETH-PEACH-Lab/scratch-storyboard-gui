@@ -417,7 +417,7 @@ $border-radius: 0.25rem;
     background: $looks-secondary-dark;
     position: absolute;
     max-width: 300px;
-    /* overflow-y: hidden; */
+    white-space: normal;
 }
 
 

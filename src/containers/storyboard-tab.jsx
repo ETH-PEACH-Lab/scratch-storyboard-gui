@@ -245,6 +245,16 @@ class StoryboardTab extends React.Component {
         this.setState({feedbackLoading: feedbackLoading.Loading});
         const feedback = await this.props.vm.getUnderstandingFeedback();
         this.setState({feedbackLoading: feedbackLoading.Loaded});
+        this.props.vm.storyboardOverall.descriptionFeedback.color = feedbackColors[this.props.vm.storyboardOverall.descriptionFeedback.color] ||
+                feedbackColors.Incomplete;
+        this.props.vm.storyboardOverall.globalVariablesFeedback.color = feedbackColors[this.props.vm.storyboardOverall.globalVariablesFeedback.color] ||
+                feedbackColors.Incomplete;
+        this.props.vm.runtime.targets.forEach(target => {
+            if (!target.isStage) {
+                target.sprite.understandingFeedback.color = (feedbackColors[target.sprite.understandingFeedback.color] ||
+                    feedbackColors.Complete);
+            }
+        })
         this.setState({understandingFeedback: feedback});
     }
 

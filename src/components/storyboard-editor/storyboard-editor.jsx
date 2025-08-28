@@ -268,8 +268,6 @@ const feedbackColors = {
     NeedsImprovement: '#FFC107'// Yellow
 };
 
-// const ThrottledSpriteSelectorItem = ThrottledPropertyHOC('asset', 500)(SpriteSelectorItem);
-
 const StoryboardEditor = props => {
     const [showVariablesDropdown, setShowVariablesDropdown] = useState(false);
     const [showRelatedSpritesDropdown, setShowRelatedSpritesDropdown] = useState(false);
@@ -439,6 +437,31 @@ const StoryboardEditor = props => {
                         disabled={props.phase !== 'Understanding'}
                     />
                 </Label>
+                {props.understandingFeedback && props.phase === 'Understanding' && (
+                    <div className={styles.feedbackButtonGroup}>
+                        <button
+                            className={styles.feedbackButton}
+                            disabled={!props.understandingFeedback}
+                            title={props.intl.formatMessage(messages.feedback)}
+                            data-for={messages.storyboardVariables.id}
+                            data-tip={props.vm.storyboardOverall.descriptionFeedback.text}
+                            style={{backgroundColor: props.vm.storyboardOverall.descriptionFeedback.color}}
+                        >
+                            <img
+                                className={styles.feedbackIcon}
+                                draggable={false}
+                                src={props.vm.storyboardOverall.descriptionFeedback.color ===
+                                feedbackColors.Complete ? tickIcon : cautionIcon}
+                            />
+                        </button>
+                        <ReactTooltip
+                            className={styles.tooltip}
+                            effect="solid"
+                            id={messages.storyboardVariables.id}
+                            place={'left'}
+                        />
+                    </div>)
+                }
             </div>
             <div className={styles.row}>
                 <Label text={props.intl.formatMessage(messages.storyboardVariables)}></Label>
@@ -469,6 +492,31 @@ const StoryboardEditor = props => {
                         draggable={false}
                     ></img>
                 </button>}
+                {props.understandingFeedback && props.phase === 'Understanding' && (
+                    <div className={styles.feedbackButtonGroup}>
+                        <button
+                            className={styles.feedbackButton}
+                            disabled={!props.understandingFeedback}
+                            title={props.intl.formatMessage(messages.feedback)}
+                            data-for={messages.storyboardVariables.id}
+                            data-tip={props.vm.storyboardOverall.globalVariablesFeedback.text}
+                            style={{backgroundColor: props.vm.storyboardOverall.globalVariablesFeedback.color}}
+                        >
+                            <img
+                                className={styles.feedbackIcon}
+                                draggable={false}
+                                src={props.vm.storyboardOverall.globalVariablesFeedback.color ===
+                                feedbackColors.Complete ? tickIcon : cautionIcon}
+                            />
+                        </button>
+                        <ReactTooltip
+                            className={styles.tooltip}
+                            effect="solid"
+                            id={messages.storyboardVariables.id}
+                            place={'left'}
+                        />
+                    </div>)
+                }
             </div>
             {props.feedbackLoading === 'Loading' && (
                 <div className={styles.loadingContainer}>
@@ -481,7 +529,7 @@ const StoryboardEditor = props => {
                     />
                 </div>
             )}
-            {props.understandingFeedback && props.phase === 'Understanding' && (
+            {/* {props.understandingFeedback && props.phase === 'Understanding' && (
                 <div className={styles.feedbackTextBox}>
                     <Label text={props.intl.formatMessage(messages.feedback)}>
                         <div className={styles.textRow}>
@@ -492,7 +540,6 @@ const StoryboardEditor = props => {
                                 style={{whiteSpace: 'pre-wrap'}}
                                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(props.understandingFeedback || 'No feedback available')) }}
                             >
-                                {/* {props.understandingFeedback || 'No feedback available'} */}
                             </div>
                             <button
                                 className={styles.toggleButton}
@@ -504,7 +551,7 @@ const StoryboardEditor = props => {
                         </div>
                     </Label>
                 </div>
-            )}
+            )} */}
             <div className={styles.divider} />
             {props.phase === 'Understanding' && (
                 <div className={styles.scrollWrapper}>
@@ -564,6 +611,31 @@ const StoryboardEditor = props => {
                                         </button>
                                         )}                                      
                                     </div>
+                                    {props.understandingFeedback && (
+                                    <div className={styles.feedbackButtonGroup}>
+                                        <button
+                                            className={styles.feedbackButton}
+                                            disabled={!props.understandingFeedback}
+                                            title={props.intl.formatMessage(messages.feedback)}
+                                            data-for={target.sprite.name}
+                                            data-tip={target.sprite.understandingFeedback.text}
+                                            style={{backgroundColor: target.sprite.understandingFeedback.color}}
+                                        >
+                                            <img
+                                                className={styles.feedbackIcon}
+                                                draggable={false}
+                                                src={target.sprite.understandingFeedback.color ===
+                                                feedbackColors.Complete ? tickIcon : cautionIcon}
+                                            />
+                                        </button>
+                                        <ReactTooltip
+                                            className={styles.tooltip}
+                                            effect="solid"
+                                            id={target.sprite.name}
+                                            place={'left'}
+                                        />
+                                    </div>)
+                                }
                                 </div>
                             )
                         ))}
@@ -654,7 +726,7 @@ const StoryboardEditor = props => {
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorVariables)}>
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex]?.variables.map(variable => (
+                                {props.behaviors[props.selectedBehaviorIndex].variables?.map(variable => (
                                     <span
                                         key={variable}
                                         className={styles.selectedItem}
@@ -727,7 +799,7 @@ const StoryboardEditor = props => {
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorRelatedSprites)}>
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex].relatedSprites.map(sprite => (
+                                {props.behaviors[props.selectedBehaviorIndex].relatedSprites?.map(sprite => (
                                     <span
                                         key={sprite}
                                         className={styles.selectedItem}
@@ -802,7 +874,7 @@ const StoryboardEditor = props => {
                     <div className={styles.row}>
                             <Label text={props.intl.formatMessage(messages.behaviorSounds)}>
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex].sounds.map(sound => (
+                                {props.behaviors[props.selectedBehaviorIndex].sounds?.map(sound => (
                                     <span
                                         key={sound}
                                         className={styles.selectedItem}
@@ -880,7 +952,7 @@ const StoryboardEditor = props => {
                     <div className={styles.row}>
                         <Label text={props.intl.formatMessage(messages.behaviorCostumes)}>
                             <div className={styles.selectedItemsContainer}>
-                                {props.behaviors[props.selectedBehaviorIndex].costumes.map(costume => (
+                                {props.behaviors[props.selectedBehaviorIndex].costumes?.map(costume => (
                                     <span
                                         key={costume}
                                         className={styles.selectedItem}
@@ -1031,10 +1103,6 @@ StoryboardEditor.propTypes = {
     onDeleteBehavior: PropTypes.func.isRequired,
     onDeleteGlobalVariable: PropTypes.func.isRequired,
     onAddBehavior: PropTypes.func.isRequired,
-    // onChangeVariables: PropTypes.func.isRequired,
-    // onChangeSounds: PropTypes.func.isRequired,
-    // onChangeCostumes: PropTypes.func.isRequired,
-    // onChangeRelatedSprites: PropTypes.func.isRequired,
     onUnderstandingFeedback: PropTypes.func.isRequired,
     onPlanningFeedback: PropTypes.func.isRequired,
     onToggleVariable: PropTypes.func.isRequired,

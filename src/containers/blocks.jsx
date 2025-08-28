@@ -566,12 +566,21 @@ class Blocks extends React.Component {
         const vmBehavior = {
             id: id,
             description: '',
+            variables: [],
+            costumes: [],
+            sounds: [],
+            relatedSprites: [],
             feedback: {
                 is_specific: false,
                 explanation: '',
                 clarification: '',
                 description: '',
-                parsing: ''
+                parsing: '',
+                variables: {text: '', color: null},
+                description: {text: '', color: null},
+                costumes: {text: '', color: null},
+                sounds: {text: '', color: null},
+                relatedSprites: {text: '', color: null}
             }
         };
         this.props.vm.editingTarget.addBehavior(vmBehavior);
